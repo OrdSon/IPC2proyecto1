@@ -1,7 +1,7 @@
 <%-- 
     Document   : añadirCliente
     Created on : 15/08/2021, 03:47:00 PM
-    Author     : ordso
+    Author     : ordson
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,6 +23,7 @@
             Direccion: <br>
             <input type = "text" name = "txtDireccion"><br>
             <input type = "submit" name = "accion" value = "añadir"><br>
+            <a href="ClienteServlet?accion=listar">Volver</a>
         </form>
     </body>
 </html>

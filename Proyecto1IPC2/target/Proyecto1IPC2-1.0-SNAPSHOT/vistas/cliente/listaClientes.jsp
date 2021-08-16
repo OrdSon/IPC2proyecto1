@@ -1,7 +1,7 @@
 <%-- 
     Document   : listaClientes
     Created on : 14/08/2021, 06:50:02 PM
-    Author     : ordso
+    Author     : ordson
 --%>
 
 <%@page import="java.sql.Connection"%>
@@ -40,13 +40,25 @@
             %>
             <tbody>
                 <tr>
+                    <td><%=cliente.getCodigo()%></td>
                     <td><%=cliente.getNit()%></td>
                     <td><%=cliente.getNombre()%></td>
                     <td><%=cliente.getTelefono()%></td>
                     <td><%=cliente.getDireccion()%></td>
                     <td>
-                        <a>editar</a>
-                        <a>remover</a>
+                        <!-- 
+                        EDICION PASO 1
+                        Se hace una referencia al objeto ClienteServlet con dos atributos
+                        atributo accion = editar, para que me redireccione a editarCliente.jsp
+                        y atributo codigo, que obtiene el codigo del cliente para trabajar con el mas adelante-->
+                        <a href="ClienteServlet?accion=editar&codigo=<%=cliente.getCodigo()%>">editar</a>
+                        <!--
+                        ELIMINACION PASO 1:
+                        Se hace una referencia a ClienteServlet con dos atributos
+                        accion = eliminar para ejecutar las acciones
+                        y codigo = codigo del cliente para trabajar con el mas adelante
+                        -->
+                        <a href="ClienteServlet?accion=eliminar&codigo=<%=cliente.getCodigo()%>">Eliminar</a>
                     </td>
                 </tr>
                 <%}%>

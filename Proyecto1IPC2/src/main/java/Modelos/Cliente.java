@@ -7,7 +7,7 @@ package Modelos;
 
 /**
  *
- * @author ordso
+ * @author ordson
  */
 public class Cliente {
     private int codigo;
@@ -29,6 +29,10 @@ public class Cliente {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
+    }
+
+    public Cliente() {
+        
     }
     
     
@@ -72,6 +76,13 @@ public class Cliente {
         this.direccion = direccion;
     }
     
+    public void print(){
+        System.out.println("codigo "+codigo);
+        System.out.println("nit "+nit);
+        System.out.println("nombre"+nombre);
+        System.out.println("telefono"+telefono);
+        System.out.println("direcciones"+direccion);
+    }
     
 
 }

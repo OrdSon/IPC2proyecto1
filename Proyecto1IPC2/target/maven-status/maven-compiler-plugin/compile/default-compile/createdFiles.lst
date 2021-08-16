@@ -1,5 +1,4 @@
 Modelos\Cliente.class
 DAO\ClienteDAO.class
-.netbeans_automatic_build
 Web\ClienteServlet.class
 Utilidades\Conexion.class

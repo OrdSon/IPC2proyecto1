@@ -14,6 +14,11 @@
         <title>JSP Page</title>
     </head>
     <body>
+        
+        <%
+            /*ESTABLECE LA CONEXION CON LA BASE DE DATOS*/
+            Conexion conexion = new Conexion();
+        %>
         <h1>Hello World! from jsp</h1>
         <a href="ClienteServlet?accion=listar">Mostrar clientes</a>
     </body>
