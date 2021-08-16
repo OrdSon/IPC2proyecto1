@@ -4,6 +4,8 @@
     Author     : ordso
 --%>
 
+<%@page import="java.sql.Connection"%>
+<%@page import="Utilidades.Conexion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

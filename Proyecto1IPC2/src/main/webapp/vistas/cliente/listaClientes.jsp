@@ -4,6 +4,7 @@
     Author     : ordso
 --%>
 
+<%@page import="java.sql.Connection"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="DAO.ClienteDAO"%>
@@ -13,10 +14,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Muebleria clientes</title>
     </head>
     <body>
         <h1>Lista de clientes</h1>
+        <a href="ClienteServlet?accion=nuevo">Añadir cliente</a>
         <table border = "1">
             <thead>
                 <tr>

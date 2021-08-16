@@ -13,16 +13,22 @@ import java.sql.DriverManager;
  * @author ordson
  */
 public class Conexion {
-    Connection con;
+    static Connection con;
     public Conexion(){
         try {
+            if (con != null) {
+                System.out.println("conexion previa aun vigente");
+                return;
+            }
             Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/muebles","root","Shinouyo0.");            
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/muebles","root","Shinouyo0.");     
+            System.out.println("conexion exitosa");
         } catch (Exception e) {
             System.err.println("Error"+e);
         }
     }
-    public Connection getConnection(){
+    public static Connection getConnection(){
         return con;
     }
+    
 }
