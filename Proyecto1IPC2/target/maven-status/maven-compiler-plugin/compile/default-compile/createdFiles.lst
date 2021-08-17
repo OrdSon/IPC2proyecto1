@@ -1,4 +1,7 @@
 Modelos\Cliente.class
+Web\PuntoVentaServlet.class
+DAO\PuntoVentaDAO.class
+Modelos\PuntoVenta.class
 DAO\ClienteDAO.class
 Web\ClienteServlet.class
 Utilidades\Conexion.class

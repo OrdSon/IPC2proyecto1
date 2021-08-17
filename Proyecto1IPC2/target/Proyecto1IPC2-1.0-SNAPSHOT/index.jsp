@@ -20,6 +20,7 @@
             Conexion conexion = new Conexion();
         %>
         <h1>Hello World! from jsp</h1>
-        <a href="ClienteServlet?accion=listar">Mostrar clientes</a>
+        <a href="ClienteServlet?accion=listar">Mostrar clientes</a><br>
+        <a href="PuntoVentaServlet?accion=listar">Mostrar puntos de venta</a>
     </body>
 </html>
