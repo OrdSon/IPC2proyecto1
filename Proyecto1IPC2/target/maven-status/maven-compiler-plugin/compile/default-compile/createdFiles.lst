@@ -1,7 +1,11 @@
+DAO\EmpleadoDAO.class
 Modelos\Cliente.class
 Web\PuntoVentaServlet.class
 DAO\PuntoVentaDAO.class
+Utilidades\Fecha.class
 Modelos\PuntoVenta.class
+Web\EmpleadoServlet.class
 DAO\ClienteDAO.class
+Modelos\Empleado.class
 Web\ClienteServlet.class
 Utilidades\Conexion.class

@@ -41,7 +41,7 @@ public class ClienteDAO  {
     su utilizacion futura
     */
     public ArrayList<Cliente> listar(){
-        connection = Conexion.getConnection();
+        
         ArrayList<Cliente> clientes = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CLIENTES);
@@ -68,7 +68,7 @@ public class ClienteDAO  {
     con sus datos
     */
     public Cliente listarCodigo(int codigo){
-        connection = Conexion.getConnection();
+        
         Cliente cliente = new Cliente();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CLIENTE_CODIGO);
@@ -96,7 +96,7 @@ public class ClienteDAO  {
     con dicho codigo y con los nuevos datos, se procede a editar el registro
     */
     public boolean editar(Cliente cliente){
-        connection = Conexion.getConnection();
+        
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CLIENTE);
             cliente.print();

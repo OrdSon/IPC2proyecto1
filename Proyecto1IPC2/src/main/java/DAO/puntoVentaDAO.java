@@ -37,11 +37,11 @@ public class PuntoVentaDAO  {
     }
     /*LISTAR
     crea una lista de objetos PuntoVenta que almacena la informacion
-    de todos los clientes en la base de datos, luego exporta esa lista para
+    de todos los puntos de venta en la base de datos, luego exporta esa lista para
     su utilizacion futura
     */
     public ArrayList<PuntoVenta> listar(){
-        connection = Conexion.getConnection();
+        
         ArrayList<PuntoVenta> puntosVenta = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_PUNTOS);
@@ -67,7 +67,7 @@ public class PuntoVentaDAO  {
     con sus datos
     */
     public PuntoVenta listarCodigo(int codigo){
-        connection = Conexion.getConnection();
+       
         PuntoVenta puntoVenta = new PuntoVenta();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_PUNTOS_CODIGO);
@@ -93,7 +93,7 @@ public class PuntoVentaDAO  {
     con dicho codigo y con los nuevos datos, se procede a editar el registro
     */
     public boolean editar(PuntoVenta puntoVenta){
-        connection = Conexion.getConnection();
+       
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PUNTO);
             preparedStatement.setString(1, puntoVenta.getNombre());

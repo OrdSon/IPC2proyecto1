@@ -5,8 +5,15 @@
  */
 package Web;
 
+import DAO.EmpleadoDAO;
+import Modelos.Empleado;
+import Utilidades.Fecha;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author ordso
+ * @author ordson
  */
 public class EmpleadoServlet extends HttpServlet {
 
@@ -27,20 +34,86 @@ public class EmpleadoServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    String listar = "vistas/empleado/listaEmpleados.jsp";
+    String añadir = "vistas/empleado/añadirEmpleado.jsp";
+    String editar = "vistas/empleado/editarEmpleado.jsp";
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EmpleadoServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EmpleadoServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        doPost(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String acceso = "";
+        String accion = request.getParameter("accion");
+        if (accion.equalsIgnoreCase("listar")) {
+            acceso = listar;
+        } else if (accion.equalsIgnoreCase("nuevo")) {
+            acceso = añadir;
+        } else if (accion.equalsIgnoreCase("añadir")) {
+            
+            Empleado empleado = getEmpleado(request);
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            empleadoDAO.añadir(empleado);
+            acceso = listar;
+
+        } else if (accion.equalsIgnoreCase("editar")) {
+            request.getSession().setAttribute("codigoEmpleado", request.getParameter("codigo"));
+            acceso = editar;
+
+        } else if (accion.equalsIgnoreCase("actualizar")) {
+            int codigo = Integer.parseInt((String) request.getSession().getAttribute("codigoEmpleado"));
+            Empleado empleado = getEmpleado(request);
+            empleado.setCodigo(codigo);
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            empleadoDAO.editar(empleado);
+            acceso = listar;
+
+        } else if (accion.equalsIgnoreCase("eliminar")) {
+            int codigo = Integer.parseInt(request.getParameter("codigo"));
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            empleadoDAO.eliminar(codigo);
+            acceso = listar;
+        }
+        RequestDispatcher vista = request.getRequestDispatcher(acceso);
+        vista.forward(request, response);
+    }
+
+    private Empleado getEmpleado(HttpServletRequest request) {
+        String nombre = request.getParameter("txtNombre");
+        String txtarea = request.getParameter("txtarea");
+        String contraseña = request.getParameter("txtContraseña");
+        String dpi = request.getParameter("txtDpi");
+        String telefono = request.getParameter("txtTelefono");
+        String direccion = request.getParameter("txtDireccion");
+        String birth = request.getParameter("txtBirth");
+        String salario = request.getParameter("txtSalario");
+        String debut = request.getParameter("txtDebut");
+
+        Fecha fecha = new Fecha();
+
+        int area = verificarArea(txtarea);
+        Date fecha_nacimiento = fecha.formatear(birth);
+        Date fecha_contratacion = fecha.formatear(debut);
+        Empleado empleado = new Empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion);
+        return empleado;
+    }
+
+    private int verificarArea(String txtArea) {
+        switch (txtArea) {
+            case "Financiero":
+                return 1;
+
+            case "Administracion":
+                return 2;
+
+            case "Fabrica":
+                return 3;
+            default:
+                return -1;
         }
     }
 
@@ -53,25 +126,25 @@ public class EmpleadoServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Returns a short description of the servlet.

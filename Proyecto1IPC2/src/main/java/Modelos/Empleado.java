@@ -5,9 +5,11 @@
  */
 package Modelos;
 
+import java.sql.Date;
+
 /**
  *
- * @author ordso
+ * @author ordson
  */
 public class Empleado {
     private int codigo;
@@ -17,11 +19,12 @@ public class Empleado {
     private String dpi;
     private String telefono;
     private String direccion;
-    private String fecha_nacimiento;
+    private Date fecha_nacimiento;
     private String salario;
-    private String fecha_contratacion;
+    private Date fecha_contratacion;
 
-    public Empleado(int codigo, String nombre, int area, String contraseña, String dpi, String telefono, String direccion, String fecha_nacimiento, String salario, String fecha_contratacion) {
+    public Empleado(int codigo, String nombre, int area, String contraseña, String dpi, 
+            String telefono, String direccion, Date fecha_nacimiento, String salario, Date fecha_contratacion) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.area = area;
@@ -34,7 +37,8 @@ public class Empleado {
         this.fecha_contratacion = fecha_contratacion;
     }
 
-    public Empleado(String nombre, int area, String contraseña, String dpi, String telefono, String direccion, String fecha_nacimiento, String salario, String fecha_contratacion) {
+    public Empleado(String nombre, int area, String contraseña, String dpi, 
+            String telefono, String direccion, Date fecha_nacimiento, String salario, Date fecha_contratacion) {
         this.nombre = nombre;
         this.area = area;
         this.contraseña = contraseña;
@@ -105,11 +109,11 @@ public class Empleado {
         this.direccion = direccion;
     }
 
-    public String getFecha_nacimiento() {
+    public Date getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(String fecha_nacimiento) {
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
@@ -121,11 +125,11 @@ public class Empleado {
         this.salario = salario;
     }
 
-    public String getFecha_contratacion() {
+    public Date getFecha_contratacion() {
         return fecha_contratacion;
     }
 
-    public void setFecha_contratacion(String fecha_contratacion) {
+    public void setFecha_contratacion(Date fecha_contratacion) {
         this.fecha_contratacion = fecha_contratacion;
     }
     
