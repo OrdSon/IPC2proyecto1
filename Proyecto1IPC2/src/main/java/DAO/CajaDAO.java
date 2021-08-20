@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package DAO;
 
 import Modelos.Caja;
@@ -34,15 +30,13 @@ public class CajaDAO {
     }
 
     /*LISTAR
-    crea una lista de objetos Cliente que almacena la informacion
-    de todos los clientes en la base de datos, luego exporta esa lista para
-    su utilizacion futura
+    Crea una lista de cajas y la exporta para su uso
      */
     public ArrayList<Caja> listar() {
 
         ArrayList<Caja> cajas = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CAJA_STRING);
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CAJA);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
@@ -60,8 +54,7 @@ public class CajaDAO {
 
     /*
     LISTAR CODIGO
-    Usa el codigo de un cliente para encontrarlo y exportar un objeto Cliente
-    con sus datos
+    Usa el codigo de caja para obtener un registro
      */
     public Caja listarCodigo(int codigo) {
 
@@ -84,9 +77,7 @@ public class CajaDAO {
 
     /*
     EDITAR
-    recibe un cliente como atributo, en este caso sera un cliente cuyos datos
-    sean diferentes a los encontrados en la base de datos, salvo por el codigo
-    con dicho codigo y con los nuevos datos, se procede a editar el registro
+    Recibe una caja y la usa para editar un registro ya existente
      */
     public boolean editar(Caja caja) {
 
@@ -109,8 +100,7 @@ public class CajaDAO {
 
     /*
     AÑADIR
-    Recibe un cliente como parametro y usa la informacion que almacena
-    para crear un nuevo cliente en la base de datos
+    Usa un objeto Caja para añadir un registro a la base de datos
      */
     public boolean añadir(Caja caja) {
         try {
@@ -127,7 +117,7 @@ public class CajaDAO {
 
     /*
     ELIMINAR
-    Toma el codigo de un cliente y lo usa para encontrar al objetivo
+    Toma el codigo de una caja y lo usa para encontrar al objetivo
     y eliminarlo de la base de datos
      */
     public boolean eliminar(int codigo) {

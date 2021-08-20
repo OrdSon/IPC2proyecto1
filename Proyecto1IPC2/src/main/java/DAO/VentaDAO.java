@@ -98,10 +98,10 @@ public class VentaDAO {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_VENTA);
             preparedStatement.setDouble(1, venta.getTotal());
-            preparedStatement.setDate(1, venta.getFecha());
-            preparedStatement.setDouble(1, venta.getPuntoVentaCodigo());
-            preparedStatement.setDouble(1, venta.getEmpleadoCodigo());
-            preparedStatement.setDouble(1, venta.getClienteCodigo());
+            preparedStatement.setDate(2, venta.getFecha());
+            preparedStatement.setInt(3, venta.getPuntoVentaCodigo());
+            preparedStatement.setInt(4, venta.getEmpleadoCodigo());
+            preparedStatement.setInt(5, venta.getClienteCodigo());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -123,7 +123,7 @@ public class VentaDAO {
         } catch (SQLException ex) {
             try {
                 connection.rollback();
-                Logger.getLogger(CajaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex1);
             }
