@@ -16,6 +16,7 @@ public class Cliente {
     private String telefono;
     private String direccion;
     
+    
     public Cliente(int codigo, String nit, String nombre, String telefono, String direccion){
         this.codigo = codigo;
         this.nit = nit;

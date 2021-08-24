@@ -12,6 +12,10 @@
         <servlet-name>EmpleadoServlet</servlet-name>
         <servlet-class>Web.EmpleadoServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CajaServlet</servlet-name>
+        <servlet-class>Web.CajaServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClienteServlet</servlet-name>
         <url-pattern>/ClienteServlet</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>EmpleadoServlet</servlet-name>
         <url-pattern>/EmpleadoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CajaServlet</servlet-name>
+        <url-pattern>/CajaServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -23,11 +23,10 @@ import java.util.logging.Logger;
 public class LoteVentaDAO {
         Connection connection;
 
-    private static final String SELECCIONAR_MUEBLE = "SELECT * FROM mueble";
-    private static final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM mueble WHERE modelo = ?";
-    private static final String INSERTAR_MUEBLE = "INSERT INTO mueble (modelo, nombre, precio, costo) VALUES (?,?,?,?)";
-    private static final String UPDATE_MUEBLE = "UPDATE mueble SET  nombre = ?, precio = ?, costo = ? WHERE modelo = ?";
-    private static final String ELIMINAR_MUEBLE = "DELETE FROM mueble WHERE modelo = ?";
+    private static final String SELECCIONAR_MUEBLE = "SELECT * FROM lote_venta";
+    private static final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM lote_venta WHERE codigo = ?";
+    private static final String INSERTAR_MUEBLE = "INSERT INTO mueble (mueble_ensamblado_codigo, venta_codigo) VALUES (?,?)";
+    private static final String ELIMINAR_MUEBLE = "DELETE FROM lote_venta WHERE codigo = ?";
 
     public LoteVentaDAO() {
         this.connection = Conexion.getConnection();

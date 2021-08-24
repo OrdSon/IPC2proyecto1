@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Lista de clientes</h1>
-        <a href="ClienteServlet?accion=nuevo">Añadir cliente</a>
+        <a href="ClienteServlet?accion=nuevo ">Añadir cliente</a>
         <table border = "1">
             <thead>
                 <tr>

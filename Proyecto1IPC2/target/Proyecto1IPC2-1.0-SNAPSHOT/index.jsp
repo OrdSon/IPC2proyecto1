@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 14/08/2021, 06:48:02 PM
-    Author     : ordso
+    Author     : ordson
 --%>
 
 <%@page import="java.sql.Connection"%>
@@ -20,6 +20,9 @@
             Conexion conexion = new Conexion();
         %>
         <h1>Hello World! from jsp</h1>
+        
+        
+        
         <a href="ClienteServlet?accion=listar">Mostrar clientes</a><br>
         <a href="PuntoVentaServlet?accion=listar">Mostrar puntos de venta</a><br>
         <a href="EmpleadoServlet?accion=listar">Mostrar empleados</a>
