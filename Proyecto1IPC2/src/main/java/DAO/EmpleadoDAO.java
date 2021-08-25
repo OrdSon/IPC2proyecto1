@@ -7,11 +7,13 @@ package DAO;
 
 import Modelos.Empleado;
 import Utilidades.Conexion;
+import Utilidades.DateManager;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class EmpleadoDAO {
     Connection connection;
-    
+    DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_EMPLEADOS = "SELECT * FROM empleado";
     private static final String SELECCIONAR_EMPLEADO_CODIGO = "SELECT * FROM empleado WHERE codigo = ?";
     private static final String INSERTAR_EMPLEADO = "INSERT INTO empleado(nombre, area, contraseña, dpi, "
@@ -51,10 +53,12 @@ public class EmpleadoDAO {
                 String dpi = resultSet.getString("dpi");
                 String telefono = resultSet.getString("telefono");
                 String direccion = resultSet.getString("direccion");
-                Date  fechaNacimiento= resultSet.getDate("fecha_nacimiento");
+                Date  fechaNacimientoSql= resultSet.getDate("fecha_nacimiento");
                 String salario = resultSet.getString("salario");
-                Date fechaContratacion = resultSet.getDate("fecha_contratacion");
+                Date fechaContratacionSql = resultSet.getDate("fecha_contratacion");
                 
+                LocalDate fechaNacimiento = dateManager.convertirALocalDate(fechaNacimientoSql);
+                LocalDate fechaContratacion = dateManager.convertirALocalDate(fechaContratacionSql);
                 
                 empleados.add( new Empleado(codigo, nombre, area, contraseña, dpi, telefono, direccion, fechaNacimiento, salario, fechaContratacion));
             }
@@ -80,9 +84,12 @@ public class EmpleadoDAO {
                 String dpi = resultSet.getString("dpi");
                 String telefono = resultSet.getString("telefono");
                 String direccion = resultSet.getString("direccion");
-                Date  fechaNacimiento= resultSet.getDate("fecha_nacimiento");
+                Date  fechaNacimientoSql= resultSet.getDate("fecha_nacimiento");
                 String salario = resultSet.getString("salario");
-                Date fechaContratacion = resultSet.getDate("fecha_contratacion");
+                Date fechaContratacionSql = resultSet.getDate("fecha_contratacion");
+                
+                LocalDate fechaNacimiento = dateManager.convertirALocalDate(fechaNacimientoSql);
+                LocalDate fechaContratacion = dateManager.convertirALocalDate(fechaContratacionSql);
                 
                 empleado = new Empleado(codigo, nombre, area, contraseña, dpi, telefono, direccion, fechaNacimiento, salario, fechaContratacion);
             }
@@ -102,9 +109,9 @@ public class EmpleadoDAO {
             preparedStatement.setString(4, empleado.getDpi());
             preparedStatement.setString(5, empleado.getTelefono());
             preparedStatement.setString(6, empleado.getDireccion());
-            preparedStatement.setDate(7, empleado.getFecha_nacimiento());
+            preparedStatement.setDate(7, dateManager.convertirADate(empleado.getFecha_nacimiento()));
             preparedStatement.setString(8, empleado.getSalario());
-            preparedStatement.setDate(9, empleado.getFecha_contratacion());
+            preparedStatement.setDate(9, dateManager.convertirADate(empleado.getFecha_contratacion()));
             preparedStatement.setInt(10, empleado.getCodigo());
           
             preparedStatement.executeUpdate();
@@ -126,9 +133,9 @@ public class EmpleadoDAO {
             preparedStatement.setString(4, empleado.getDpi());
             preparedStatement.setString(5, empleado.getTelefono());
             preparedStatement.setString(6, empleado.getDireccion());
-            preparedStatement.setDate(7, empleado.getFecha_nacimiento());
+            preparedStatement.setDate(7, dateManager.convertirADate(empleado.getFecha_nacimiento()));
             preparedStatement.setString(8, empleado.getSalario());
-            preparedStatement.setDate(9, empleado.getFecha_contratacion());
+            preparedStatement.setDate(9, dateManager.convertirADate(empleado.getFecha_contratacion()));
             
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {

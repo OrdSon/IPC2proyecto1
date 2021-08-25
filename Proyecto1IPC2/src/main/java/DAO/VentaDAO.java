@@ -7,11 +7,13 @@ package DAO;
 
 import Modelos.Venta;
 import Utilidades.Conexion;
+import Utilidades.DateManager;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +25,7 @@ import java.util.logging.Logger;
 public class VentaDAO {
 
     Connection connection;
-
+    DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_VENTAS = "SELECT * FROM venta";
     private static final String SELECCIONAR_VENTA_CODIGO = "SELECT * FROM venta WHERE codigo = ?";
     private static final String INSERTAR_VENTA = "INSERT INTO venta (total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?)";
@@ -46,11 +48,13 @@ public class VentaDAO {
 
                 int codigo = resultSet.getInt("codigo");
                 double total = resultSet.getInt("total");
-                Date fecha = resultSet.getDate("fecha");
+                Date fechaSql = resultSet.getDate("fecha");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
                 int empleadoCodigo = resultSet.getInt("empleado_codigo");
                 int clienteCodigo = resultSet.getInt("cliente_codigo");
-
+                
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
+                
                 ventas.add(new Venta(codigo, total, fecha, puntoVentaCodigo, empleadoCodigo, clienteCodigo));
             }
         } catch (SQLException ex) {
@@ -73,10 +77,11 @@ public class VentaDAO {
             while (resultSet.next()) {
 
                 double total = resultSet.getInt("total");
-                Date fecha = resultSet.getDate("fecha");
+                Date fechaSql = resultSet.getDate("fecha");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
                 int empleadoCodigo = resultSet.getInt("empleado_codigo");
                 int clienteCodigo = resultSet.getInt("cliente_codigo");
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
 
                 venta = new Venta(codigo, total, fecha, puntoVentaCodigo, empleadoCodigo, clienteCodigo);
             }
@@ -98,7 +103,7 @@ public class VentaDAO {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_VENTA);
             preparedStatement.setDouble(1, venta.getTotal());
-            preparedStatement.setDate(2, venta.getFecha());
+            preparedStatement.setDate(2, dateManager.convertirADate(venta.getFecha()));
             preparedStatement.setInt(3, venta.getPuntoVentaCodigo());
             preparedStatement.setInt(4, venta.getEmpleadoCodigo());
             preparedStatement.setInt(5, venta.getClienteCodigo());

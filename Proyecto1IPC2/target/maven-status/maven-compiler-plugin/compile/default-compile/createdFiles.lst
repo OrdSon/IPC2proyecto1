@@ -7,7 +7,6 @@ Modelos\Devolucion.class
 DAO\PiezaAlmacenadaDAO.class
 Modelos\LoteVenta.class
 DAO\PiezaDAO.class
-Utilidades\LocalDateConvertidor.class
 Modelos\Cliente.class
 DAO\MuebleEnsambladoDAO.class
 Modelos\Movimiento.class
@@ -16,6 +15,7 @@ Web\EmpleadoServlet.class
 Web\ClienteServlet.class
 DAO\EmpleadoDAO.class
 DAO\PuntoVentaDAO.class
+Utilidades\DateManager.class
 Modelos\MuebleEnsamblado.class
 Modelos\Empleado.class
 Utilidades\Conexion.class
@@ -26,6 +26,8 @@ Modelos\Pieza.class
 Utilidades\Fecha.class
 DAO\DevolucionDAO.class
 Modelos\Caja.class
+Web\VentaServlet.class
+Web\DevolucionServlet.class
 Modelos\Mueble.class
 Web\CajaServlet.class
 DAO\ClienteDAO.class

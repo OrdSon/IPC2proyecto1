@@ -7,12 +7,8 @@ package Web;
 
 import DAO.EmpleadoDAO;
 import Modelos.Empleado;
-import Utilidades.Fecha;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
+import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -92,12 +88,12 @@ public class EmpleadoServlet extends HttpServlet {
         String birth = request.getParameter("txtBirth");
         String salario = request.getParameter("txtSalario");
         String debut = request.getParameter("txtDebut");
-
-        Fecha fecha = new Fecha();
+        System.out.println(birth +"  FECHA DE NACIMIENTO");
+        System.out.println(debut + " FECHA DE CONTRATACION");
 
         int area = verificarArea(txtarea);
-        Date fecha_nacimiento = fecha.formatear(birth);
-        Date fecha_contratacion = fecha.formatear(debut);
+        LocalDate fecha_nacimiento = LocalDate.parse(birth);
+        LocalDate fecha_contratacion = LocalDate.parse(debut);
         Empleado empleado = new Empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion);
         return empleado;
     }

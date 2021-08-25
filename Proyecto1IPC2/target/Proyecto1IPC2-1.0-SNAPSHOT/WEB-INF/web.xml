@@ -16,6 +16,38 @@
         <servlet-name>CajaServlet</servlet-name>
         <servlet-class>Web.CajaServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VentaServlet</servlet-name>
+        <servlet-class>Web.VentaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DevolucionServlet</servlet-name>
+        <servlet-class>Web.DevolucionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PiezaServlet</servlet-name>
+        <servlet-class>Web.PiezaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MuebleServlet</servlet-name>
+        <servlet-class>Web.MuebleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MuebleEnsambladoServlet</servlet-name>
+        <servlet-class>Web.MuebleEnsambladoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CompraServlet</servlet-name>
+        <servlet-class>Web.CompraServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PiezaAlmacenadaServlet</servlet-name>
+        <servlet-class>Web.PiezaAlmacenadaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MovimientoServlet</servlet-name>
+        <servlet-class>Web.MovimientoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClienteServlet</servlet-name>
         <url-pattern>/ClienteServlet</url-pattern>
@@ -31,6 +63,38 @@
     <servlet-mapping>
         <servlet-name>CajaServlet</servlet-name>
         <url-pattern>/CajaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VentaServlet</servlet-name>
+        <url-pattern>/VentaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DevolucionServlet</servlet-name>
+        <url-pattern>/DevolucionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PiezaServlet</servlet-name>
+        <url-pattern>/PiezaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MuebleServlet</servlet-name>
+        <url-pattern>/MuebleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MuebleEnsambladoServlet</servlet-name>
+        <url-pattern>/MuebleEnsambladoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompraServlet</servlet-name>
+        <url-pattern>/CompraServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PiezaAlmacenadaServlet</servlet-name>
+        <url-pattern>/PiezaAlmacenadaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovimientoServlet</servlet-name>
+        <url-pattern>/MovimientoServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -3,11 +3,13 @@ package DAO;
 
 import Modelos.Devolucion;
 import Utilidades.Conexion;
+import Utilidades.DateManager;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class DevolucionDAO {
         Connection connection;
-
+        DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_DEVOLUCION = "SELECT * FROM devolucion";
     private static final String SELECCIONAR_DEVOLUCION_CODIGO = "SELECT * FROM devolucion WHERE codigo = ?";
     private static final String INSERTAR_DEVOLUCION = "INSERT INTO devolucion (fecha, total, venta_codigo) VALUES (?, ?, ?)";
@@ -40,11 +42,10 @@ public class DevolucionDAO {
             while (resultSet.next()) {
 
                 int codigo = resultSet.getInt("codigo");
-                Date fecha = resultSet.getDate("fecha");
+                Date fechaSql = resultSet.getDate("fecha");
                 double total = resultSet.getDouble("total");
                 int ventaCodigo = resultSet.getInt("venta_codigo");
-                
-
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
                 devoluciones.add(new Devolucion(codigo, fecha, total, ventaCodigo, ventaCodigo));
             }
         } catch (SQLException ex) {
@@ -66,9 +67,11 @@ public class DevolucionDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
               
-                Date fecha = resultSet.getDate("fecha");
+                Date fechaSql = resultSet.getDate("fecha");
                 double total = resultSet.getDouble("total");
                 int ventaCodigo = resultSet.getInt("venta_codigo");
+                
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
 
                 devolucion = new Devolucion(codigo, fecha, total, ventaCodigo, ventaCodigo);
             }
@@ -91,7 +94,7 @@ public class DevolucionDAO {
     public boolean añadir(Devolucion devolucion) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_DEVOLUCION);
-            preparedStatement.setDate(1, devolucion.getFecha());
+            preparedStatement.setDate(1, dateManager.convertirADate(devolucion.getFecha()));
             preparedStatement.setDouble(2, devolucion.getTotal());
             preparedStatement.setInt(3, devolucion.getVentaCodigo());
             preparedStatement.executeUpdate();

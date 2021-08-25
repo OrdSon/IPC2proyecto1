@@ -5,7 +5,8 @@
  */
 package Modelos;
 
-import java.sql.Date;
+import java.time.LocalDate;
+
 
 /**
  *
@@ -13,12 +14,12 @@ import java.sql.Date;
  */
 public class Devolucion {
     private int codigo;
-    private java.sql.Date fecha;
+    private LocalDate fecha;
     private double total;
     private int muebleDevuelto;
     private int ventaCodigo;
 
-    public Devolucion(int codigo, Date fecha, double total, int muebleDevuelto, int ventaCodigo) {
+    public Devolucion(int codigo, LocalDate fecha, double total, int muebleDevuelto, int ventaCodigo) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.total = total;
@@ -26,7 +27,7 @@ public class Devolucion {
         this.ventaCodigo = ventaCodigo;
     }
 
-    public Devolucion(Date fecha, double total, int muebleDevuelto, int ventaCodigo) {
+    public Devolucion(LocalDate fecha, double total, int muebleDevuelto, int ventaCodigo) {
         this.fecha = fecha;
         this.total = total;
         this.muebleDevuelto = muebleDevuelto;
@@ -44,11 +45,11 @@ public class Devolucion {
         this.codigo = codigo;
     }
 
-    public java.sql.Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(java.sql.Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

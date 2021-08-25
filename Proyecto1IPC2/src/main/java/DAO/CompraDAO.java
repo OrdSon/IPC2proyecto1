@@ -7,11 +7,13 @@ package DAO;
 
 import Modelos.Compra;
 import Utilidades.Conexion;
+import Utilidades.DateManager;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +25,7 @@ import java.util.logging.Logger;
 public class CompraDAO {
 
     Connection connection;
-
+    DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_COMPRAS = "SELECT * FROM compra";
     private static final String SELECCIONAR_COMPRA_CODIGO = "SELECT * FROM compra WHERE codigo = ?";
     private static final String INSERTAR_COMPRA = "INSERT INTO compra (fecha, total, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?)";
@@ -44,10 +46,10 @@ public class CompraDAO {
             while (resultSet.next()) {
 
                 int codigo = resultSet.getInt("codigo");
-                Date fecha = resultSet.getDate("fecha");
+                Date fechaSql = resultSet.getDate("fecha");
                 double total = resultSet.getDouble("total");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
-
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
                 compras.add(new Compra(codigo, fecha, total, puntoVentaCodigo));
             }
         } catch (SQLException ex) {
@@ -70,9 +72,9 @@ public class CompraDAO {
             while (resultSet.next()) {
 
                 double total = resultSet.getInt("total");
-                Date fecha = resultSet.getDate("fecha");
+                Date fechaSql = resultSet.getDate("fecha");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
-
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
                 compra = new Compra(codigo, fecha, total, puntoVentaCodigo);
             }
         } catch (SQLException ex) {
@@ -85,7 +87,7 @@ public class CompraDAO {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_COMPRA);
             
-            preparedStatement.setDate(1, compra.getFecha());
+            preparedStatement.setDate(1, dateManager.convertirADate(compra.getFecha()));
             preparedStatement.setDouble(2, compra.getTotal());
             preparedStatement.setInt(3, compra.getPuntoVentaCodigo());
 

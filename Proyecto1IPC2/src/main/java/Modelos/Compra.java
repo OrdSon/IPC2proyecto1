@@ -5,7 +5,7 @@
  */
 package Modelos;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -13,18 +13,18 @@ import java.sql.Date;
  */
 public class Compra {
     private int codigo;
-    private java.sql.Date fecha;
+    private LocalDate fecha;
     private double total;
     private int puntoVentaCodigo;
 
-    public Compra(int codigo, Date fecha, double total, int puntoVentaCodigo) {
+    public Compra(int codigo, LocalDate fecha, double total, int puntoVentaCodigo) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.total = total;
         this.puntoVentaCodigo = puntoVentaCodigo;
     }
 
-    public Compra(Date fecha, double total, int puntoVentaCodigo) {
+    public Compra(LocalDate fecha, double total, int puntoVentaCodigo) {
         this.fecha = fecha;
         this.total = total;
         this.puntoVentaCodigo = puntoVentaCodigo;
@@ -41,11 +41,11 @@ public class Compra {
         this.codigo = codigo;
     }
 
-    public java.sql.Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(java.sql.Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
