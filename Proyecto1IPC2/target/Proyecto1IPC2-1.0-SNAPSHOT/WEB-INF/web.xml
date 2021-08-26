@@ -48,6 +48,18 @@
         <servlet-name>MovimientoServlet</servlet-name>
         <servlet-class>Web.MovimientoServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>Web.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DiseñoServlet</servlet-name>
+        <servlet-class>Web.DiseñoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>Web.loginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClienteServlet</servlet-name>
         <url-pattern>/ClienteServlet</url-pattern>
@@ -95,6 +107,18 @@
     <servlet-mapping>
         <servlet-name>MovimientoServlet</servlet-name>
         <url-pattern>/MovimientoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DiseñoServlet</servlet-name>
+        <url-pattern>/Dise_oServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/loginServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

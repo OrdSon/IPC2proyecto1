@@ -21,7 +21,7 @@
 
                 <select name="txtarea" id="area">
                     <option value="Fabrica">Fabrica</option>
-                    <option value="Financiero">Financiero</option>
+                    <option value="Ventas">Financiero</option>
                     <option value="Administracion">Administracion</option>
                 </select> 
             </div>

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CajaServlet extends HttpServlet {
 
-    String listar = "vistas/caja/listarCajas.jsp";
+    String listar = "vistas/caja/listaCajas.jsp";
     String añadir = "vistas/caja/añadirCaja.jsp";
     String editar = "vistas/caja/editarCaja.jsp";
 

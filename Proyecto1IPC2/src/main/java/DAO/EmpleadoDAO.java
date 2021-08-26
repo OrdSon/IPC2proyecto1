@@ -27,6 +27,7 @@ public class EmpleadoDAO {
     DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_EMPLEADOS = "SELECT * FROM empleado";
     private static final String SELECCIONAR_EMPLEADO_CODIGO = "SELECT * FROM empleado WHERE codigo = ?";
+    private static final String SELECCIONAR_EMPLEADO_DPI = "SELECT * FROM empleado WHERE dpi = ?";
     private static final String INSERTAR_EMPLEADO = "INSERT INTO empleado(nombre, area, contraseña, dpi, "
             + "telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES (?,?,?,?,?,?,?,?,?)";
     private static final String UPDATE_EMPLEADO = "UPDATE empleado SET nombre = ?, area = ?, contraseña = ?, dpi = ?, telefono = ?, "
@@ -98,10 +99,42 @@ public class EmpleadoDAO {
         }
         return empleado;
     }
+    public Empleado listarDPI(String dpi){
+        
+   
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_EMPLEADO_DPI);
+            preparedStatement.setString(1, dpi);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {         
+                
+                int codigo = resultSet.getInt("codigo");
+                String nombre = resultSet.getString("nombre");
+                int area = resultSet.getInt("area");
+                String contraseña = resultSet.getString("contraseña");
+                String telefono = resultSet.getString("telefono");
+                String direccion = resultSet.getString("direccion");
+                Date  fechaNacimientoSql= resultSet.getDate("fecha_nacimiento");
+                String salario = resultSet.getString("salario");
+                Date fechaContratacionSql = resultSet.getDate("fecha_contratacion");
+                
+                LocalDate fechaNacimiento = dateManager.convertirALocalDate(fechaNacimientoSql);
+                LocalDate fechaContratacion = dateManager.convertirALocalDate(fechaContratacionSql);
+                
+                return new Empleado(codigo, nombre, area, contraseña, dpi, telefono, direccion, fechaNacimiento, salario, fechaContratacion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     public boolean editar(Empleado empleado){
         
         try {
+            if (listarDPI(empleado.getDpi()) != null) {
+                return false;
+            }
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_EMPLEADO);
             preparedStatement.setString(1, empleado.getNombre());
             preparedStatement.setInt(2, empleado.getArea());
@@ -127,6 +160,9 @@ public class EmpleadoDAO {
     public boolean añadir(Empleado empleado){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_EMPLEADO);
+            if (listarDPI(empleado.getDpi()) != null) {
+                return false;
+            }
             preparedStatement.setString(1, empleado.getNombre());
             preparedStatement.setInt(2, empleado.getArea());
             preparedStatement.setString(3, empleado.getContraseña());
@@ -162,6 +198,18 @@ public class EmpleadoDAO {
     }
     public void setConnection(Connection connection) {
         this.connection = connection;
+    }
+    
+    public int verificarUsuario(String dpi, String contraseña){
+        Empleado temporal = listarDPI(dpi);
+        if (temporal == null) {
+            System.out.println("empleado inexistente");
+            return -1;
+        }else if (temporal.getContraseña().equals(contraseña)) {
+            return temporal.getArea();
+        }
+        System.out.println("no hubo");
+        return -1;
     }
     
     

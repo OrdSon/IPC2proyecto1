@@ -100,13 +100,13 @@ public class EmpleadoServlet extends HttpServlet {
 
     private int verificarArea(String txtArea) {
         switch (txtArea) {
-            case "Financiero":
+            case "Fabrica":
                 return 1;
 
-            case "Administracion":
+            case "Ventas":
                 return 2;
 
-            case "Fabrica":
+            case "Financiero":
                 return 3;
             default:
                 return -1;
