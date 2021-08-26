@@ -68,7 +68,7 @@ public class MuebleServlet extends HttpServlet {
         } else if (accion.equalsIgnoreCase("actualizar")) {
             System.out.println((String) request.getParameter("txtCodigo") + "  muebleServlet");
             
-            String modelo = (String) request.getSession().getAttribute("modeloMueble");
+            String modelo = (String) request.getSession().getAttribute("codigoMueble");
             String nombre = request.getParameter("txtNombre");
             String txtPrecio = request.getParameter("txtPrecio");
             String txtCosto = request.getParameter("txtCosto");

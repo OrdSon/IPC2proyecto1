@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author OrdSon
  */
 public class PiezaServlet extends HttpServlet {
-    String listar = "vistas/pieza/listaPiezas.jsp";
+    String listar = "vistas/pieza/listarPiezas.jsp";
     String añadir = "vistas/pieza/añadirPiezas.jsp";
-    String editar = "vistas/pieza/editarPiezas.jsp";
+    String editar = "vistas/pieza/editarPieza.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +52,8 @@ public class PiezaServlet extends HttpServlet {
               luego se redirige a editarPieza.jsp
              */
         } else if (accion.equalsIgnoreCase("editar")) {
-            request.getSession().setAttribute("codigoPieza", request.getParameter("codigoPieza"));
+            String code = request.getParameter("codigo");
+            request.getSession().setAttribute("codigoPieza", code);
             acceso = editar;
             /*EDITAR PASO 4 
              Se reciben los campos de texto y se crea un objeto pieza con esa informacion
@@ -62,10 +63,9 @@ public class PiezaServlet extends HttpServlet {
         } else if (accion.equalsIgnoreCase("actualizar")) {
 
             int codigo = Integer.parseInt((String) request.getSession().getAttribute("codigoPieza"));
-
             String nombre = request.getParameter("txtNombre");
 
-            Pieza pieza = new Pieza(nombre);
+            Pieza pieza = new Pieza(codigo, nombre);
             PiezaDAO piezaDAO = new PiezaDAO();
             piezaDAO.editar(pieza);
             acceso = listar;

@@ -20,10 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author OrdSon
  */
 public class loginServlet extends HttpServlet {
+
     private final String FABRICA = "vistas/principales/fabrica.jsp";
     private final String VENTAS = "vistas/principales/ventas.jsp";
     private final String ADMINISTRACION = "vistas/principales/administracion.jsp";
     private final String INDEX = "index.jsp";
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,46 +36,48 @@ public class loginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
+        String destino = "";
         if (accion.equalsIgnoreCase("ingresar")) {
             String empleadoDPI = request.getParameter("txtEmpleado");
             String contraseña = request.getParameter("txtContraseña");
-            
+
             EmpleadoDAO empleadoDAO = new EmpleadoDAO();
             int resultado = empleadoDAO.verificarUsuario(empleadoDPI, contraseña);
-            String destino = getDestino(resultado);
+            destino = getDestino(resultado);
             if (!destino.equals(INDEX)) {
                 Empleado empleado = empleadoDAO.listarDPI(empleadoDPI);
                 request.getSession().setAttribute("empleadoActivo", empleado);
             }
-           
-            
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher(destino);
-            requestDispatcher.forward(request, response);
-            
+
+        } else if (accion.equalsIgnoreCase("salir")) {
+            request.getSession().setAttribute("empleadoActivo", null);
+            destino = INDEX;
         }
-        
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(destino);
+        requestDispatcher.forward(request, response);
+
     }
-    
-    private String getDestino(int resultado){
-        
+
+    private String getDestino(int resultado) {
+
         String destino = INDEX;
-            switch (resultado){
-                case -1:
-                    destino = INDEX;
-                    break;
-                case 1:
-                    destino = FABRICA;
-                    break;
-                case 2:
-                    destino = VENTAS;
-                    break;
-                case 3:
-                    destino = ADMINISTRACION;
-                    break;
-                default:
-                    destino = INDEX;
-                    break;
-            }
+        switch (resultado) {
+            case -1:
+                destino = INDEX;
+                break;
+            case 1:
+                destino = FABRICA;
+                break;
+            case 2:
+                destino = VENTAS;
+                break;
+            case 3:
+                destino = ADMINISTRACION;
+                break;
+            default:
+                destino = INDEX;
+                break;
+        }
         return destino;
     }
 

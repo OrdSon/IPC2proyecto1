@@ -14,8 +14,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <%Empleado empleadoActivo = (Empleado)request.getSession().getAttribute("empleadoActivo"); %>
+    <body style="margin: 0; padding: 0; height: 85vh; width: 100vw;">
+        <%Empleado empleadoActivo = (Empleado) request.getSession().getAttribute("empleadoActivo");%>
         <nav class="navbar navbar-expand-lg navbar-light bg-info">
             <div class="container-fluid">
                 <!-- <a class="navbar-brand" href="#">Navbar</a> -->
@@ -25,43 +25,42 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="btn btn-info">
-                                <a class="nav-link active text-white"  href="#">Inicio</a>
+                            <a class="nav-link active text-white"  href="#">Inicio</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link text-white" aria-current="page" href="#">Ensambles</a>
                         </li>
-                        
-                       
-                        
-                        
                         <li class="btn btn-info">
-                                <a class="nav-link active text-white" href="#">Diseños</a>
+                            <a class="nav-link active text-white" href="#">Diseños</a>
                         </li>
                         <li class="btn btn-info">
-                                <a class="nav-link active text-white" href="#">Inventario</a>
+                            <a class="nav-link active text-white" href="#">Materia prima</a>
                         </li>
                         <li class="btn btn-info">
-                                <a class="nav-link active text-white" href="#">Muebles</a>
+                            <a class="nav-link active text-white" href="MuebleServlet?accion=listar" target="frameInterno">Muebles</a>
                         </li>
                         <li class="btn btn-info">
-                                <a class="nav-link active text-white" href="#">Piezas</a>
+                            <a class="nav-link active text-white" href="PiezaServlet?accion=listar" target="frameInterno">Piezas</a>
                         </li>
                         <li class="btn btn-info">
-                                <a class="nav-link active text-white" href="#">Comprar piezas</a>
+                            <a class="nav-link active text-white" href="#">Comprar piezas</a>
                         </li>
-                        
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sesión
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><button type="button" class="btn btn-lg btn-light" disabled><%=empleadoActivo.getNombre()%></button></li>
-                                <li><hr class="dropdown-divider"></li>
-                             <!--//TOCA AQUI, HAY QUE HACER REFERENCIA AL SERVLET PARA QUITAR EL USUARIO ACTIVO Y QUE SEA NULL!!!
-                             -->   <li><a class="dropdown-item" href="#">Salir</a></li>
-                            </ul>
-                        </div> 
                     </ul>
+                    <div class="nav-item dropdown text-center">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sesión
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><button type="button" class="btn btn-lg btn-light" disabled><%=empleadoActivo.getNombre()%></button></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!--//TOCA AQUI, HAY QUE HACER REFERENCIA AL SERVLET PARA QUITAR EL USUARIO ACTIVO Y QUE SEA NULL!!!
+                            -->   <li><a class="dropdown-item text-center" href="loginServlet?accion=salir">Salir</a></li>
+                        </ul>
+                    </div> 
+                    <div style="width: 75px;">
+                        
+                    </div>
+
                     <!--
                         CREA BARRA DE BUSQUEDA
                     <form class="d-flex">
@@ -71,5 +70,10 @@
                 </div>
             </div>
         </nav>
+        <div class="m-4" style="height: 100%; width: 97%;">
+            <iframe name="frameInterno" style="height: 100%; width: 100%;">
+
+            </iframe>
+        </div>
     </body>
 </html>
