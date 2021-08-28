@@ -66,7 +66,7 @@ public class PiezaDAO {
 
                 String nombre = resultSet.getString("nombre");
 
-                pieza = new Pieza(nombre);
+                pieza = new Pieza(codigo, nombre);
             }
         } catch (SQLException ex) {
             Logger.getLogger(PiezaDAO.class.getName()).log(Level.SEVERE, null, ex);

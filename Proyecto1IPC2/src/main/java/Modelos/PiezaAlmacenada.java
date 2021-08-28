@@ -34,6 +34,15 @@ public class PiezaAlmacenada {
         this.muebleEnsambladoCodigo = muebleEnsambladoCodigo;
     }
 
+    public PiezaAlmacenada(double costo, int piezaCodigo, String piezaTipo, int compraCodigo) {
+        this.costo = costo;
+        this.piezaCodigo = piezaCodigo;
+        this.piezaTipo = piezaTipo;
+        this.compraCodigo = compraCodigo;
+    }
+    
+    
+
     public PiezaAlmacenada() {
     }
 

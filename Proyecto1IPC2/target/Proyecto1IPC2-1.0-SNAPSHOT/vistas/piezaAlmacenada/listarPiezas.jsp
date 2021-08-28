@@ -4,6 +4,7 @@
     Author     : ordson
 --%>
 
+<%@page import="Modelos.piezaComprada"%>
 <%@page import="Modelos.Pieza"%>
 <%@page import="DAO.PiezaDAO"%>
 <%@page import="java.sql.Connection"%>
@@ -23,14 +24,14 @@
     </head>
     <body>
 
-        <h1 class="text-center">piezas</h1>
+        <h1 class="text-center">Materia prima</h1>
         <div style="height: 50px"></div>
 
         <!--<a href="PiezaAlmacenadaServlet?accion=nuevo ">Añadir pieza</a> -->
         <div class="d-flex justify-content-center">
             <%Pieza piezaTemp = (Pieza) request.getSession().getAttribute("piezaActiva");
-                String codigo = "lol ";
-                String tipo = " ";
+                String codigo = "";
+                String tipo = "";
                 if (piezaTemp != null) {
                     tipo = piezaTemp.getNombre();
                     codigo = piezaTemp.getCodigo() + "";
@@ -38,26 +39,27 @@
             %>
             <div class="card col-sm-4">
                 <div class="card-body">
-                    <form action="PiezaServlet">
-                        <div>
+                    <form action="CompraServlet">
+                        <div >
                             <label>Codigo</label> 
-                            <input type ="text" name = "txtModelo" class="form-control" value="<%=codigo%>"><br>       
+                            <input type ="text" name = "txtModelo" class="form-control" value="<%=codigo%>">      
+                            <input type = "submit" name = "accion" value = "Buscar codigo"><br>
+
+                        </div>
+                        <div >
+
+                            <label>Nombre:</label> 
+                            <input type ="text" name = "txtNombre" class="form-control" value="<%=tipo%>">
+                            <input type = "submit" name = "accion" value = "Buscar nombre"><br>
 
                         </div>
                         <div>
-                            
-                                <label>Nombre:</label> 
-                                <input type ="text" name = "txtNombre" class="form-control" value="<%=tipo%>"><br>
-                                <input type = "submit" name = "accion" value = "buscarNombre">
-                            
-                        </div>
-                        <div>
                             <label>Precio:</label> 
-                            <input type ="text" name = "txtPrecio" class="form-control"><br>  
+                            <input type ="number" min="0" step="0.01" name = "txtPrecio" class="form-control"><br>  
                         </div>
                         <div>
                             <label>Cantidad:</label> 
-                            <input type = "number" name = "txtCantidad" class="form-control"><br>  
+                            <input type = "number" min="1" name = "txtCantidad" class="form-control"><br>  
                         </div>
                         <input type = "submit" name = "accion" value = "añadir"><br>
                     </form>
@@ -68,43 +70,25 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th >Modelo</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
+                            <th >Tipo</th>
                             <th>Costo</th>
-                            <th>Acciones</th>
+                            <th>Cantidad</th>
                         </tr>
                     </thead> 
                     <%
                         PiezaAlmacenadaDAO piezaDAO = new PiezaAlmacenadaDAO();
-                        ArrayList<PiezaAlmacenada> piezas = piezaDAO.listar();
-                        Iterator<PiezaAlmacenada> iterator = piezas.iterator();
-                        PiezaAlmacenada pieza = null;
+                        ArrayList<piezaComprada> piezas = piezaDAO.listarCompradas();
+                        Iterator<piezaComprada> iterator = piezas.iterator();
+                        piezaComprada pieza = null;
                         while (iterator.hasNext()) {
                             pieza = iterator.next();
 
                     %>
                     <tbody>
                         <tr>
-                            <td><%=pieza.getCodigo()%></td>
-                            <td><%=pieza.getPiezaTipo()%></td>
-                            <td><%=pieza.getCosto()%></td>
-                            <td>
-                                <!-- 
-                                EDICION PASO 1
-                                Se hace una referencia al objeto PiezaAlmacenadaServlet con dos atributos
-                                atributo accion = editar, para que me redireccione a editarPiezaAlmacenada.jsp
-                                y atributo codigo, que obtiene el codigo del pieza para trabajar con el mas adelante-->
-
-                                <a href="PiezaAlmacenadaServlet?accion=editar&codigo=<%=pieza.getCodigo()%>" class="btn btn-warning">Editar</a>
-                                <!--
-                                ELIMINACION PASO 1:
-                                Se hace una referencia a PiezaAlmacenadaServlet con dos atributos
-                                accion = eliminar para ejecutar las acciones
-                                y codigo = codigo del pieza para trabajar con el mas adelante
-                                -->
-                                <a href="PiezaAlmacenadaServlet?accion=eliminar&codigo=<%=pieza.getCodigo()%>" class="btn btn-danger">Eliminar</a>
-                            </td>
+                            <td><%=pieza.getTipo()%></td>
+                            <td><%=pieza.getCosto() %></td>
+                            <td><%=pieza.getCantidad() %></td>
                         </tr>
                         <%}%>
                     </tbody>

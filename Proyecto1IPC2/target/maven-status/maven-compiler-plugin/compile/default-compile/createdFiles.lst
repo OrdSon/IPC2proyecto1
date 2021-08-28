@@ -18,6 +18,7 @@ Web\loginServlet.class
 DAO\DiseñoDAO.class
 Modelos\PuntoVenta.class
 Web\EmpleadoServlet.class
+Modelos\piezaComprada.class
 Web\ClienteServlet.class
 DAO\EmpleadoDAO.class
 Web\EnsambladorServlet.class

@@ -4,6 +4,9 @@
     Author     : ordson
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="DAO.PuntoVentaDAO"%>
+<%@page import="Modelos.PuntoVenta"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="Utilidades.Conexion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,6 +34,7 @@
                             <label>Contraseña</label>
                             <input type="password" name ="txtContraseña" class="form-control">
                         </div>
+                        
                         <input type="submit" name="accion" value="ingresar" class="btn btn-primary btn-block">
                     </form>
                 </div>

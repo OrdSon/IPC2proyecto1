@@ -80,20 +80,6 @@ public class PiezaServlet extends HttpServlet {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
             piezaDAO.eliminar(codigo);
             acceso = listar;
-        }else if(accion.equalsIgnoreCase("buscarNombre")){
-            try {
-                String nombre = request.getParameter("txtNombre");
-                Pieza pieza;
-                Pieza temporal = piezaDAO.listarNombre(nombre);
-                if (temporal != null) {
-                    pieza = temporal;
-                }else{
-                    pieza = new Pieza(0, "");
-                }
-                request.getSession().setAttribute("piezaActiva", pieza);
-            } catch (NullPointerException e) {
-            }
-            acceso = BUSCAR_PIEZA;
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);

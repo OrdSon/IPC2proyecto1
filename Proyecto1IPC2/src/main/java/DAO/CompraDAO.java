@@ -27,8 +27,9 @@ public class CompraDAO {
     Connection connection;
     DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_COMPRAS = "SELECT * FROM compra";
+    private final String SELECCIONAR_ULTIMA = "SELECT * FROM compra ORDER BY codigo DESC LIMIT 1";
     private static final String SELECCIONAR_COMPRA_CODIGO = "SELECT * FROM compra WHERE codigo = ?";
-    private static final String INSERTAR_COMPRA = "INSERT INTO compra (fecha, total, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?)";
+    private static final String INSERTAR_COMPRA = "INSERT INTO compra (fecha, total, punto_venta_codigo) VALUES (?,?,?)";
 
     public CompraDAO() {
         this.connection = Conexion.getConnection();
@@ -82,6 +83,25 @@ public class CompraDAO {
         }
         return compra;
     }
+    public Compra listarUltima () {
+
+        Compra compra = new Compra();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_ULTIMA);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("codigo");
+                double total = resultSet.getInt("total");
+                Date fechaSql = resultSet.getDate("fecha");
+                int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
+                compra = new Compra(codigo, fecha, total, puntoVentaCodigo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CompraDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return compra;
+    }
 
     public boolean añadir(Compra compra) {
         try {
@@ -94,6 +114,7 @@ public class CompraDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
             return false;
         }
         return true;

@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelos.PiezaAlmacenada;
+import Modelos.piezaComprada;
 import Utilidades.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,9 +24,10 @@ public class PiezaAlmacenadaDAO {
     
     Connection connection;
     
-    private static final String SELECCIONAR_PIEZA = "SELECT * FROM pieza_almacenada";
+    private static final String SELECCIONAR_PIEZA = "SELECT * FROM piezas_listas";
+    private static final String SELECCIONAR_PIEZA_CANTIDAD = "SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;";
     private static final String SELECCIONAR_PIEZA_CODIGO = "SELECT * FROM piezas_listas WHERE codigo = ? LIMIT 1";
-    private static final String INSERTAR_PIEZA = "INSERT INTO pieza_almacenada (costo, pieza_codigo, compra_codigo, mueble_ensamblado_codigo) VALUES (?,?,?,?)";
+    private static final String INSERTAR_PIEZA = "INSERT INTO pieza_almacenada (costo, pieza_codigo, compra_codigo) VALUES (?,?,?)";
     private static final String ELIMINAR_PIEZA = "DELETE FROM pieza_almacenada WHERE codigo = ?";
     private static final String UPDATE_PIEZA = "UPDATE pieza_almacenada SET mueble_ensamblado_codigo = ? WHERE codigo = ?";
 
@@ -47,11 +49,31 @@ public class PiezaAlmacenadaDAO {
                 int codigo = resultSet.getInt("codigo");
                 double costo = resultSet.getInt("costo");
                 String tipo = resultSet.getString("tipo");
-                int piezaCodigo = resultSet.getInt("pieza_codigo");
-                int compraCodigo = resultSet.getInt("compra_codigo");
-                int muebleEnsambladoCodigo = resultSet.getInt("mueble_ensamblado_codigo");
+                int compraCodigo = resultSet.getInt("compra");
                 
-                piezas.add(new PiezaAlmacenada(codigo, costo, piezaCodigo,tipo, compraCodigo, muebleEnsambladoCodigo));
+                
+                piezas.add(new PiezaAlmacenada(costo, codigo, tipo, compraCodigo));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PiezaAlmacenadaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return piezas;
+    }
+    public ArrayList<piezaComprada> listarCompradas() {
+
+        ArrayList<piezaComprada> piezas = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_PIEZA_CANTIDAD);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                String tipo = resultSet.getString("tipo");
+                int cantidad = resultSet.getInt("cantidad");
+                double costo = resultSet.getDouble("costo");
+                
+                
+                
+                piezas.add(new piezaComprada(tipo, cantidad, costo));
             }
         } catch (SQLException ex) {
             Logger.getLogger(PiezaAlmacenadaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,10 +143,10 @@ public class PiezaAlmacenadaDAO {
             preparedStatement.setDouble(1, pieza.getCosto());
             preparedStatement.setInt(2, pieza.getPiezaCodigo());
             preparedStatement.setInt(3, pieza.getCompraCodigo());
-            preparedStatement.setInt(4, pieza.getMuebleEnsambladoCodigo());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(PiezaAlmacenadaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
             return false;
         }
         return true;
