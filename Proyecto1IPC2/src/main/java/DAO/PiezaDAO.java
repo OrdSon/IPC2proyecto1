@@ -20,6 +20,7 @@ public class PiezaDAO {
 
     private static final String SELECCIONAR_PIEZA = "SELECT * FROM pieza";
     private static final String SELECCIONAR_PIEZA_CODIGO = "SELECT * FROM pieza WHERE codigo = ?";
+    private static final String SELECCIONAR_PIEZA_NOMBRE = "SELECT * FROM pieza WHERE nombre LIKE ? ESCAPE '!'";
     private static final String INSERTAR_PIEZA = "INSERT INTO pieza (nombre) VALUES (?)";
     private static final String UPDATE_PIEZA = "UPDATE pieza SET nombre = ? WHERE codigo = ?";
     private static final String ELIMINAR_PIEZA = "DELETE FROM pieza WHERE codigo = ?";
@@ -71,6 +72,32 @@ public class PiezaDAO {
             Logger.getLogger(PiezaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return pieza;
+    }
+    /*
+    LISTAR NOMBRE
+    Usa el codigo de Pieza para obtener un registro
+     */
+    public Pieza listarNombre(String cadena) {
+
+        Pieza pieza;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_PIEZA_NOMBRE);
+            cadena = cadena.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+            preparedStatement.setString(1, cadena+"%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("codigo");
+                String nombre = resultSet.getString("nombre");
+                pieza = new Pieza(codigo, nombre);
+                return pieza;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PiezaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        } catch(NullPointerException ex){
+            
+        }
+        return null;
     }
 
     /*

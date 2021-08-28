@@ -20,6 +20,7 @@ Modelos\PuntoVenta.class
 Web\EmpleadoServlet.class
 Web\ClienteServlet.class
 DAO\EmpleadoDAO.class
+Web\EnsambladorServlet.class
 DAO\PuntoVentaDAO.class
 Web\DiseñoServlet.class
 Utilidades\DateManager.class

@@ -22,7 +22,9 @@ public class PiezaServlet extends HttpServlet {
     String listar = "vistas/pieza/listarPiezas.jsp";
     String añadir = "vistas/pieza/añadirPiezas.jsp";
     String editar = "vistas/pieza/editarPieza.jsp";
-
+    String BUSCAR_PIEZA = "vistas/piezaAlmacenada/listarPiezas.jsp";
+    PiezaDAO piezaDAO = new PiezaDAO();
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -43,7 +45,6 @@ public class PiezaServlet extends HttpServlet {
             String nombre = request.getParameter("txtNombre");
 
             Pieza pieza = new Pieza(nombre);
-            PiezaDAO piezaDAO = new PiezaDAO();
             piezaDAO.añadir(pieza);
             acceso = listar;
             /*EDICION PASO 2
@@ -66,7 +67,7 @@ public class PiezaServlet extends HttpServlet {
             String nombre = request.getParameter("txtNombre");
 
             Pieza pieza = new Pieza(codigo, nombre);
-            PiezaDAO piezaDAO = new PiezaDAO();
+            
             piezaDAO.editar(pieza);
             acceso = listar;
             /*ELIMINAR PASO 2:
@@ -77,9 +78,22 @@ public class PiezaServlet extends HttpServlet {
              */
         } else if (accion.equalsIgnoreCase("eliminar")) {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
-            PiezaDAO piezaDAO = new PiezaDAO();
             piezaDAO.eliminar(codigo);
             acceso = listar;
+        }else if(accion.equalsIgnoreCase("buscarNombre")){
+            try {
+                String nombre = request.getParameter("txtNombre");
+                Pieza pieza;
+                Pieza temporal = piezaDAO.listarNombre(nombre);
+                if (temporal != null) {
+                    pieza = temporal;
+                }else{
+                    pieza = new Pieza(0, "");
+                }
+                request.getSession().setAttribute("piezaActiva", pieza);
+            } catch (NullPointerException e) {
+            }
+            acceso = BUSCAR_PIEZA;
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);

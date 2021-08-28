@@ -24,7 +24,7 @@ public class PiezaAlmacenadaDAO {
     Connection connection;
     
     private static final String SELECCIONAR_PIEZA = "SELECT * FROM pieza_almacenada";
-    private static final String SELECCIONAR_PIEZA_CODIGO = "SELECT * FROM pieza_almacenada WHERE codigo = ?";
+    private static final String SELECCIONAR_PIEZA_CODIGO = "SELECT * FROM piezas_listas WHERE codigo = ? LIMIT 1";
     private static final String INSERTAR_PIEZA = "INSERT INTO pieza_almacenada (costo, pieza_codigo, compra_codigo, mueble_ensamblado_codigo) VALUES (?,?,?,?)";
     private static final String ELIMINAR_PIEZA = "DELETE FROM pieza_almacenada WHERE codigo = ?";
     private static final String UPDATE_PIEZA = "UPDATE pieza_almacenada SET mueble_ensamblado_codigo = ? WHERE codigo = ?";
@@ -46,11 +46,12 @@ public class PiezaAlmacenadaDAO {
 
                 int codigo = resultSet.getInt("codigo");
                 double costo = resultSet.getInt("costo");
+                String tipo = resultSet.getString("tipo");
                 int piezaCodigo = resultSet.getInt("pieza_codigo");
                 int compraCodigo = resultSet.getInt("compra_codigo");
                 int muebleEnsambladoCodigo = resultSet.getInt("mueble_ensamblado_codigo");
                 
-                piezas.add(new PiezaAlmacenada(codigo, costo, piezaCodigo, compraCodigo, muebleEnsambladoCodigo));
+                piezas.add(new PiezaAlmacenada(codigo, costo, piezaCodigo,tipo, compraCodigo, muebleEnsambladoCodigo));
             }
         } catch (SQLException ex) {
             Logger.getLogger(PiezaAlmacenadaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,10 +74,11 @@ public class PiezaAlmacenadaDAO {
 
                  double costo = resultSet.getInt("costo");
                 int piezaCodigo = resultSet.getInt("pieza_codigo");
+                String tipo = resultSet.getString("tipo");
                 int compraCodigo = resultSet.getInt("compra_codigo");
                 int muebleEnsambladoCodigo = resultSet.getInt("mueble_ensamblado_codigo");
 
-                pieza = new PiezaAlmacenada(codigo, costo, piezaCodigo, compraCodigo, muebleEnsambladoCodigo);
+                pieza = new PiezaAlmacenada(codigo, costo, piezaCodigo,tipo, compraCodigo, muebleEnsambladoCodigo);
             }
         } catch (SQLException ex) {
             Logger.getLogger(PiezaAlmacenadaDAO.class.getName()).log(Level.SEVERE, null, ex);

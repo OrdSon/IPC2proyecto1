@@ -34,16 +34,13 @@
                             <a class="nav-link active text-white" href="#">Diseños</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="#">Materia prima</a>
+                            <a class="nav-link active text-white" href="PiezaAlmacenadaServlet?accion=listar" target="frameInterno">Materia prima</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="MuebleServlet?accion=listar" target="frameInterno">Muebles</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="PiezaServlet?accion=listar" target="frameInterno">Piezas</a>
-                        </li>
-                        <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="#">Comprar piezas</a>
                         </li>
                     </ul>
                     <div class="nav-item dropdown text-center">

@@ -13,20 +13,23 @@ public class PiezaAlmacenada {
     private int codigo;
     private double costo;
     private int piezaCodigo;
+    private String piezaTipo;
     private int compraCodigo;
     private int muebleEnsambladoCodigo;
 
-    public PiezaAlmacenada(int codigo, double costo, int piezaCodigo, int compraCodigo, int muebleEnsambladoCodigo) {
+    public PiezaAlmacenada(int codigo, double costo, int piezaCodigo, String piezaTipo, int compraCodigo, int muebleEnsambladoCodigo) {
         this.codigo = codigo;
         this.costo = costo;
         this.piezaCodigo = piezaCodigo;
+        this.piezaTipo = piezaTipo;
         this.compraCodigo = compraCodigo;
         this.muebleEnsambladoCodigo = muebleEnsambladoCodigo;
     }
 
-    public PiezaAlmacenada(double costo, int piezaCodigo, int compraCodigo, int muebleEnsambladoCodigo) {
+    public PiezaAlmacenada(double costo, int piezaCodigo, String piezaTipo, int compraCodigo, int muebleEnsambladoCodigo) {
         this.costo = costo;
         this.piezaCodigo = piezaCodigo;
+        this.piezaTipo = piezaTipo;
         this.compraCodigo = compraCodigo;
         this.muebleEnsambladoCodigo = muebleEnsambladoCodigo;
     }
@@ -58,6 +61,14 @@ public class PiezaAlmacenada {
         this.piezaCodigo = piezaCodigo;
     }
 
+    public String getPiezaTipo() {
+        return piezaTipo;
+    }
+
+    public void setPiezaTipo(String piezaTipo) {
+        this.piezaTipo = piezaTipo;
+    }
+
     public int getCompraCodigo() {
         return compraCodigo;
     }
@@ -73,6 +84,7 @@ public class PiezaAlmacenada {
     public void setMuebleEnsambladoCodigo(int muebleEnsambladoCodigo) {
         this.muebleEnsambladoCodigo = muebleEnsambladoCodigo;
     }
-    
+
+
     
 }

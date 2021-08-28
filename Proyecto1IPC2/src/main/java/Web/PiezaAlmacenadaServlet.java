@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PiezaAlmacenadaServlet extends HttpServlet {
 
-    String listar = "vistas/piezaAlmacenada/listaPiezaAlmacenadas.jsp";
-    String añadir = "vistas/piezaAlmacenada/añadirPiezaAlmacenada.jsp";
-    String editar = "vistas/piezaAlmacenada/editarPiezaAlmacenada.jsp";
+    String listar = "vistas/piezaAlmacenada/listarPiezas.jsp";
+    String añadir = "vistas/piezaAlmacenada/añadirPiezas.jsp";
+    String editar = "vistas/piezaAlmacenada/editarPiezas.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,13 +45,15 @@ public class PiezaAlmacenadaServlet extends HttpServlet {
             String txtPiezaCodigo = request.getParameter("txtPiezaCodigo");
             String txtCompraCodigo = request.getParameter("txtCompraCodigo");
             String txtMuebleEnsambladoCodigo = request.getParameter("txtMuebleEnsambladoCodigo");
+            String tipo = request.getParameter("txtTipo");
             
             double costo = Double.parseDouble(txtCosto);
             int piezaCodigo = Integer.parseInt(txtPiezaCodigo);
             int compraCodigo = Integer.parseInt(txtCompraCodigo);
             int muebleEnsambladoCodigo = Integer.parseInt(txtMuebleEnsambladoCodigo);
             
-            PiezaAlmacenada piezaAlmacenada = new PiezaAlmacenada(costo, piezaCodigo, compraCodigo, muebleEnsambladoCodigo);
+            
+            PiezaAlmacenada piezaAlmacenada = new PiezaAlmacenada(costo, piezaCodigo, tipo, compraCodigo, muebleEnsambladoCodigo);
             PiezaAlmacenadaDAO piezaAlmacenadaDAO = new PiezaAlmacenadaDAO();
             piezaAlmacenadaDAO.añadir(piezaAlmacenada);
             acceso = listar;
@@ -59,37 +61,6 @@ public class PiezaAlmacenadaServlet extends HttpServlet {
               Se obtiene la sesion para setear un atributo con nombre "codigoPiezaAlmacenada"
               para poder identificar al piezaAlmacenada en la transaccion,
               luego se redirige a editarPiezaAlmacenada.jsp
-             */
-        } else if (accion.equalsIgnoreCase("editar")) {
-            request.getSession().setAttribute("codigoPiezaAlmacenada", request.getParameter("codigo"));
-            acceso = editar;
-            /*EDITAR PASO 4 
-             Se reciben los campos de texto y se crea un objeto PiezaAlmacenada con esa informacion
-             luego se envia este objeto como parametro al metodo piezaAlmacenadaDAO.editar
-             para ejecutar la transaccion
-             */
-        } else if (accion.equalsIgnoreCase("actualizar")) {
-            System.out.println((String) request.getParameter("txtCodigo") + "  piezaAlmacenadaServlet");
-            int codigo = Integer.parseInt((String) request.getSession().getAttribute("codigoPiezaAlmacenada"));
-            String txtCosto = request.getParameter("txtCosto");
-            String txtPiezaCodigo = request.getParameter("txtPiezaCodigo");
-            String txtCompraCodigo = request.getParameter("txtCompraCodigo");
-            String txtMuebleEnsambladoCodigo = request.getParameter("txtMuebleEnsambladoCodigo");
-            
-            double costo = Double.parseDouble(txtCosto);
-            int piezaCodigo = Integer.parseInt(txtPiezaCodigo);
-            int compraCodigo = Integer.parseInt(txtCompraCodigo);
-            int muebleEnsambladoCodigo = Integer.parseInt(txtMuebleEnsambladoCodigo);
-            
-            PiezaAlmacenada piezaAlmacenada = new PiezaAlmacenada(codigo, costo, piezaCodigo, compraCodigo, muebleEnsambladoCodigo);
-            PiezaAlmacenadaDAO piezaAlmacenadaDAO = new PiezaAlmacenadaDAO();
-            piezaAlmacenadaDAO.editar(piezaAlmacenada);
-            acceso = listar;
-            /*ELIMINAR PASO 2:
-              Se toma el atributo codigo de listaPiezaAlmacenadas.jsp
-              y se pasa como parametro al metodo PiezaAlmacenadaDAO.eliminar();
-              y se pasa a eliminar directamente a la base de datos
-              esta eliminacion debe ser validada mas tarde por un javaScript
              */
         } else if (accion.equalsIgnoreCase("eliminar")) {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
