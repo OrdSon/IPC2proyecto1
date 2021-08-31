@@ -47,20 +47,20 @@
             %>
             <div class="card col-sm-4">
                 <div class="card-body">
-                    <form action="DiseñoServlet">
+                    <form action="DesignServlet">
                         <div>
                             <label>Buscar mueble</label>
                             <div >
                                 <label>Modelo</label> 
                                 <input type ="text" name = "txtModelo" class="form-control" value="<%=codigoMueble%>">      
-                                <input type = "submit" name = "accion" value = "BuscarModeloMueble"><br>
+                                <input type = "submit" name = "accion" value = "Buscar modelo" class="btn btn-outline-primary"><br>
 
                             </div>
                             <div >
 
                                 <label>Nombre:</label> 
                                 <input type ="text" name = "txtNombreMueble" class="form-control" value="<%=tipoMueble%>">
-                                <input type = "submit" name = "accion" value = "BuscarNombreMueble"><br>
+                                <input type = "submit" name = "accion" value = "Buscar por nombre" class="btn btn-outline-primary"><br>
 
                             </div>
                         </div>
@@ -69,14 +69,14 @@
                             <div >
                                 <label>Codigo</label> 
                                 <input type ="text" name = "txtCodigoPieza" class="form-control" value="<%=codigoPieza%>">      
-                                <input type = "submit" name = "accion" value = "BuscarCodigoPieza"><br>
+                                <input type = "submit" name = "accion" value = "Buscar pieza" class="btn btn-outline-primary"><br>
 
                             </div>
                             <div >
 
                                 <label>Nombre:</label> 
                                 <input type ="text" name = "txtNombrePieza" class="form-control" value="<%=tipoPieza%>">
-                                <input type = "submit" name = "accion" value = "BuscarNombrePieza"><br>
+                                <input type = "submit" name = "accion" value = "Buscar por tipo" class="btn btn-outline-primary"><br>
 
                             </div>
                             <div>
@@ -85,7 +85,7 @@
                             </div>
                         </div>
 
-                        <input type = "submit" name = "accion" value = "añadir"><br>
+                        <input type = "submit" name = "accion" value = "añadir" class="btn btn-success"><br>
                     </form>
                 </div>
             </div>
@@ -96,7 +96,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th >Codigo</th>
+                            <th >Codigo de pieza</th>
                             <th>Nombre</th>
                             <th>Cantidad</th>
                         </tr>

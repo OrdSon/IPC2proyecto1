@@ -64,6 +64,10 @@
         <servlet-name>EnsambladorServlet</servlet-name>
         <servlet-class>Web.EnsambladorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DesignServlet</servlet-name>
+        <servlet-class>Web.DesignServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClienteServlet</servlet-name>
         <url-pattern>/ClienteServlet</url-pattern>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>EnsambladorServlet</servlet-name>
         <url-pattern>/EnsambladorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DesignServlet</servlet-name>
+        <url-pattern>/DesignServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

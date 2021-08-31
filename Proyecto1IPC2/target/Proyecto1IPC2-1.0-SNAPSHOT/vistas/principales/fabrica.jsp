@@ -31,7 +31,7 @@
                             <a class="nav-link text-white" aria-current="page" href="#">Ensambles</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="DiseñoServlet?accion=listar">Diseños</a>
+                            <a class="nav-link active text-white" href="DesignServlet?accion=listar" target="frameInterno">Diseños</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="PiezaAlmacenadaServlet?accion=listar" target="frameInterno">Materia prima</a>

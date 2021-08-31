@@ -24,7 +24,7 @@ public class MuebleDAO {
     Connection connection;
 
     private static final String SELECCIONAR_MUEBLE = "SELECT * FROM mueble";
-    private static final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM mueble WHERE modelo = ?";
+    private static final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM mueble WHERE modelo LIKE ? ESCAPE '!' LIMIT 1";
     private static final String INSERTAR_MUEBLE = "INSERT INTO mueble (modelo, nombre, precio, costo) VALUES (?,?,?,?)";
     private static final String UPDATE_MUEBLE = "UPDATE mueble SET  nombre = ?, precio = ?, costo = ? WHERE modelo = ?";
     private static final String ELIMINAR_MUEBLE = "DELETE FROM mueble WHERE modelo = ?";
@@ -67,15 +67,16 @@ public class MuebleDAO {
         Mueble mueble = new Mueble();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_MUEBLE_CODIGO);
-            preparedStatement.setString(1, modelo);
+            modelo = modelo.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+            preparedStatement.setString(1, modelo+"%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-
+                String fullModel = resultSet.getString("modelo");
                 String nombre = resultSet.getString("nombre");
                 double precio = resultSet.getDouble("precio");
                 double costo = resultSet.getDouble("costo");
 
-                mueble = new Mueble(modelo, nombre, precio, costo);
+                mueble = new Mueble(fullModel, nombre, precio, costo);
             }
         } catch (SQLException ex) {
             Logger.getLogger(MuebleDAO.class.getName()).log(Level.SEVERE, null, ex);

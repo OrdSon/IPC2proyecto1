@@ -38,6 +38,7 @@ Web\EmpleadoServlet.class
 Modelos\piezaComprada.class
 DAO\EmpleadoDAO.class
 Web\EnsambladorServlet.class
+Web\DesignServlet.class
 Web\CompraServlet.class
 Utilidades\SweetAlert.class
 Modelos\Empleado.class
