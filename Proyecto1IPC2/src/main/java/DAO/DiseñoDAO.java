@@ -7,6 +7,7 @@ package DAO;
 
 
 import Modelos.Diseño;
+import Modelos.DiseñoListo;
 import Utilidades.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,8 +25,9 @@ public class DiseñoDAO {
     Connection connection;
     
     private static final String SELECCIONAR_DISEÑOS = "SELECT * FROM diseño";
-    private static final String SELECCIONAR_DISEÑO_CODIGO = "SELECT * FROM diseño WHERE codigo = ?";
-    private static final String INSERTAR_DISEÑO = "INSERT INTO diseño (nit, nombre, telefono, direccion) VALUES (?,?,?,?) ";
+    private static final String SELECCIONAR_COINCIDENCIAS = "SELECT * FROM diseño_listo WHERE modelo_mueble = ?";
+    private static final String SELECCIONAR_DISEÑO_CODIGO = "SELECT * FROM diseño WHERE modelo_mueble = ?";
+    private static final String INSERTAR_DISEÑO = "INSERT INTO diseño (modelo_mueble, pieza_codigo, cantidad) VALUES (?,?,?) ";
     private static final String ELIMINAR_DISEÑO = "DELETE FROM diseño WHERE codigo = ?";
     
     
@@ -48,9 +50,10 @@ public class DiseñoDAO {
                 int codigo = resultSet.getInt("codigo");
                 String modelo = resultSet.getString("nit");
                 int pieza = resultSet.getInt("nombre");
+                int cantidad = resultSet.getInt("cantidad");
                 
                 
-                diseños.add( new Diseño(codigo,modelo,pieza));
+                diseños.add( new Diseño(codigo, modelo, pieza, cantidad));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiseñoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,24 +66,25 @@ public class DiseñoDAO {
     Usa el codigo de un diseño para encontrarlo y exportar un objeto Diseño
     con sus datos
     */
-    public Diseño listarCodigo(int codigo){
-        
-        Diseño diseño = new Diseño();
+    public ArrayList<DiseñoListo> listarPorMueble(String modelo){
+        ArrayList<DiseñoListo> diseñosListos = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_DISEÑO_CODIGO);
-            preparedStatement.setInt(1, codigo);
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_COINCIDENCIAS);
+            preparedStatement.setString(1, modelo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                
-                String modelo = resultSet.getString("nit");
-                int pieza = resultSet.getInt("nombre");
-                
-                diseño = new Diseño(codigo,modelo,pieza);
+                int codigo = resultSet.getInt("codigo");
+                String nombre = resultSet.getString("nombre");
+                int cantidad = resultSet.getInt("cantidad");
+                DiseñoListo diseñoListo = new DiseñoListo(codigo, nombre, cantidad);
+                diseñosListos.add(diseñoListo);
             }
+            return  diseñosListos;
         } catch (SQLException ex) {
             Logger.getLogger(DiseñoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return diseño;
+        return null;
+        
     }
     /*
 
@@ -92,9 +96,9 @@ public class DiseñoDAO {
     public boolean añadir(Diseño diseño){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_DISEÑO);
-            preparedStatement.setInt(1, diseño.getCodigo());
-            preparedStatement.setString(2, diseño.getModelo());
-            preparedStatement.setInt(3, diseño.getPieza());
+            preparedStatement.setString(1, diseño.getModelo());
+            preparedStatement.setInt(2, diseño.getPieza());
+            preparedStatement.setInt(3, diseño.getCantidad());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DiseñoDAO.class.getName()).log(Level.SEVERE, null, ex);

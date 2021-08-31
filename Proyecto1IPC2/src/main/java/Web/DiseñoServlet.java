@@ -6,7 +6,11 @@
 package Web;
 
 import DAO.DiseñoDAO;
+import DAO.MuebleDAO;
+import DAO.PiezaDAO;
 import Modelos.Diseño;
+import Modelos.Mueble;
+import Modelos.Pieza;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,43 +25,78 @@ import javax.servlet.http.HttpServletResponse;
 public class DiseñoServlet extends HttpServlet {
 
     String listar = "vistas/diseño/listaDiseños.jsp";
-    String añadir = "vistas/diseño/añadirDiseño.jsp";
-    String editar = "vistas/diseño/editarDiseño.jsp";
-
+    DiseñoDAO diseñoDAO = new DiseñoDAO();
+    MuebleDAO muebleDAO = new MuebleDAO();
+    PiezaDAO piezaDAO = new PiezaDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
 
-    @Override 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String acceso = "";
         String accion = request.getParameter("accion");
         if (accion.equalsIgnoreCase("listar")) {
             acceso = listar;
-        } else if (accion.equalsIgnoreCase("nuevo")) {
-            acceso = añadir;
         } else if (accion.equalsIgnoreCase("añadir")) {
-            String modelo = request.getParameter("txtModelo");
-            String txtPieza = request.getParameter("txtPieza");
-            int pieza = Integer.parseInt(txtPieza);
-            Diseño diseño = new Diseño( modelo, 0);
-            DiseñoDAO diseñoDAO = new DiseñoDAO();
+            String modeloMueble = request.getParameter("txtModelo");
+            String nombreMueble = request.getParameter("txtNombreMueble");
+            String txtCodigoPieza = request.getParameter("txtCodigoPieza");
+            String txtNombrePieza = request.getParameter("txtNombrePieza");
+            String txtCantidad = request.getParameter("txtCantidad");
+            
+            int pieza = Integer.parseInt(txtCodigoPieza);
+            int cantidad = Integer.parseInt(txtCantidad);
+
+            Diseño diseño = new Diseño(modeloMueble, pieza, cantidad);
+
             diseñoDAO.añadir(diseño);
             acceso = listar;
-            /*EDICION PASO 2
-              Se obtiene la sesion para setear un atributo con nombre "codigoDiseño"
-              para poder identificar al diseño en la transaccion,
-              luego se redirige a editarDiseño.jsp
-             */
+
         } else if (accion.equalsIgnoreCase("eliminar")) {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
             DiseñoDAO diseñoDAO = new DiseñoDAO();
             diseñoDAO.eliminar(codigo);
             acceso = listar;
+        }else if (accion.equalsIgnoreCase("BuscarModeloMueble")) {
+            try {
+                String modelo = request.getParameter("txtModelo");
+                Mueble mueble = muebleDAO.listarCodigo(modelo);
+                request.getSession().setAttribute("muebleDiseñoActivo", mueble);
+ 
+            } catch (NullPointerException e) {
+            }
+            acceso = listar;
+        } else if (accion.equalsIgnoreCase("BuscarNombreMueble")) {
+            try {
+                String modelo = request.getParameter("txtModelo");
+                Mueble mueble = muebleDAO.listarNombre(modelo);
+                request.getSession().setAttribute("muebleDiseñoActivo", mueble);
+            } catch (NullPointerException e) {
+            }
+            acceso = listar;
+        }else if (accion.equalsIgnoreCase("BuscarNombrePieza")) {
+            try {
+                String nombre = request.getParameter("txtNombre");
+                Pieza pieza = piezaDAO.listarNombre(nombre);
+                request.getSession().setAttribute("piezaDiseñoActiva", pieza);
+            } catch (NullPointerException e) {
+            }
+            acceso = listar;
+        } else if (accion.equalsIgnoreCase("BuscarCodigoPieza")) {
+            try {
+                String txtCodigo = request.getParameter("txtModelo");
+                int codigo = Integer.parseInt(txtCodigo);
+                Pieza pieza = piezaDAO.listarCodigo(codigo);
+                request.getSession().setAttribute("piezaDiseñoActiva", pieza);
+            } catch (NullPointerException e) {
+            }
+            acceso = listar;
         }
+        
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
     }

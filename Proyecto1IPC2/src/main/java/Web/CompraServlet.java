@@ -11,7 +11,9 @@ import DAO.PiezaDAO;
 import Modelos.Compra;
 import Modelos.Pieza;
 import Modelos.PiezaAlmacenada;
+import Utilidades.SweetAlert;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,9 +26,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author OrdSon
  */
 public class CompraServlet extends HttpServlet {
+
     PiezaDAO piezaDAO = new PiezaDAO();
     PiezaAlmacenadaDAO piezaAlmacenadaDAO = new PiezaAlmacenadaDAO();
     CompraDAO compraDAO = new CompraDAO();
+    SweetAlert sweetAlert = new SweetAlert();
     String BUSCAR_PIEZA = "vistas/piezaAlmacenada/listarPiezas.jsp";
     String listar = "vistas/compra/listaCompras.jsp";
     String añadir = "vistas/compra/añadirCompra.jsp";
@@ -43,47 +47,39 @@ public class CompraServlet extends HttpServlet {
         String acceso = "";
         String accion = request.getParameter("accion");
         if (accion.equalsIgnoreCase("listar")) {
+            
             acceso = listar;
         } else if (accion.equalsIgnoreCase("nuevo")) {
             acceso = añadir;
         } else if (accion.equalsIgnoreCase("añadir")) {
-            LocalDate fecha = LocalDate.now();
-            String txtPiezaCodigo = request.getParameter("txtModelo");
-            String txtPiezaTipo = request.getParameter("txtNombre");
+            
             String txtCantidad = request.getParameter("txtCantidad");
-            String txtPrecio = request.getParameter("txtPrecio");
-            
-            int codigo = Integer.parseInt(txtPiezaCodigo);
-            double precio = Double.parseDouble(txtPrecio);
             int cantidad = Integer.parseInt(txtCantidad);
-            double total=(precio*cantidad);
-            //TEMPORAL puse el punto de venta como 2 para no tener que elegirlo por el momento
-            Compra compra = new Compra(fecha, total, 2);
-            
-            compraDAO.añadir(compra);
-            
-            Compra temporal = compraDAO.listarUltima();
-            int compraCodigo = temporal.getCodigo();
-            for (int i = 0; i < cantidad; i++) {
-                PiezaAlmacenada pieza = new PiezaAlmacenada(precio, codigo, txtPiezaTipo, compraCodigo);
-                piezaAlmacenadaDAO.añadir(pieza);
+
+            Compra compra = crearCompra(request);
+            PiezaAlmacenada piezaAlmacenada = crearPieza(request, compra);
+            try {
+                compraDAO.comprarPiezas(compra, piezaAlmacenada, cantidad);
+            } catch (SQLException e) {
+                System.out.println("Error creando compras en el servlet");
             }
+
             acceso = BUSCAR_PIEZA;
-        }else if(accion.equalsIgnoreCase("Buscar nombre")){
+        } else if (accion.equalsIgnoreCase("Buscar nombre")) {
             try {
                 String nombre = request.getParameter("txtNombre");
                 Pieza pieza;
                 Pieza temporal = piezaDAO.listarNombre(nombre);
                 if (temporal != null) {
                     pieza = temporal;
-                }else{
+                } else {
                     pieza = new Pieza(0, "");
                 }
                 request.getSession().setAttribute("piezaActiva", pieza);
             } catch (NullPointerException e) {
             }
             acceso = BUSCAR_PIEZA;
-        }else if(accion.equalsIgnoreCase("Buscar codigo")){
+        } else if (accion.equalsIgnoreCase("Buscar codigo")) {
             try {
                 String txtCodigo = request.getParameter("txtModelo");
                 int codigo = Integer.parseInt(txtCodigo);
@@ -91,7 +87,7 @@ public class CompraServlet extends HttpServlet {
                 Pieza temporal = piezaDAO.listarCodigo(codigo);
                 if (temporal != null) {
                     pieza = temporal;
-                }else{
+                } else {
                     pieza = null;
                 }
                 request.getSession().setAttribute("piezaActiva", pieza);
@@ -103,4 +99,38 @@ public class CompraServlet extends HttpServlet {
         vista.forward(request, response);
     }
 
+    private Compra crearCompra(HttpServletRequest request) {
+        try {
+            LocalDate fecha = LocalDate.now();
+            String txtCantidad = request.getParameter("txtCantidad");
+            String txtPrecio = request.getParameter("txtPrecio");
+            double precio = Double.parseDouble(txtPrecio);
+            int cantidad = Integer.parseInt(txtCantidad);
+            double total = (precio * cantidad);
+            Compra temporal = compraDAO.listarUltima();
+            int codigo = (temporal.getCodigo() + 1);
+            Compra compra = new Compra(codigo, fecha, total, 2);
+            return compra;
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+            System.out.println("Error en crear compra");
+        }
+        return null;
+    }
+
+    private PiezaAlmacenada crearPieza(HttpServletRequest request, Compra compra) {
+        try {
+            String txtPiezaCodigo = request.getParameter("txtModelo");
+            String txtPrecio = request.getParameter("txtPrecio");
+            String txtPiezaTipo = request.getParameter("txtNombre");
+            int codigo = Integer.parseInt(txtPiezaCodigo);
+            int codigoCompra = compra.getCodigo();
+            double precio = Double.parseDouble(txtPrecio);
+            PiezaAlmacenada piezaAlmacenada = new PiezaAlmacenada(precio, codigo, txtPiezaTipo, codigoCompra);
+            return piezaAlmacenada;
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

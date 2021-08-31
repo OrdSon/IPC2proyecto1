@@ -28,6 +28,7 @@ public class MuebleDAO {
     private static final String INSERTAR_MUEBLE = "INSERT INTO mueble (modelo, nombre, precio, costo) VALUES (?,?,?,?)";
     private static final String UPDATE_MUEBLE = "UPDATE mueble SET  nombre = ?, precio = ?, costo = ? WHERE modelo = ?";
     private static final String ELIMINAR_MUEBLE = "DELETE FROM mueble WHERE modelo = ?";
+    private static final String SELECCIONAR_NOMBRE = "SELECT * FROM mueble WHERE nombre LIKE ? ESCAPE '!'";
 
     public MuebleDAO() {
         this.connection = Conexion.getConnection();
@@ -80,6 +81,34 @@ public class MuebleDAO {
             Logger.getLogger(MuebleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return mueble;
+    }
+    
+    public Mueble listarNombre(String nombre) { 
+
+        Mueble mueble;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_NOMBRE);
+            nombre = nombre.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+            preparedStatement.setString(1, nombre+"%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String modelo = resultSet.getString("modelo");
+//                double precio = resultSet.getDouble("precio");
+//                double costo = resultSet.getDouble("costo");
+                mueble = new Mueble();
+                mueble.setModelo(modelo);
+                mueble.setNombre(nombre);
+//                mueble.setPrecio(precio);
+//                mueble.setCosto(costo);
+                return mueble;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MuebleDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        } catch(NullPointerException ex){
+            
+        }
+        return null;
     }
 
     /*

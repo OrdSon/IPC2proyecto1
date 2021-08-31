@@ -13,16 +13,19 @@ public class Diseño {
     int codigo;
     String modelo;
     int pieza;
+    int cantidad;
 
-    public Diseño(int codigo, String modelo, int pieza) {
+    public Diseño(int codigo, String modelo, int pieza, int cantidad) {
         this.codigo = codigo;
         this.modelo = modelo;
         this.pieza = pieza;
+        this.cantidad = cantidad;
     }
 
-    public Diseño(String modelo, int pieza) {
+    public Diseño(String modelo, int pieza, int cantidad) {
         this.modelo = modelo;
         this.pieza = pieza;
+        this.cantidad = cantidad;
     }
 
     public Diseño() {
@@ -51,6 +54,16 @@ public class Diseño {
     public void setPieza(int pieza) {
         this.pieza = pieza;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    
     
       
 }

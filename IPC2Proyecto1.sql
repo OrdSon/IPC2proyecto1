@@ -157,7 +157,7 @@ FOREIGN KEY (mueble_devuelto) REFERENCES lote_venta(mueble_ensamblado_codigo);
 use muebles;
 create view empleados_fabrica as
 select * from empleado where area = 1;
-
+select * from diseño;
 create view empleados_ventas as
 select * from empleado where area = 2;
 
@@ -166,3 +166,16 @@ select * from empleado where area = 3;
 
 show tables;
 select * from empleado;
+select * from punto_venta;
+
+create view piezas_listas as
+select a.codigo as codigo, p.nombre as tipo,a.costo as costo, a.compra_codigo as compra, a.mueble_ensamblado_codigo as mueble from pieza as p inner join pieza_almacenada as a on p.codigo = a.pieza_codigo;
+
+SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
+
+CREATE VIEW diseño_listo AS
+SELECT p.codigo, p.nombre, d.cantidad FROM pieza as p INNER JOIN diseño as d ON p.codigo = d.pieza_codigo;
+
+
+
+

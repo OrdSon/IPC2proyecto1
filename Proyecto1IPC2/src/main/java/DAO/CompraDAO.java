@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelos.Compra;
+import Modelos.PiezaAlmacenada;
 import Utilidades.Conexion;
 import Utilidades.DateManager;
 import java.sql.Connection;
@@ -26,6 +27,7 @@ public class CompraDAO {
 
     Connection connection;
     DateManager dateManager = new DateManager();
+    PiezaAlmacenadaDAO piezaAlmacenadaDAO = new PiezaAlmacenadaDAO();
     private static final String SELECCIONAR_COMPRAS = "SELECT * FROM compra";
     private final String SELECCIONAR_ULTIMA = "SELECT * FROM compra ORDER BY codigo DESC LIMIT 1";
     private static final String SELECCIONAR_COMPRA_CODIGO = "SELECT * FROM compra WHERE codigo = ?";
@@ -119,4 +121,13 @@ public class CompraDAO {
         }
         return true;
     }
+    
+    public void comprarPiezas(Compra compra, PiezaAlmacenada piezaAlmacenada, int cantidad)  throws SQLException{
+        
+        añadir(compra);
+        for (int i = 0; i < cantidad; i++) {
+            piezaAlmacenadaDAO.añadir(piezaAlmacenada);
+        }
+    }
+    
 }

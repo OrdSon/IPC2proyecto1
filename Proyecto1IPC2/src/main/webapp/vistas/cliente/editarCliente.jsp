@@ -10,11 +10,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Editar cliente</h1>
+        <h1 class="d-flex justify-content-center">Editar cliente</h1>
         <%
             /*EDICION PASO 3
               Se crea una instancia de ClienteDAO y se hacen 3 cosas:
@@ -27,8 +30,9 @@
             int codigo = Integer.parseInt((String)request.getSession().getAttribute("codigoCliente"));
             Cliente cliente = clienteDAO.listarCodigo(codigo);
         %>
-        <div>
-            <form>
+        <div class="card ">
+            <div class="d-flex justify-content-center card-body">
+                <form>
                 NIT: <br>
                 <input type ="hidden" name = "txtCodigo" value = "<%=cliente.getCodigo()%>"><br>
                 <input type ="text" name = "txtNit" value = "<%=cliente.getNit()%>"><br>
@@ -41,6 +45,7 @@
                 <input type = "submit" name = "accion" value = "actualizar"><br>
                 <a href="ClienteServlet?accion=listar">Volver</a>
             </form>
+            </div>
         </div>
     </body>
 </html>
