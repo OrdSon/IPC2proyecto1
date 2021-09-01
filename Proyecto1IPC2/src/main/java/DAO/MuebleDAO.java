@@ -94,11 +94,12 @@ public class MuebleDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String modelo = resultSet.getString("modelo");
+                String fullName = resultSet.getString("nombre");
 //                double precio = resultSet.getDouble("precio");
 //                double costo = resultSet.getDouble("costo");
                 mueble = new Mueble();
                 mueble.setModelo(modelo);
-                mueble.setNombre(nombre);
+                mueble.setNombre(fullName);
 //                mueble.setPrecio(precio);
 //                mueble.setCosto(costo);
                 return mueble;

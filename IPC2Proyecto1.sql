@@ -92,7 +92,7 @@ CREATE TABLE mueble_ensamblado (
     CONSTRAINT fk_mueble_empleado FOREIGN KEY (empleado_codigo)
     REFERENCES empleado(codigo), 
     CONSTRAINT fk_mueble_punto FOREIGN KEY (punto_venta_codigo)
-    REFERENCES venta(codigo),
+    REFERENCES punto_venta(codigo),
     CONSTRAINT fk_mueble_modelo FOREIGN KEY (mueble_modelo)
     REFERENCES mueble(modelo) 
 );
@@ -169,13 +169,32 @@ select * from empleado;
 select * from punto_venta;
 
 create view piezas_listas as
-select a.codigo as codigo, p.nombre as tipo,a.costo as costo, a.compra_codigo as compra, a.mueble_ensamblado_codigo as mueble from pieza as p inner join pieza_almacenada as a on p.codigo = a.pieza_codigo;
+select a.codigo as codigo, p.codigo as pieza, p.nombre as tipo,a.costo as costo, a.compra_codigo as compra, a.mueble_ensamblado_codigo as mueble from pieza as p inner join pieza_almacenada as a on p.codigo = a.pieza_codigo;
 
 SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
 
 CREATE VIEW diseño_listo AS
-SELECT p.codigo, p.nombre, d.cantidad FROM pieza as p INNER JOIN diseño as d ON p.codigo = d.pieza_codigo;
+SELECT p.codigo, p.nombre, d.cantidad, d.modelo_mueble FROM pieza as p INNER JOIN diseño as d ON p.codigo = d.pieza_codigo;
+
+CREATE VIEW piezas_disponibles as
+SELECT pieza, tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
+select * from diseño;
+
+create view coincidencias as
+select p.pieza, p.tipo, p.cantidad as disponibles, p.costo, d.modelo_mueble, d.cantidad as necesarias from piezas_disponibles as p inner join diseño as d on p.pieza = d.pieza_codigo;
+
+select * from coincidencias;
+select * from diseño;
+
+select * from coincidencias;
+SELECT * FROM pieza_almacenada WHERE pieza_codigo = 5 LIMIT 2;
+SELECT * FROM punto_venta;
+
+SELECT * FROM mueble as m inner join mueble_ensamblado as e on m.modelo = e.mueble_modelo ;
 
 
+SELECT FROM lote_venta as v LEFT JOIN mueble_ensamblado m ON v.mueble_ensamblado_codigo = m.codigo WHERE v.mueble_ensamblado_codigo IS NULL;
 
 
+select * from pieza_almacenada;
+SELECT * FROM mueble_ensamblado ORDER BY codigo DESC LIMIT 1;

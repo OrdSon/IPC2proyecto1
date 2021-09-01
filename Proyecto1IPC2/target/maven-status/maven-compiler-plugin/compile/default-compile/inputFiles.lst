@@ -3,6 +3,7 @@ C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\CompraServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\PiezaAlmacenadaServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\VentaServlet.java
+C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\Coincidencia.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Utilidades\DateManager.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\MuebleServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\PiezaAlmacenada.java
@@ -28,7 +29,6 @@ C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\ClienteDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\PiezaDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\Compra.java
-C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\DiseñoServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\DesignServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\EmpleadoDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\CompraDAO.java
@@ -41,7 +41,6 @@ C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\DevolucionServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\CajaDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\piezaComprada.java
-C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\EnsambladorServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\DevolucionDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Utilidades\Conexion.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\LoteVentaDAO.java

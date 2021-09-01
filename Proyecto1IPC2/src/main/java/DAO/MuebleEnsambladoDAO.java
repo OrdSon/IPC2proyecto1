@@ -5,8 +5,10 @@
  */
 package DAO;
 
-
+import Modelos.Coincidencia;
+import Modelos.Diseño;
 import Modelos.MuebleEnsamblado;
+import Modelos.PiezaAlmacenada;
 import Utilidades.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,13 +23,18 @@ import java.util.logging.Logger;
  * @author OrdSon
  */
 public class MuebleEnsambladoDAO {
+
     Connection connection;
+    DiseñoDAO diseñoDAO = new DiseñoDAO();
+    PiezaAlmacenadaDAO piezaAlmacenadaDAO = new PiezaAlmacenadaDAO();
 
     private static final String SELECCIONAR_MUEBLE = "SELECT * FROM mueble_ensamblado";
     private static final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM mueble_ensamblado WHERE codigo = ?";
     private static final String INSERTAR_MUEBLE = "INSERT INTO mueble_ensamblado (empleado_codigo, punto_venta_codigo, mueble_modelo) VALUES (?,?,?)";
     private static final String UPDATE_MUEBLE = "UPDATE mueble_ensamblado SET  empleado_codigo = ?, punto_venta_codigo = ?, mueble_modelo = ? WHERE codigo = ?";
     private static final String ELIMINAR_MUEBLE = "DELETE FROM mueble_ensamblado WHERE codigo = ?";
+    private static final String SELECCIONAR_COINCIDENCIAS = "SELECT * FROM coincidencias WHERE modelo_mueble = ?";
+    private final String SELECCIONAR_ULTIMO = "SELECT * FROM mueble_ensamblado ORDER BY codigo DESC LIMIT 1";
 
     public MuebleEnsambladoDAO() {
         this.connection = Conexion.getConnection();
@@ -48,14 +55,37 @@ public class MuebleEnsambladoDAO {
                 int empleadoCodigo = resultSet.getInt("empleado_codigo");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
                 String modelo = resultSet.getString("modelo");
-                
 
-                muebles.add(new MuebleEnsamblado(codigo, empleadoCodigo, puntoVentaCodigo, modelo) );
+                muebles.add(new MuebleEnsamblado(codigo, empleadoCodigo, puntoVentaCodigo, modelo));
             }
         } catch (SQLException ex) {
             Logger.getLogger(MuebleEnsambladoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return muebles;
+    }
+
+    public ArrayList<Coincidencia> listarPorMueble(String modelo) {
+
+        ArrayList<Coincidencia> coincidencias = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_COINCIDENCIAS);
+            preparedStatement.setString(1, modelo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                int pieza = resultSet.getInt("pieza");
+                String tipo = resultSet.getString("tipo");
+                int disponibles = resultSet.getInt("disponibles");
+                double costo = resultSet.getInt("costo");
+                int necesarias = resultSet.getInt("necesarias");
+
+                coincidencias.add(new Coincidencia(pieza, tipo, disponibles, costo, necesarias));
+            }
+            return coincidencias;
+        } catch (SQLException ex) {
+            Logger.getLogger(MuebleEnsambladoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /*
@@ -111,17 +141,22 @@ public class MuebleEnsambladoDAO {
     AÑADIR
     Usa un objeto mueble para añadir un registro a la base de datos
      */
-    public boolean añadir(MuebleEnsamblado mueble) {
+    public boolean añadir(MuebleEnsamblado muebleEnsamblado) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_MUEBLE);
-            
-            preparedStatement.setInt(1, mueble.getEmpleadoCodigo());
-            preparedStatement.setInt(2, mueble.getPuntoVentaCodigo());
-            preparedStatement.setString(3, mueble.getMuebleModelo());
+            //"INSERT INTO mueble_ensamblado (empleado_codigo, punto_venta_codigo, mueble_modelo) VALUES (?,?,?)"
+            int empleado = muebleEnsamblado.getEmpleadoCodigo();
+            String modelo = muebleEnsamblado.getMuebleModelo();
+            int punto = 2;
+            preparedStatement.setInt(1, empleado);
+            preparedStatement.setInt(2, punto);
+            preparedStatement.setString(3, modelo);
 
             preparedStatement.executeUpdate();
+            setearMueble(muebleEnsamblado);
         } catch (SQLException ex) {
             Logger.getLogger(MuebleEnsambladoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
             return false;
         }
         return true;
@@ -148,7 +183,48 @@ public class MuebleEnsambladoDAO {
         return true;
     }
 
+    public MuebleEnsamblado listarUltima() {
+
+        MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_ULTIMO);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("codigo");
+                int empleadoCodigo = resultSet.getInt("empleado_codigo");
+                int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
+                String modelo = resultSet.getString("mueble_modelo");
+                muebleEnsamblado = new MuebleEnsamblado(codigo, empleadoCodigo, puntoVentaCodigo, modelo);
+            }
+            return muebleEnsamblado;
+        } catch (SQLException ex) {
+            Logger.getLogger(CompraDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public void setConnection(Connection connection) {
         this.connection = connection;
+    }
+
+    private boolean setearMueble(MuebleEnsamblado muebleEnsamblado) {
+        ArrayList<Diseño> diseños = diseñoDAO.listarPorModelo(muebleEnsamblado.getMuebleModelo());
+        if (diseños == null) {
+            return false;
+        }
+        try {
+            for (int i = 0; i < diseños.size(); i++) {
+                int pieza = diseños.get(i).getPieza();
+                int cantidad = diseños.get(i).getCantidad();
+                ArrayList<PiezaAlmacenada> piezasAlmacenadas = piezaAlmacenadaDAO.listarPiezas(pieza, cantidad);
+                for (int j = 0; j < piezasAlmacenadas.size(); j++) {
+                    piezaAlmacenadaDAO.setMueble(listarUltima(), piezasAlmacenadas.get(j));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 }

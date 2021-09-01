@@ -5,7 +5,10 @@
  */
 package Web;
 
+import DAO.MuebleDAO;
 import DAO.MuebleEnsambladoDAO;
+import Modelos.Empleado;
+import Modelos.Mueble;
 import Modelos.MuebleEnsamblado;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -19,10 +22,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author OrdSon
  */
 public class MuebleEnsambladoServlet extends HttpServlet {
-
-    String listar = "vistas/muebleEnsamblado/listaMuebleEnsamblados.jsp";
+    MuebleDAO muebleDAO = new MuebleDAO();
+    MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
     String añadir = "vistas/muebleEnsamblado/añadirMuebleEnsamblado.jsp";
-    String editar = "vistas/muebleEnsamblado/editarMuebleEnsamblado.jsp";
+    String listar = "vistas/muebleEnsamblado/EnsamblarMueble.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,13 +43,12 @@ public class MuebleEnsambladoServlet extends HttpServlet {
         } else if (accion.equalsIgnoreCase("nuevo")) {
             acceso = añadir;
         } else if (accion.equalsIgnoreCase("añadir")) {
-            int empleadoCodigo = Integer.parseInt(request.getParameter("txtEmpleadoCodigo"));
-            int puntoVentaCodigo  = Integer.parseInt(request.getParameter("txtPuntoVentaCodigo"));
-            String modelo = request.getParameter("txtModelo");
-
-            MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado(empleadoCodigo,puntoVentaCodigo, modelo);
-            MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
+            Empleado activo = obtenerEmpleado(request);
+            String muebleModelo = request.getParameter("txtModelo");
+            MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado(activo.getCodigo(), 2, muebleModelo);
             muebleEnsambladoDAO.añadir(muebleEnsamblado);
+            
+            
             acceso = listar;
             /*EDICION PASO 2
               Se obtiene la sesion para setear un atributo con nombre "codigoMuebleEnsamblado"
@@ -58,8 +60,36 @@ public class MuebleEnsambladoServlet extends HttpServlet {
             MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
             muebleEnsambladoDAO.eliminar(codigo);
             acceso = listar;
+        }else if (accion.equalsIgnoreCase("Buscar modelo")) {
+            try {
+                String modelo = request.getParameter("txtModelo");
+                Mueble mueble = muebleDAO.listarCodigo(modelo);
+                request.getSession().setAttribute("modeloEnsambleActivo", mueble);
+                request.getSession().setAttribute("modeloEnsamble", mueble.getModelo());
+            } catch (NullPointerException e) {
+            }
+            acceso = listar;
+        } else if (accion.equalsIgnoreCase("Buscar por nombre")) {
+            try {
+                String modelo = request.getParameter("txtNombreMueble");
+                Mueble mueble = muebleDAO.listarNombre(modelo);
+                request.getSession().setAttribute("modeloEnsambleActivo", mueble);
+                request.getSession().setAttribute("modeloEnsamble", mueble.getModelo());
+            } catch (NullPointerException e) {
+            }
+            acceso = listar;
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
     }
+    
+    private Empleado obtenerEmpleado(HttpServletRequest request){
+        try {
+            Empleado activo = (Empleado)request.getSession().getAttribute("empleadoActivo");
+            return  activo;
+        } catch (Exception e) {
+        }
+        return  null;
+    }
+    
 }

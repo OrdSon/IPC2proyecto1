@@ -25,10 +25,10 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white"  href="#">Inicio</a>
+                            <a class="nav-link active text-white"  href="vistas/PaginasInicio/inicioFabrica.jsp">Inicio</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link text-white" aria-current="page" href="#">Ensambles</a>
+                            <a class="nav-link text-white" aria-current="page" href="MuebleEnsambladoServlet?accion=listar" target="frameInterno">Ensambles</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="DesignServlet?accion=listar" target="frameInterno">Diseños</a>

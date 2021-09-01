@@ -1,4 +1,5 @@
 Modelos\Compra.class
+Modelos\Coincidencia.class
 DAO\MuebleDAO.class
 Modelos\Devolucion.class
 Web\MovimientoServlet.class
@@ -8,7 +9,6 @@ DAO\DiseñoDAO.class
 Modelos\PuntoVenta.class
 Web\ClienteServlet.class
 DAO\PuntoVentaDAO.class
-Web\DiseñoServlet.class
 Utilidades\DateManager.class
 Modelos\MuebleEnsamblado.class
 Modelos\PiezaAlmacenada.class
@@ -37,7 +37,6 @@ Web\loginServlet.class
 Web\EmpleadoServlet.class
 Modelos\piezaComprada.class
 DAO\EmpleadoDAO.class
-Web\EnsambladorServlet.class
 Web\DesignServlet.class
 Web\CompraServlet.class
 Utilidades\SweetAlert.class

@@ -40,6 +40,14 @@ public class PiezaAlmacenada {
         this.piezaTipo = piezaTipo;
         this.compraCodigo = compraCodigo;
     }
+
+    public PiezaAlmacenada(int codigo, double costo, int piezaCodigo, int muebleEnsambladoCodigo) {
+        this.codigo = codigo;
+        this.costo = costo;
+        this.piezaCodigo = piezaCodigo;
+        this.muebleEnsambladoCodigo = muebleEnsambladoCodigo;
+    }
+    
     
     
 

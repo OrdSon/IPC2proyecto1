@@ -86,6 +86,27 @@ public class DiseñoDAO {
         return null;
         
     }
+    public ArrayList<Diseño> listarPorModelo(String modelo){
+        ArrayList<Diseño> diseños = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_DISEÑO_CODIGO);
+            preparedStatement.setString(1, modelo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                
+                int pieza = resultSet.getInt("pieza_codigo");
+                int cantidad = resultSet.getInt("cantidad");
+                Diseño diseño = new Diseño(modelo, pieza, cantidad);
+                diseños.add(diseño);
+            }
+            return  diseños;
+        } catch (SQLException ex) {
+            Logger.getLogger(DiseñoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        return null;
+        
+    }
     /*
 
     /*
