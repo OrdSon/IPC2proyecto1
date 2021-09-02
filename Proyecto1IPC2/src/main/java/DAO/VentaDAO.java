@@ -31,6 +31,7 @@ public class VentaDAO {
     Connection connection;
     DateManager dateManager = new DateManager();
     MovimientoDAO movimientoDAO = new MovimientoDAO();
+    MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
     CajaDAO cajaDAO = new CajaDAO();
     LoteVentaDAO loteVentaDAO = new LoteVentaDAO();
     private static final String SELECCIONAR_VENTAS = "SELECT * FROM venta";
@@ -134,7 +135,7 @@ public class VentaDAO {
     public boolean añadir(Venta venta) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_VENTA);
-            
+
             Double total = venta.getTotal();
             LocalDate fecha = venta.getFecha();
             int puntoVenta = venta.getPuntoVentaCodigo();
@@ -145,7 +146,7 @@ public class VentaDAO {
             preparedStatement.setInt(3, puntoVenta);
             preparedStatement.setInt(4, empleado);
             preparedStatement.setInt(5, cliente);
-            
+
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -156,7 +157,7 @@ public class VentaDAO {
 
     public boolean nuevaVenta(Venta venta, Caja caja, ArrayList<MuebleEnsamblado> muebles) {
         try {
-            
+
             if (añadir(venta)) {
 
                 Venta ventaNueva = listarUltima();
@@ -171,16 +172,21 @@ public class VentaDAO {
                     Caja cajaEditada = new Caja(1, movimiento.getResultado());
                     cajaDAO.editar(cajaEditada);
                     for (int i = 0; i < muebles.size(); i++) {
-                        LoteVenta loteVenta = new LoteVenta(muebles.get(i).getCodigo(), ventaCodigo);
-                        loteVentaDAO.añadir(loteVenta);
+                        for (int j = 0; j < muebles.get(i).getCantidad(); j++) {
+                            String modelo = muebles.get(i).getMuebleModelo();
+                            MuebleEnsamblado muebleEnsamblado = muebleEnsambladoDAO.listarDisponibleModelo(modelo);
+                            int muebleCodigo = muebleEnsamblado.getCodigo();
+                            LoteVenta loteVenta = new LoteVenta(muebleCodigo, ventaCodigo);
+                            loteVentaDAO.añadir(loteVenta);
+                        }
                     }
                 }
             }
             return true;
         } catch (Exception e) {
             System.out.println(e + " error en nueva venta, VentaDAO");
+            return false;
         }
-        return false;
     }
 
     /*

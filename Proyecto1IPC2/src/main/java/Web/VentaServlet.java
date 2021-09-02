@@ -100,7 +100,9 @@ public class VentaServlet extends HttpServlet {
             Caja caja = cajaDAO.listarCodigo(1);
             ArrayList<MuebleEnsamblado> muebles = getLista(request);
             try {
-                ventaDAO.nuevaVenta(venta, caja, muebles);
+                if (ventaDAO.nuevaVenta(venta, caja, muebles)) {
+                    request.getSession().removeAttribute("listaProductos");
+                }
             } catch (Exception e) {
             }
             

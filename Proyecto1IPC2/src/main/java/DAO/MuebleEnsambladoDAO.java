@@ -40,6 +40,7 @@ public class MuebleEnsambladoDAO {
     private final String SELECCIONAR_ULTIMO = "SELECT * FROM mueble_ensamblado ORDER BY codigo DESC LIMIT 1";
     private final String SELECCIONAR_ALGUNOS = "SELECT * FROM mueble_venta WHERE modelo = ? ORDER BY codigo LIMIT ?";
     private final String SELECCIONAR_CANTIDAD = "SELECT disponibles FROM mueble_venta WHERE modelo = ?";
+
     
 
     public MuebleEnsambladoDAO() {

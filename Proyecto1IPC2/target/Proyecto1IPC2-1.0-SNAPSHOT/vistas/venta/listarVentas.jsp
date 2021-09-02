@@ -32,7 +32,7 @@
             <%
                 Cliente clienteTemp = (Cliente) request.getSession().getAttribute("clienteVentaActiva");
                 Mueble muebleTemp = (Mueble) request.getSession().getAttribute("muebleVentaActivo");
-                
+
                 String codigoProducto = "";
                 String nombreProducto = "";
                 String nitCliente = "";
@@ -44,7 +44,7 @@
                     nitCliente = clienteTemp.getNit() + "";
                     request.getSession().setAttribute("codigoClienteActivo", clienteTemp.getCodigo());
                     System.out.println("CODIGO DE CLIENTE!!" + clienteTemp.getCodigo());
-               
+
                 }
                 if (muebleTemp != null) {
                     nombreProducto = muebleTemp.getNombre();
@@ -129,8 +129,10 @@
                         </tr>
 
                     </tbody>-
-                    <%}
-                    } else {
+
+                    <%}%>
+                    <a href="VentaServlet?accion=Ingresar venta" class="btn btn-primary">Ingresar venta</a>
+                    <%} else {
 
                         ArrayList<MuebleEnsamblado> temp = muebleEnsambladoDAO.listarDisponibles();
                         for (int i = 0; i < temp.size(); i++) {
@@ -146,11 +148,12 @@
                         </tr>
 
                     </tbody>
-                    <%}
-                        }%>
+                        <%}%>
+                    
+                    <%}%>
                 </table>
                 <div>
-                    <a href="VentaServlet?accion=Ingresar venta" class="btn btn-success">Ingresar venta</a>
+
                 </div>
             </div>
         </div>
