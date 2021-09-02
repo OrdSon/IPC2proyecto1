@@ -5,6 +5,10 @@
  */
 package DAO;
 
+import Modelos.Caja;
+import Modelos.LoteVenta;
+import Modelos.Movimiento;
+import Modelos.MuebleEnsamblado;
 import Modelos.Venta;
 import Utilidades.Conexion;
 import Utilidades.DateManager;
@@ -26,10 +30,14 @@ public class VentaDAO {
 
     Connection connection;
     DateManager dateManager = new DateManager();
+    MovimientoDAO movimientoDAO = new MovimientoDAO();
+    CajaDAO cajaDAO = new CajaDAO();
+    LoteVentaDAO loteVentaDAO = new LoteVentaDAO();
     private static final String SELECCIONAR_VENTAS = "SELECT * FROM venta";
     private static final String SELECCIONAR_VENTA_CODIGO = "SELECT * FROM venta WHERE codigo = ?";
-    private static final String INSERTAR_VENTA = "INSERT INTO venta (total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?)";
+    private static final String INSERTAR_VENTA = "INSERT INTO venta (total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?,?,?,?)";
     private static final String ELIMINAR_VENTA = "DELETE FROM venta WHERE codigo = ?";
+    private static final String SELECCIONAR_ULTIMA = "SELECT * FROM venta ORDER BY codigo DESC LIMIT 1";
 
     public VentaDAO() {
         this.connection = Conexion.getConnection();
@@ -52,9 +60,9 @@ public class VentaDAO {
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
                 int empleadoCodigo = resultSet.getInt("empleado_codigo");
                 int clienteCodigo = resultSet.getInt("cliente_codigo");
-                
+
                 LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
-                
+
                 ventas.add(new Venta(codigo, total, fecha, puntoVentaCodigo, empleadoCodigo, clienteCodigo));
             }
         } catch (SQLException ex) {
@@ -91,6 +99,30 @@ public class VentaDAO {
         return venta;
     }
 
+    public Venta listarUltima() {
+
+        Venta venta;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_ULTIMA);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("codigo");
+                double total = resultSet.getInt("total");
+                Date fechaSql = resultSet.getDate("fecha");
+                int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
+                int empleadoCodigo = resultSet.getInt("empleado_codigo");
+                int clienteCodigo = resultSet.getInt("cliente_codigo");
+                LocalDate fecha = dateManager.convertirALocalDate(fechaSql);
+
+                venta = new Venta(codigo, total, fecha, puntoVentaCodigo, empleadoCodigo, clienteCodigo);
+                return venta;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     /*
     EDITAR
     No tiene sentido editar una venta
@@ -102,17 +134,53 @@ public class VentaDAO {
     public boolean añadir(Venta venta) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_VENTA);
-            preparedStatement.setDouble(1, venta.getTotal());
+            
+            Double total = venta.getTotal();
+            LocalDate fecha = venta.getFecha();
+            int puntoVenta = venta.getPuntoVentaCodigo();
+            int empleado = venta.getEmpleadoCodigo();
+            int cliente = venta.getClienteCodigo();
+            preparedStatement.setDouble(1, total);
             preparedStatement.setDate(2, dateManager.convertirADate(venta.getFecha()));
-            preparedStatement.setInt(3, venta.getPuntoVentaCodigo());
-            preparedStatement.setInt(4, venta.getEmpleadoCodigo());
-            preparedStatement.setInt(5, venta.getClienteCodigo());
+            preparedStatement.setInt(3, puntoVenta);
+            preparedStatement.setInt(4, empleado);
+            preparedStatement.setInt(5, cliente);
+            
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
+    }
+
+    public boolean nuevaVenta(Venta venta, Caja caja, ArrayList<MuebleEnsamblado> muebles) {
+        try {
+            
+            if (añadir(venta)) {
+
+                Venta ventaNueva = listarUltima();
+                if (caja != null && ventaNueva != null) {
+                    int ventaCodigo = ventaNueva.getCodigo();
+                    double monto = ventaNueva.getTotal();
+                    double capital = caja.getCapital();
+                    double resultado = (capital + monto);
+
+                    Movimiento movimiento = new Movimiento(monto, resultado, ventaCodigo, 1);
+                    movimientoDAO.añadir(movimiento);
+                    Caja cajaEditada = new Caja(1, movimiento.getResultado());
+                    cajaDAO.editar(cajaEditada);
+                    for (int i = 0; i < muebles.size(); i++) {
+                        LoteVenta loteVenta = new LoteVenta(muebles.get(i).getCodigo(), ventaCodigo);
+                        loteVentaDAO.añadir(loteVenta);
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println(e + " error en nueva venta, VentaDAO");
+        }
+        return false;
     }
 
     /*

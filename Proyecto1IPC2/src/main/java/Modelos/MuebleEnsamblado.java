@@ -14,12 +14,25 @@ public class MuebleEnsamblado {
     private int empleadoCodigo;
     private int puntoVentaCodigo;
     private String muebleModelo;
-
+    private String muebleNombre;
+    private int cantidad;
+    private double precio;
+    private double costo;
+    
+    
     public MuebleEnsamblado(int codigo, int empleadoCodigo, int puntoVentaCodigo, String muebleModelo) {
         this.codigo = codigo;
         this.empleadoCodigo = empleadoCodigo;
         this.puntoVentaCodigo = puntoVentaCodigo;
         this.muebleModelo = muebleModelo;
+    }
+    public MuebleEnsamblado(int codigo, int empleadoCodigo, int puntoVentaCodigo, String muebleModelo,int cantidad, double precio, double costo) {
+        this.codigo = codigo;
+        this.empleadoCodigo = empleadoCodigo;
+        this.puntoVentaCodigo = puntoVentaCodigo;
+        this.muebleModelo = muebleModelo;
+        this.cantidad = cantidad;
+        this.precio = precio;
     }
 
     public MuebleEnsamblado(int empleadoCodigo, int puntoVentaCodigo, String muebleModelo) {
@@ -27,6 +40,15 @@ public class MuebleEnsamblado {
         this.puntoVentaCodigo = puntoVentaCodigo;
         this.muebleModelo = muebleModelo;
     }
+
+    public MuebleEnsamblado(int codigo, String muebleModelo, String muebleNombre, double precio, double costo) {
+        this.codigo = codigo;
+        this.muebleModelo = muebleModelo;
+        this.muebleNombre = muebleNombre;
+        this.precio = precio;
+        this.costo = costo;
+    }
+    
 
     public MuebleEnsamblado() {
     }
@@ -62,6 +84,31 @@ public class MuebleEnsamblado {
     public void setMuebleModelo(String muebleModelo) {
         this.muebleModelo = muebleModelo;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+    
     
     
 }

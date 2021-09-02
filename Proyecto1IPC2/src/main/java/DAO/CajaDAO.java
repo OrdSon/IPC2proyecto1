@@ -22,7 +22,7 @@ public class CajaDAO {
     private static final String SELECCIONAR_CAJA = "SELECT * FROM caja";
     private static final String SELECCIONAR_CAJA_CODIGO = "SELECT * FROM caja WHERE codigo = ?";
     private static final String INSERTAR_CAJA = "INSERT INTO caja (capital, punto_venta_codigo) VALUES (?,?)";
-    private static final String UPDATE_CAJA = "UPDATE caja SET capital = ?, punto_venta_codigo = ? WHERE codigo = ?";
+    private static final String UPDATE_CAJA = "UPDATE caja SET capital = ? WHERE codigo = ?";
     private static final String ELIMINAR_CAJA = "DELETE FROM caja WHERE codigo = ?";
 
     public CajaDAO() {
@@ -63,12 +63,15 @@ public class CajaDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CAJA_CODIGO);
             preparedStatement.setInt(1, codigo);
             ResultSet resultSet = preparedStatement.executeQuery();
+            int contador = 0;
             while (resultSet.next()) {
                 double capital = resultSet.getDouble("capital");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
 
                 caja = new Caja(capital, puntoVentaCodigo);
+                contador++;
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(CajaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -85,14 +88,14 @@ public class CajaDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CAJA);
 
             preparedStatement.setDouble(1, caja.getCapital());
-            preparedStatement.setInt(2, caja.getPuntoVentaCodigo());
-            preparedStatement.setInt(3, caja.getCodigo());
+            preparedStatement.setInt(2, caja.getCodigo());
             
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
 
             System.out.println(ex);
             Logger.getLogger(CajaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
 
         return true;

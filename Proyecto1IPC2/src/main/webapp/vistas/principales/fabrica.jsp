@@ -42,6 +42,9 @@
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="PiezaServlet?accion=listar" target="frameInterno">Piezas</a>
                         </li>
+                        <li class="btn btn-info">
+                            <a class="nav-link active text-white" href="VentaServlet?accion=listar" target="frameInterno">Ventas</a>
+                        </li>
                     </ul>
                     <div class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -20,6 +20,13 @@ public class Caja {
         this.puntoVentaCodigo = puntoVentaCodigo;
     }
 
+    public Caja(int codigo, double capital) {
+        this.codigo = codigo;
+        this.capital = capital;
+    }
+    
+    
+
     public Caja() {
     }
 

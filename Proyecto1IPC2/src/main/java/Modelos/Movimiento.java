@@ -34,6 +34,16 @@ public class Movimiento {
         this.cajaCodigo = cajaCodigo;
     }
 
+    public Movimiento(double monto, double resultado, int ventaCodigo, int cajaCodigo) {
+        this.monto = monto;
+        this.resultado = resultado;
+        this.ventaCodigo = ventaCodigo;
+        this.cajaCodigo = cajaCodigo;
+    }
+    
+    
+    
+    
     public Movimiento() {
     }
 

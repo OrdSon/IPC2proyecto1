@@ -50,7 +50,6 @@ public class loginServlet extends HttpServlet {
             }
 
         } else if (accion.equalsIgnoreCase("salir")) {
-            request.getSession().setAttribute("empleadoActivo", null);
             destino = INDEX;
         }
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(destino);

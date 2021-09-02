@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 public class LoteVentaDAO {
         Connection connection;
 
-    private static final String SELECCIONAR_MUEBLE = "SELECT * FROM lote_venta";
-    private static final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM lote_venta WHERE codigo = ?";
-    private static final String INSERTAR_MUEBLE = "INSERT INTO mueble (mueble_ensamblado_codigo, venta_codigo) VALUES (?,?)";
-    private static final String ELIMINAR_MUEBLE = "DELETE FROM lote_venta WHERE codigo = ?";
+    private static final String SELECCIONAR_LOTE = "SELECT * FROM lote_venta";
+    private static final String SELECCIONAR_LOTE_CODIGO = "SELECT * FROM lote_venta WHERE codigo = ?";
+    private static final String INSERTAR_LOTE = "INSERT INTO lote_venta (mueble_ensamblado_codigo, venta_codigo) VALUES (?,?)";
+    private static final String ELIMINAR_LOTE = "DELETE FROM lote_venta WHERE codigo = ?";
 
     public LoteVentaDAO() {
         this.connection = Conexion.getConnection();
@@ -39,7 +39,7 @@ public class LoteVentaDAO {
 
         ArrayList<LoteVenta> LotesVenta = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_MUEBLE);
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_LOTE);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
@@ -64,7 +64,7 @@ public class LoteVentaDAO {
 
         LoteVenta mueble = new LoteVenta();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_MUEBLE_CODIGO);
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_LOTE_CODIGO);
             preparedStatement.setInt(1, codigo);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -92,14 +92,16 @@ public class LoteVentaDAO {
      */
     public boolean añadir(LoteVenta loteVenta) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_MUEBLE);
-
-            preparedStatement.setInt(1, loteVenta.getMuebleEnsambladoCodigo());
-            preparedStatement.setInt(2, loteVenta.getVenta_codigo());
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_LOTE);
+            int mueble =loteVenta.getMuebleEnsambladoCodigo();
+            int venta = loteVenta.getVenta_codigo();
+            preparedStatement.setInt(1, mueble);
+            preparedStatement.setInt(2, venta);
 
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(LoteVentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
             return false;
         }
         return true;
@@ -112,7 +114,7 @@ public class LoteVentaDAO {
      */
     public boolean eliminar(int codigo) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(ELIMINAR_MUEBLE);
+            PreparedStatement preparedStatement = connection.prepareStatement(ELIMINAR_LOTE);
             preparedStatement.setInt(1, codigo);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {

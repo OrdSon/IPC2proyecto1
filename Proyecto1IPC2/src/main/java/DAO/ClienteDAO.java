@@ -22,7 +22,7 @@ public class ClienteDAO  {
     
     private static final String SELECCIONAR_CLIENTES = "SELECT * FROM cliente";
     private static final String SELECCIONAR_CLIENTE_CODIGO = "SELECT * FROM cliente WHERE codigo = ?";
-    private static final String SELECCIONAR_CLIENTE_NIT = "SELECT * FROM cliente WHERE nit = ?";
+    private static final String SELECCIONAR_CLIENTE_NIT = "SELECT * FROM cliente WHERE nit LIKE ? ESCAPE '!' LIMIT 1";
     private static final String INSERTAR_CLIENTE = "INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES (?,?,?,?) ";
     private static final String UPDATE_CLIENTE = "UPDATE cliente SET nit = ?, nombre = ?, telefono = ?, direccion = ? WHERE codigo = ?";
     private static final String ELIMINAR_CLIENTE = "DELETE FROM cliente WHERE codigo = ?";
@@ -84,6 +84,30 @@ public class ClienteDAO  {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return cliente;
+    }
+    public Cliente listarNit(String NIT){
+        
+        Cliente cliente = new Cliente();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CLIENTE_NIT);
+            NIT = NIT.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+            preparedStatement.setString(1, NIT+"%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {         
+                int codigo = resultSet.getInt("codigo");
+                String nit = resultSet.getString("nit");
+                String nombre = resultSet.getString("nombre");
+                String telefono = resultSet.getString("telefono");
+                String direccion = resultSet.getString("direccion");
+                
+                cliente = new Cliente(codigo, nit, nombre, telefono, direccion);
+                
+            }
+            return cliente;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     /*
     EDITAR

@@ -24,7 +24,7 @@ public class MovimientoDAO {
 
     private static final String SELECCIONAR_MOVIMIENTO = "SELECT * FROM movimiento";
     private static final String SELECCIONAR_MOVIMIENTO_CODIGO = "SELECT * FROM movimiento WHERE codigo = ?";
-    private static final String INSERTAR_MOVIMIENTO = "INSERT INTO movimiento (monto, resultado, venta_codigo, compra_codigo) VALUES (?,?,?,?)";
+    private static final String INSERTAR_MOVIMIENTO = "INSERT INTO movimiento (monto, resultado, venta_codigo, caja_codigo) VALUES (?,?,?,?)";
     private static final String ELIMINAR_MOVIMIENTO = "DELETE FROM venta WHERE codigo = ?";
 
     public MovimientoDAO() {
@@ -95,11 +95,14 @@ public class MovimientoDAO {
     public boolean añadir(Movimiento movimiento) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERTAR_MOVIMIENTO);
-            preparedStatement.setDouble(1, movimiento.getMonto());
-            preparedStatement.setDouble(2, movimiento.getResultado());
-            preparedStatement.setInt(3, movimiento.getVentaCodigo());
-            preparedStatement.setInt(4, movimiento.getCompraCodigo());
-            preparedStatement.setInt(5, movimiento.getCajaCodigo());
+            double monto = movimiento.getMonto();
+            double resultado = movimiento.getResultado();
+            int venta = movimiento.getVentaCodigo();
+            int caja = 1;
+            preparedStatement.setDouble(1,monto);
+            preparedStatement.setDouble(2, resultado);
+            preparedStatement.setInt(3, venta);
+            preparedStatement.setInt(4, caja);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(MovimientoDAO.class.getName()).log(Level.SEVERE, null, ex);
