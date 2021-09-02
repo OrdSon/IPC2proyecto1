@@ -39,7 +39,7 @@
                 if (muebleTemp != null) {
                     tipoMueble = muebleTemp.getNombre();
                     codigoMueble = muebleTemp.getModelo() + "";
-                }else{
+                } else {
                     System.out.println("modelonull");
                 }
             %>
@@ -61,6 +61,11 @@
                                 <input type = "submit" name = "accion" value = "Buscar por nombre" class="btn btn-outline-primary"><br>
 
                             </div>
+                            <div >
+
+                                <label>Fecha:</label> 
+                                <input type ="date" name = "fecha" class="form-control">
+                            </div>
                         </div>
 
                         <input type = "submit" name = "accion" value = "añadir" class="btn btn-success"><br>
@@ -79,6 +84,7 @@
                             <th>Costo</th>
                             <th>Disponibles</th>
                             <th>Necesarias</th>
+                            <th>Estado</th>
                         </tr>
                     </thead> 
                     <%
@@ -95,11 +101,23 @@
                     %>
                     <tbody>
                         <tr>
-                            <td><%=coincidencia.getPieza() %></td>
-                            <td><%=coincidencia.getTipo() %></td>
+                            <td><%=coincidencia.getPieza()%></td>
+                            <td><%=coincidencia.getTipo()%></td>
                             <td><%=coincidencia.getCosto()%></td>
                             <td><%=coincidencia.getDisponibles()%></td>
-                            <td><%=coincidencia.getNecesarias() %></td>
+                            <td><%=coincidencia.getNecesarias()%></td>
+                            <td>
+                                <%
+                                    if (coincidencia.getDisponibles() <= (coincidencia.getNecesarias() * 2)) {%>
+                                <input type="submit" value="Por agotarse" disabled="disabled" class="btn btn-warning"/>
+                                <% } else if (coincidencia.getDisponibles() == (coincidencia.getNecesarias())) {%>
+                                <input type="submit" value="Ultimas piezas" disabled="disabled" class="btn btn-warning"/>
+                                <%} else if (coincidencia.getDisponibles() < (coincidencia.getNecesarias())) {%>
+                                <input type="submit" value="Insuficientes" disabled="disabled" class="btn btn-danger"/>
+                                <%} else { %>
+                                <input type="submit" value="BIEN" disabled="disabled" class="btn btn-success"/>
+                                <%}%>
+                            </td>
                         </tr>
                         <%}
 

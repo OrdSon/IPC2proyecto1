@@ -5,6 +5,8 @@
  */
 package Modelos;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author OrdSon
@@ -18,6 +20,7 @@ public class MuebleEnsamblado {
     private int cantidad;
     private double precio;
     private double costo;
+    private LocalDate fecha;
     
     
     public MuebleEnsamblado(int codigo, int empleadoCodigo, int puntoVentaCodigo, String muebleModelo) {
@@ -33,12 +36,31 @@ public class MuebleEnsamblado {
         this.muebleModelo = muebleModelo;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.costo = costo;
+    }
+    public MuebleEnsamblado(int codigo, int empleadoCodigo, int puntoVentaCodigo, String muebleModelo,int cantidad, double precio, double costo, LocalDate fecha, String muebleNombre) {
+        this.codigo = codigo;
+        this.empleadoCodigo = empleadoCodigo;
+        this.puntoVentaCodigo = puntoVentaCodigo;
+        this.muebleModelo = muebleModelo;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.costo = costo;
+        this.fecha = fecha;
+        this.muebleNombre = muebleNombre;
     }
 
     public MuebleEnsamblado(int empleadoCodigo, int puntoVentaCodigo, String muebleModelo) {
         this.empleadoCodigo = empleadoCodigo;
         this.puntoVentaCodigo = puntoVentaCodigo;
         this.muebleModelo = muebleModelo;
+    }
+    
+    public MuebleEnsamblado(int empleadoCodigo, int puntoVentaCodigo, String muebleModelo, LocalDate fecha) {
+        this.empleadoCodigo = empleadoCodigo;
+        this.puntoVentaCodigo = puntoVentaCodigo;
+        this.muebleModelo = muebleModelo;
+        this.fecha = fecha;
     }
 
     public MuebleEnsamblado(int codigo, String muebleModelo, String muebleNombre, double precio, double costo) {
@@ -107,6 +129,22 @@ public class MuebleEnsamblado {
 
     public void setCosto(double costo) {
         this.costo = costo;
+    }
+
+    public String getMuebleNombre() {
+        return muebleNombre;
+    }
+
+    public void setMuebleNombre(String muebleNombre) {
+        this.muebleNombre = muebleNombre;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
     
     

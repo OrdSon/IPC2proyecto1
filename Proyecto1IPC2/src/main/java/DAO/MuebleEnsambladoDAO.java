@@ -10,10 +10,13 @@ import Modelos.Diseño;
 import Modelos.MuebleEnsamblado;
 import Modelos.PiezaAlmacenada;
 import Utilidades.Conexion;
+import Utilidades.DateManager;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,22 +29,23 @@ public class MuebleEnsambladoDAO {
 
     Connection connection;
     DiseñoDAO diseñoDAO = new DiseñoDAO();
+    DateManager dateManager = new DateManager();
     PiezaAlmacenadaDAO piezaAlmacenadaDAO = new PiezaAlmacenadaDAO();
 
-    private final String SELECCIONAR_MUEBLE = "SELECT * FROM mueble_ensamblado";
+    private final String SELECCIONAR_MUEBLE = "SELECT * FROM muebles_disponibles";
+    private final String SELECCIONAR_MUEBLE_DESC = "SELECT * FROM muebles_disponibles ORDER BY fecha DESC";
+    private final String SELECCIONAR_MUEBLE_ASC = "SELECT * FROM muebles_disponibles ORDER BY fecha ASC";
     private final String SELECCIONAR_DISPONIBLES = "SELECT * FROM mueble_venta";
     private final String SELECCIONAR_DISPONIBLE_MODELO = "SELECT * FROM muebles_disponibles WHERE modelo = ?";
     private final String SELECCIONAR_DISPONIBLE_CODIGO = "SELECT * FROM muebles_disponibles WHERE ensamble_codigo = ?";
     private final String SELECCIONAR_MUEBLE_CODIGO = "SELECT * FROM mueble_ensamblado WHERE codigo = ?";
-    private final String INSERTAR_MUEBLE = "INSERT INTO mueble_ensamblado (empleado_codigo, punto_venta_codigo, mueble_modelo) VALUES (?,?,?)";
+    private final String INSERTAR_MUEBLE = "INSERT INTO mueble_ensamblado (empleado_codigo, punto_venta_codigo, mueble_modelo, fecha) VALUES (?,?,?,?)";
     private final String UPDATE_MUEBLE = "UPDATE mueble_ensamblado SET  empleado_codigo = ?, punto_venta_codigo = ?, mueble_modelo = ? WHERE codigo = ?";
     private final String ELIMINAR_MUEBLE = "DELETE FROM mueble_ensamblado WHERE codigo = ?";
     private final String SELECCIONAR_COINCIDENCIAS = "SELECT * FROM coincidencias WHERE modelo_mueble = ?";
     private final String SELECCIONAR_ULTIMO = "SELECT * FROM mueble_ensamblado ORDER BY codigo DESC LIMIT 1";
     private final String SELECCIONAR_ALGUNOS = "SELECT * FROM mueble_venta WHERE modelo = ? ORDER BY codigo LIMIT ?";
     private final String SELECCIONAR_CANTIDAD = "SELECT disponibles FROM mueble_venta WHERE modelo = ?";
-
-    
 
     public MuebleEnsambladoDAO() {
         this.connection = Conexion.getConnection();
@@ -50,33 +54,60 @@ public class MuebleEnsambladoDAO {
     /*LISTAR
     Crea una lista de muebles y la exporta para su uso
      */
-    public ArrayList<MuebleEnsamblado> listar() {
-
+    public ArrayList<MuebleEnsamblado> listar(int orden) {
+        String query;
+        switch (orden) {
+            case 1:
+                query = SELECCIONAR_MUEBLE_DESC;
+                break;
+            case 2:
+                query = SELECCIONAR_MUEBLE_ASC;
+                break;
+            default:
+                query = SELECCIONAR_MUEBLE;
+                break;
+        }
         ArrayList<MuebleEnsamblado> muebles = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_MUEBLE);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-
+                String nombre = resultSet.getString("nombre");
+                if (nombre == null) {
+                    nombre = "";
+                }
+                double precio = resultSet.getDouble("precio");
+                String modelo = resultSet.getString("modelo");
+                double costo = resultSet.getDouble("costo");
+                if (costo == 0) {
+                    costo = resultSet.getDouble("costo_default");
+                }
                 int codigo = resultSet.getInt("codigo");
                 int empleadoCodigo = resultSet.getInt("empleado_codigo");
-                int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
-                String modelo = resultSet.getString("modelo");
-
-                muebles.add(new MuebleEnsamblado(codigo, empleadoCodigo, puntoVentaCodigo, modelo));
+                int puntoVenta = resultSet.getInt("punto_venta_codigo");
+                Date fecha = resultSet.getDate("fecha");
+                LocalDate localDate;
+                if (fecha != null) {
+                    localDate = dateManager.convertirALocalDate(fecha);
+                }else{
+                    localDate = null;
+                }
+                MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado(codigo, empleadoCodigo, puntoVenta, modelo, 0, precio, costo, localDate, nombre);
+                muebles.add(muebleEnsamblado);
             }
         } catch (SQLException ex) {
             Logger.getLogger(MuebleEnsambladoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return muebles;
     }
+
     public ArrayList<MuebleEnsamblado> listarAlgunos(String modelo, int cantidad) {
 
         ArrayList<MuebleEnsamblado> muebles = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_ALGUNOS);
-            preparedStatement.setString(1,modelo);
-            preparedStatement.setInt(1,cantidad);
+            preparedStatement.setString(1, modelo);
+            preparedStatement.setInt(1, cantidad);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
@@ -170,6 +201,7 @@ public class MuebleEnsambladoDAO {
         }
         return mueble;
     }
+
     public MuebleEnsamblado listarDisponibeleCodigo(int codigo) {
 
         MuebleEnsamblado mueble = new MuebleEnsamblado();
@@ -210,7 +242,7 @@ public class MuebleEnsambladoDAO {
                 int empleadoCodigo = resultSet.getInt("empleado_codigo");
                 int puntoVentaCodigo = resultSet.getInt("punto_venta_codigo");
 
-                mueble = new MuebleEnsamblado(codigo, empleadoCodigo, puntoVentaCodigo, modelo,0, precio, costo);
+                mueble = new MuebleEnsamblado(codigo, empleadoCodigo, puntoVentaCodigo, modelo, 0, precio, costo);
 
                 return mueble;
             }
@@ -220,8 +252,8 @@ public class MuebleEnsambladoDAO {
         }
         return null;
     }
-    
-    public int seleccionarCantidad(String modelo){
+
+    public int seleccionarCantidad(String modelo) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_CANTIDAD);
             preparedStatement.setString(1, modelo);
@@ -273,9 +305,11 @@ public class MuebleEnsambladoDAO {
             int empleado = muebleEnsamblado.getEmpleadoCodigo();
             String modelo = muebleEnsamblado.getMuebleModelo();
             int punto = 2;
+            java.sql.Date fecha = dateManager.convertirADate(muebleEnsamblado.getFecha());
             preparedStatement.setInt(1, empleado);
             preparedStatement.setInt(2, punto);
             preparedStatement.setString(3, modelo);
+            preparedStatement.setDate(4, fecha);
 
             preparedStatement.executeUpdate();
             setearMueble(muebleEnsamblado);

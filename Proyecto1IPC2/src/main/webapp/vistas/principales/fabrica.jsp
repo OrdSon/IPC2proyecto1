@@ -40,6 +40,9 @@
                             <a class="nav-link active text-white" href="MuebleServlet?accion=listar" target="frameInterno">Muebles</a>
                         </li>
                         <li class="btn btn-info">
+                            <a class="nav-link active text-white" href="MuebleEnsambladoServlet?accion=listarEnsambles" target="frameInterno">Muebles ensamblados</a>
+                        </li>
+                        <li class="btn btn-info">
                             <a class="nav-link active text-white" href="PiezaServlet?accion=listar" target="frameInterno">Piezas</a>
                         </li>
                         <li class="btn btn-info">

@@ -26,7 +26,9 @@ public class PiezaAlmacenadaDAO {
     Connection connection;
     
     private static final String SELECCIONAR_PIEZA = "SELECT * FROM piezas_listas";
-    private static final String SELECCIONAR_PIEZA_CANTIDAD = "SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;";
+    private static final String SELECCIONAR_PIEZA_CANTIDAD = "SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo";
+    private static final String SELECCIONAR_PIEZA_CANTIDAD_DESC = "SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo ORDER BY cantidad DESC";
+    private static final String SELECCIONAR_PIEZA_CANTIDAD_ASC = "SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo ORDER BY cantidad ASC";
     private static final String SELECCIONAR_PIEZA_CODIGO = "SELECT * FROM piezas_listas WHERE codigo = ? LIMIT 1";
     private static final String SELECCIONAR_PIEZAS_CODIGO = "SELECT * FROM piezas_listas WHERE pieza = ? LIMIT ?";
     private static final String INSERTAR_PIEZA = "INSERT INTO pieza_almacenada (costo, pieza_codigo, compra_codigo) VALUES (?,?,?)";
@@ -61,11 +63,22 @@ public class PiezaAlmacenadaDAO {
         }
         return piezas;
     }
-    public ArrayList<piezaComprada> listarCompradas() {
-
+    public ArrayList<piezaComprada> listarCompradas(int orden) {
+        String query;
+        switch (orden){
+            case 1:
+                query = SELECCIONAR_PIEZA_CANTIDAD_DESC;
+                break;
+            case 2:
+                query = SELECCIONAR_PIEZA_CANTIDAD_ASC;
+                break;
+            default:
+                query = SELECCIONAR_PIEZA_CANTIDAD;
+                break;
+        }
         ArrayList<piezaComprada> piezas = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_PIEZA_CANTIDAD);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 

@@ -10,7 +10,9 @@ import DAO.MuebleEnsambladoDAO;
 import Modelos.Empleado;
 import Modelos.Mueble;
 import Modelos.MuebleEnsamblado;
+import Utilidades.DateManager;
 import java.io.IOException;
+import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +24,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author OrdSon
  */
 public class MuebleEnsambladoServlet extends HttpServlet {
+
     MuebleDAO muebleDAO = new MuebleDAO();
     MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
-    String añadir = "vistas/muebleEnsamblado/añadirMuebleEnsamblado.jsp";
+    DateManager dateManager = new DateManager();
+    String ensambles = "vistas/muebleEnsamblado/listaEnsambles.jsp";
     String listar = "vistas/muebleEnsamblado/EnsamblarMueble.jsp";
 
     @Override
@@ -36,20 +40,33 @@ public class MuebleEnsambladoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String acceso = "";
+        String acceso = listar;
         String accion = request.getParameter("accion");
         if (accion.equalsIgnoreCase("listar")) {
             acceso = listar;
-        } else if (accion.equalsIgnoreCase("nuevo")) {
-            acceso = añadir;
-        } else if (accion.equalsIgnoreCase("añadir")) {
+        }else if (accion.equalsIgnoreCase("listarEnsambles")) {
+            acceso = ensambles;
+        }else if (accion.equalsIgnoreCase("asc")) {
+            request.getSession().setAttribute("ordenEnsambles", 2);
+            acceso = ensambles;
+        }else if (accion.equalsIgnoreCase("desc")) {
+            request.getSession().setAttribute("ordenEnsambles", 1);
+            acceso = ensambles;
+        }else if (accion.equalsIgnoreCase("añadir")) {
             Empleado activo = obtenerEmpleado(request);
             String muebleModelo = request.getParameter("txtModelo");
-            MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado(activo.getCodigo(), 2, muebleModelo);
+            String fecha = request.getParameter("fecha");
+            LocalDate localDate;
+            if (fecha == null || fecha.isEmpty()) {
+                localDate = LocalDate.now();
+            } else {
+                java.sql.Date sqlDate = dateManager.formatear(fecha);
+                localDate = dateManager.convertirALocalDate(sqlDate);
+            }
+            MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado(activo.getCodigo(), 2, muebleModelo, localDate);
             muebleEnsambladoDAO.añadir(muebleEnsamblado);
-            
-            
-            acceso = listar;
+
+
             /*EDICION PASO 2
               Se obtiene la sesion para setear un atributo con nombre "codigoMuebleEnsamblado"
               para poder identificar al muebleEnsamblado en la transaccion,
@@ -57,10 +74,9 @@ public class MuebleEnsambladoServlet extends HttpServlet {
              */
         } else if (accion.equalsIgnoreCase("eliminar")) {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
-            MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
             muebleEnsambladoDAO.eliminar(codigo);
-            acceso = listar;
-        }else if (accion.equalsIgnoreCase("Buscar modelo")) {
+
+        } else if (accion.equalsIgnoreCase("Buscar modelo")) {
             try {
                 String modelo = request.getParameter("txtModelo");
                 Mueble mueble = muebleDAO.listarCodigo(modelo);
@@ -68,7 +84,7 @@ public class MuebleEnsambladoServlet extends HttpServlet {
                 request.getSession().setAttribute("modeloEnsamble", mueble.getModelo());
             } catch (NullPointerException e) {
             }
-            acceso = listar;
+
         } else if (accion.equalsIgnoreCase("Buscar por nombre")) {
             try {
                 String modelo = request.getParameter("txtNombreMueble");
@@ -77,19 +93,19 @@ public class MuebleEnsambladoServlet extends HttpServlet {
                 request.getSession().setAttribute("modeloEnsamble", mueble.getModelo());
             } catch (NullPointerException e) {
             }
-            acceso = listar;
+
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
     }
-    
-    private Empleado obtenerEmpleado(HttpServletRequest request){
+
+    private Empleado obtenerEmpleado(HttpServletRequest request) {
         try {
-            Empleado activo = (Empleado)request.getSession().getAttribute("empleadoActivo");
-            return  activo;
+            Empleado activo = (Empleado) request.getSession().getAttribute("empleadoActivo");
+            return activo;
         } catch (Exception e) {
         }
-        return  null;
+        return null;
     }
-    
+
 }

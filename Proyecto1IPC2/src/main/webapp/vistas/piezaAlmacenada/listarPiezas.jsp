@@ -67,18 +67,22 @@
             </div>
             <div style="width: 25px"></div>
             <div class="col-sm-6">
-                <table id="dtDynamic" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th class="th-sm">Tipo</th>
                             <th class="th-sm">Costo</th>
                             <th class="th-sm">Cantidad</th>
+                            <th class="th-sm">Estado</th>
                         </tr>
                     </thead> 
                     <%
-                        
+                        int orden = 0;
+                        if (request.getSession().getAttribute("ordenPiezas") != null) {
+                            orden = (int) request.getSession().getAttribute("ordenPiezas");
+                        }
                         PiezaAlmacenadaDAO piezaDAO = new PiezaAlmacenadaDAO();
-                        ArrayList<piezaComprada> piezas = piezaDAO.listarCompradas();
+                        ArrayList<piezaComprada> piezas = piezaDAO.listarCompradas(orden);
                         Iterator<piezaComprada> iterator = piezas.iterator();
                         piezaComprada pieza = null;
                         while (iterator.hasNext()) {
@@ -90,9 +94,21 @@
                             <td><%=pieza.getTipo()%></td>
                             <td><%=pieza.getCosto()%></td>
                             <td><%=pieza.getCantidad()%></td>
+                            <td>
+                                <%
+                                    if (pieza.getCantidad() <= 12) {%>
+                                <input type="submit" value="Por agotarse" disabled="disabled" class="btn btn-warning"/>
+                                <% } else if (pieza.getCantidad() == 0) {%>
+                                <input type="submit" value="AGOTADAS" disabled="disabled" class="btn btn-danger"/>
+                                <%} else { %>
+                                <input type="submit" value="BIEN" disabled="disabled" class="btn btn-success"/>
+                                <%}%>
+                            </td>
                         </tr>
                         <%}%>
                     </tbody>
+                    <tfoot><label>Ordenar:</label><a href="CompraServlet?accion=desc" class="btn btn-info">Descendiente</a>
+                    <a href="CompraServlet?accion=asc" class="btn btn-info">Ascendiente</a>  </tfoot>
                 </table>
             </div>
 

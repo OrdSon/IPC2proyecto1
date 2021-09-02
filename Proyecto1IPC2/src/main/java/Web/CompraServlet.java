@@ -94,6 +94,12 @@ public class CompraServlet extends HttpServlet {
             } catch (NullPointerException e) {
             }
             acceso = BUSCAR_PIEZA;
+        }else if (accion.equalsIgnoreCase("desc")) {
+            request.getSession().setAttribute("ordenPiezas",1);
+            acceso = BUSCAR_PIEZA;
+        }else if (accion.equalsIgnoreCase("asc")) {
+            request.getSession().setAttribute("ordenPiezas",2);
+            acceso = BUSCAR_PIEZA;
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);

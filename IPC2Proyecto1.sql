@@ -90,6 +90,7 @@ CREATE TABLE mueble_ensamblado (
     punto_venta_codigo INT,
     mueble_modelo VARCHAR(8),
     costo INT,
+    fecha DATE,
     CONSTRAINT pk_mueble_ensamblado PRIMARY KEY (codigo),
     CONSTRAINT fk_mueble_empleado FOREIGN KEY (empleado_codigo)
     REFERENCES empleado(codigo), 
@@ -183,7 +184,7 @@ CREATE VIEW diseño_listo AS
 SELECT p.codigo, p.nombre, d.cantidad, d.modelo_mueble FROM pieza as p INNER JOIN diseño as d ON p.codigo = d.pieza_codigo;
 
 CREATE VIEW piezas_disponibles AS
-SELECT pieza, tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
+
 select * from diseño;
 
 CREATE VIEW coincidencias AS
@@ -203,14 +204,18 @@ SELECT  m.nombre, m.precio, m.modelo, e.costo, m.costo as costo_default , e.codi
 CREATE VIEW mueble_venta AS
 SELECT COUNT(modelo) AS disponibles , nombre, precio, modelo, costo, costo_default, codigo, empleado_codigo, punto_venta_codigo FROM muebles_disponibles;
 
-
 select * from muebles_disponibles;
+SELECT COUNT(modelo) AS disponibles , nombre, precio, modelo, costo, costo_default, codigo, empleado_codigo, punto_venta_codigo FROM muebles_disponibles;
 SELECT * FROM mueble_venta;
 select * from pieza_almacenada;
+select * from piezas_listas where codigo = 157;
 SELECT * FROM mueble_ensamblado ORDER BY codigo;
 SELECT * FROM muebles_disponibles;		
 SELECT * FROM cliente;
 SELECT * FROM movimiento;
 SELECT * FROM muebles_disponibles;
 SELECT * FROM venta;
-
+SELECT * FROM coincidencias;
+SELECT * FROM mueble_ensamblado;
+SELECT pieza, tipo, COUNT(costo) AS cantidad, costo ,mueble FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
+SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo ORDER BY cantidad DESC;
