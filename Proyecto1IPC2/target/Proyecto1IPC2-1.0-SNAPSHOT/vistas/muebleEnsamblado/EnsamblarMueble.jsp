@@ -76,7 +76,9 @@
                         <tr>
                             <th >Codigo de pieza</th>
                             <th>Nombre</th>
-                            <th>Cantidad</th>
+                            <th>Costo</th>
+                            <th>Disponibles</th>
+                            <th>Necesarias</th>
                         </tr>
                     </thead> 
                     <%

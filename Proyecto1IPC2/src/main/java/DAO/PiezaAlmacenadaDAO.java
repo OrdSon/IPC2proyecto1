@@ -28,7 +28,7 @@ public class PiezaAlmacenadaDAO {
     private static final String SELECCIONAR_PIEZA = "SELECT * FROM piezas_listas";
     private static final String SELECCIONAR_PIEZA_CANTIDAD = "SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;";
     private static final String SELECCIONAR_PIEZA_CODIGO = "SELECT * FROM piezas_listas WHERE codigo = ? LIMIT 1";
-    private static final String SELECCIONAR_PIEZAS_CODIGO = "SELECT * FROM pieza_almacenada WHERE pieza_codigo = ? LIMIT ?";
+    private static final String SELECCIONAR_PIEZAS_CODIGO = "SELECT * FROM piezas_listas WHERE pieza = ? LIMIT ?";
     private static final String INSERTAR_PIEZA = "INSERT INTO pieza_almacenada (costo, pieza_codigo, compra_codigo) VALUES (?,?,?)";
     private static final String ELIMINAR_PIEZA = "DELETE FROM pieza_almacenada WHERE codigo = ?";
     private static final String UPDATE_PIEZA = "UPDATE pieza_almacenada SET mueble_ensamblado_codigo = ? WHERE codigo = ?";
@@ -120,8 +120,8 @@ public class PiezaAlmacenadaDAO {
             while (resultSet.next()) {
                 int codigo = resultSet.getInt("codigo");
                 double costo = resultSet.getInt("costo");
-                int piezaCodigo = resultSet.getInt("pieza_codigo");
-                int muebleEnsambladoCodigo = resultSet.getInt("mueble_ensamblado_codigo");
+                int piezaCodigo = resultSet.getInt("pieza");
+                int muebleEnsambladoCodigo = resultSet.getInt("mueble");
 
                 pieza = new PiezaAlmacenada(codigo, costo, piezaCodigo, muebleEnsambladoCodigo);
                 piezas.add(pieza);
@@ -163,8 +163,11 @@ public class PiezaAlmacenadaDAO {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PIEZA);
-            preparedStatement.setInt(1, muebleEnsamblado.getCodigo());
-            preparedStatement.setInt(2, piezaAlmacenada.getCodigo());
+            int mueble = muebleEnsamblado.getCodigo();
+            int pieza = piezaAlmacenada.getCodigo();
+            preparedStatement.setInt(1, mueble);
+            
+            preparedStatement.setInt(2, pieza);
 
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {

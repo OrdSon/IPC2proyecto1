@@ -25,7 +25,7 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white"  href="vistas/PaginasInicio/inicioFabrica.jsp">Inicio</a>
+                            <a class="nav-link active text-white"  href="vistas/welcome/welcomeFabrica.jsp" target="frameInterno">Inicio</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link text-white" aria-current="page" href="MuebleEnsambladoServlet?accion=listar" target="frameInterno">Ensambles</a>
@@ -58,7 +58,7 @@
                         </ul>
                     </div> 
                     <div style="width: 75px;">
-                        
+
                     </div>
 
                     <!--
@@ -71,8 +71,8 @@
             </div>
         </nav>
         <div class="m-4" style="height: 100%; width: 97%;">
-            <iframe name="frameInterno" style="height: 100%; width: 100%;">
-
+            <iframe src="vistas/welcome/welcomeFabrica.jsp" name="frameInterno" style="height: 100%; width: 100%;">
+                
             </iframe>
         </div>
     </body>

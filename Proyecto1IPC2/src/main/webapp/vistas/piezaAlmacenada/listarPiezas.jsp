@@ -67,15 +67,16 @@
             </div>
             <div style="width: 25px"></div>
             <div class="col-sm-6">
-                <table class="table table-striped">
+                <table id="dtDynamic" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th >Tipo</th>
-                            <th>Costo</th>
-                            <th>Cantidad</th>
+                            <th class="th-sm">Tipo</th>
+                            <th class="th-sm">Costo</th>
+                            <th class="th-sm">Cantidad</th>
                         </tr>
                     </thead> 
                     <%
+                        
                         PiezaAlmacenadaDAO piezaDAO = new PiezaAlmacenadaDAO();
                         ArrayList<piezaComprada> piezas = piezaDAO.listarCompradas();
                         Iterator<piezaComprada> iterator = piezas.iterator();
@@ -87,13 +88,13 @@
                     <tbody>
                         <tr>
                             <td><%=pieza.getTipo()%></td>
-                            <td><%=pieza.getCosto() %></td>
-                            <td><%=pieza.getCantidad() %></td>
+                            <td><%=pieza.getCosto()%></td>
+                            <td><%=pieza.getCantidad()%></td>
                         </tr>
                         <%}%>
                     </tbody>
                 </table>
             </div>
-        </div>
+
     </body>
 </html>

@@ -176,7 +176,8 @@ CREATE VIEW empleados_finanzas AS
 select * from empleado where area = 3;
 
 CREATE VIEW piezas_listas AS
-select a.codigo as codigo, p.codigo as pieza, p.nombre as tipo,a.costo as costo, a.compra_codigo as compra, a.mueble_ensamblado_codigo as mueble from pieza as p inner join pieza_almacenada as a on p.codigo = a.pieza_codigo;
+select a.codigo as codigo, p.codigo as pieza, p.nombre as tipo,a.costo as costo, a.compra_codigo as compra, a.mueble_ensamblado_codigo as mueble from pieza as p right join pieza_almacenada as a on p.codigo = a.pieza_codigo WHERE a.mueble_ensamblado_codigo IS NULL;
+
 
 CREATE VIEW diseño_listo AS
 SELECT p.codigo, p.nombre, d.cantidad, d.modelo_mueble FROM pieza as p INNER JOIN diseño as d ON p.codigo = d.pieza_codigo;
@@ -187,6 +188,11 @@ select * from diseño;
 
 CREATE VIEW coincidencias AS
 select p.pieza, p.tipo, p.cantidad as disponibles, p.costo, d.modelo_mueble, d.cantidad as necesarias from piezas_disponibles as p inner join diseño as d on p.pieza = d.pieza_codigo;
+
+select * from coincidencias;
+select * from pieza_almacenada;
+select * from piezas_disponibles;
+select * from piezas_listas;
 
 CREATE VIEW muebles_disponibles AS
 SELECT v.codigo, v.cantidad, v.venta_codigo, m.codigo as ensamble_codigo, m.empleado_codigo, m.punto_venta_codigo, m.mueble_modelo FROM lote_venta as v RIGHT JOIN mueble_ensamblado m ON v.mueble_ensamblado_codigo = m.codigo WHERE v.mueble_ensamblado_codigo IS NULL;
@@ -206,4 +212,5 @@ SELECT * FROM muebles_disponibles;
 SELECT * FROM cliente;
 SELECT * FROM movimiento;
 SELECT * FROM muebles_disponibles;
+SELECT * FROM venta;
 
