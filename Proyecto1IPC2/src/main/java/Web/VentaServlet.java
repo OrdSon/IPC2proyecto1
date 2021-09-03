@@ -13,12 +13,16 @@ import DAO.MuebleEnsambladoDAO;
 import DAO.VentaDAO;
 import Modelos.Caja;
 import Modelos.Cliente;
+import Modelos.DetalleVenta;
 import Modelos.Empleado;
 import Modelos.Movimiento;
 import Modelos.Mueble;
 import Modelos.MuebleEnsamblado;
 import Modelos.Venta;
+import Modelos.VentaRealizada;
+import Utilidades.DateManager;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -38,10 +42,12 @@ public class VentaServlet extends HttpServlet {
     MuebleDAO muebleDAO = new MuebleDAO();
     VentaDAO ventaDAO = new VentaDAO();
     MovimientoDAO movimientoDAO = new MovimientoDAO();
+    DateManager dateManager = new DateManager();
     MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
     String listar = "vistas/venta/listarVentas.jsp";
     String añadir = "vistas/venta/añadirVenta.jsp";
-    
+    String realizadas = "vistas/venta/listarVentasRealizadas.jsp";
+    String detalle = "vistas/venta/Detalle.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,11 +64,23 @@ public class VentaServlet extends HttpServlet {
 
         } else if (accion.equalsIgnoreCase("nuevo")) {
             acceso = añadir;
-        } else if (accion.equalsIgnoreCase("añadir")) {
+        } else if (accion.equalsIgnoreCase("ver")) {
+            int codigoVenta = Integer.parseInt(request.getParameter("codigoVentaRealizada"));
+            if (codigoVenta != 0) {
+                ArrayList<DetalleVenta> detalles = ventaDAO.listarDetalleVenta(codigoVenta);
+                request.getSession().setAttribute("detalleActivo", detalles);
+                acceso = detalle;
+            }else{
+                acceso = realizadas;
+            }
 
+        } else if (accion.equalsIgnoreCase("setNull")) {
+            request.getSession().setAttribute("ventasRealizadas", null);
+            acceso = realizadas;
+        } else if (accion.equalsIgnoreCase("listarRealizadas")) {
+            acceso = realizadas;
         } else if (accion.equalsIgnoreCase("eliminar")) {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
-            VentaDAO ventaDAO = new VentaDAO();
             ventaDAO.eliminar(codigo);
         } else if (accion.equalsIgnoreCase("Buscar")) {
             try {
@@ -71,6 +89,44 @@ public class VentaServlet extends HttpServlet {
                 request.getSession().setAttribute("clienteVentaActiva", cliente);
             } catch (NullPointerException e) {
             }
+        } else if (accion.equalsIgnoreCase("Buscar cliente")) {
+            try {
+                String nit = request.getParameter("txtNIT");
+                Cliente cliente = clienteDAO.listarNit(nit);
+                request.getSession().setAttribute("clienteVentaActiva", cliente);
+                acceso = realizadas;
+            } catch (NullPointerException e) {
+            }
+
+        } else if (accion.equalsIgnoreCase("Ver ventas")) {
+            try {
+                acceso = realizadas;
+                String nit = request.getParameter("txtNIT");
+                if (nit != null && !nit.isEmpty()) {
+                    LocalDate inicial;
+                    LocalDate ultima;
+                    if (request.getParameter("inicial").isEmpty()) {
+                        inicial = LocalDate.MIN;
+                    } else {
+                        inicial = LocalDate.parse(request.getParameter("inicial"));
+                    }
+
+                    if (request.getParameter("final").isEmpty()) {
+                        ultima = LocalDate.now();
+                    } else {
+                        ultima = LocalDate.parse(request.getParameter("final"));
+                    }
+                    Date fechaInicial = dateManager.convertirADate(inicial);
+                    Date fechaFinal = dateManager.convertirADate(ultima);
+
+                    ArrayList<VentaRealizada> ventas = ventaDAO.listarVentasRealizadasBetween(nit, fechaInicial, fechaFinal);
+                    if (ventas != null) {
+                        request.getSession().setAttribute("ventasRealizadas", ventas);
+                    }
+                }
+            } catch (NullPointerException e) {
+            }
+
         } else if (accion.equalsIgnoreCase("Buscar producto")) {
             try {
                 String modelo = request.getParameter("txtCodigoProducto");
@@ -105,20 +161,21 @@ public class VentaServlet extends HttpServlet {
                 }
             } catch (Exception e) {
             }
-            
+
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
     }
 
-    private  ArrayList<MuebleEnsamblado> getLista(HttpServletRequest request){
+    private ArrayList<MuebleEnsamblado> getLista(HttpServletRequest request) {
         try {
-            ArrayList<MuebleEnsamblado> muebles = (ArrayList<MuebleEnsamblado>)request.getSession().getAttribute("listaProductos");
-            return  muebles;
+            ArrayList<MuebleEnsamblado> muebles = (ArrayList<MuebleEnsamblado>) request.getSession().getAttribute("listaProductos");
+            return muebles;
         } catch (Exception e) {
         }
         return null;
     }
+
     private Venta crearVenta(HttpServletRequest request) {
         try {
             Empleado empleado = (Empleado) request.getSession().getAttribute("empleadoActivo");
@@ -127,47 +184,23 @@ public class VentaServlet extends HttpServlet {
                 return null;
             }
             if (empleado != null) {
-                int codigo = (int)request.getSession().getAttribute("codigoClienteActivo");
-                System.out.println(codigo+ " ESTE ES EL CODIGO!!");
+                int codigo = (int) request.getSession().getAttribute("codigoClienteActivo");
+                System.out.println(codigo + " ESTE ES EL CODIGO!!");
                 LocalDate hoy = LocalDate.now();
                 int puntoVenta = 2;
                 int empleadoCodigo = empleado.getCodigo();
                 Cliente cliente = clienteDAO.listarCodigo(codigo);
-                if (cliente!=null && cliente.getCodigo() >= 0) {
+                if (cliente != null && cliente.getCodigo() >= 0) {
                     Venta venta = new Venta(total, hoy, puntoVenta, empleadoCodigo, codigo);
-                    System.out.println("CODIGO EXTRAIDO DE LA VENTA CREADA  "+ codigo);
+                    System.out.println("CODIGO EXTRAIDO DE LA VENTA CREADA  " + codigo);
 
                     return venta;
                 }
             }
 
         } catch (Exception e) {
-            System.out.println(e+ "metodo crear venta");
-            
-        }
-        return null;
-    }
-    
-    private Movimiento crearMovimiento(){
-        try {
-            Caja caja = cajaDAO.listarCodigo(1);
-            Venta venta = ventaDAO.listarUltima();
-            if (caja != null && venta != null) {
-                int ventaCodigo = venta.getCodigo();
-                double monto = venta.getTotal();
-                double capital = caja.getCapital();
-                double resultado = (capital-monto);
-                
-                Movimiento movimiento = new Movimiento(monto, resultado,0, ventaCodigo);
-                return movimiento;
-//                if (movimientoDAO.añadir(movimiento)) {
-//                    Caja cajaEditada = new Caja(1, resultado);
-//                    if (cajaDAO.editar(cajaEditada)) {
-//                        return movimiento;
-//                    }
-//                }
-            }
-        } catch (Exception e) {
+            System.out.println(e + "metodo crear venta");
+
         }
         return null;
     }

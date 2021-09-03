@@ -6,10 +6,12 @@
 package DAO;
 
 import Modelos.Caja;
+import Modelos.DetalleVenta;
 import Modelos.LoteVenta;
 import Modelos.Movimiento;
 import Modelos.MuebleEnsamblado;
 import Modelos.Venta;
+import Modelos.VentaRealizada;
 import Utilidades.Conexion;
 import Utilidades.DateManager;
 import java.sql.Connection;
@@ -35,6 +37,9 @@ public class VentaDAO {
     CajaDAO cajaDAO = new CajaDAO();
     LoteVentaDAO loteVentaDAO = new LoteVentaDAO();
     private static final String SELECCIONAR_VENTAS = "SELECT * FROM venta";
+    private static final String SELECCIONAR_VENTAS_REALIZADAS = "SELECT * FROM venta_realizada";
+    private static final String SELECCIONAR_DETALLE_VENTA = "SELECT * FROM detalle_venta WHERE codigo_venta = ?";
+    private static final String SELECCIONAR_VENTAS_BETWEEN = "SELECT * FROM venta_realizada WHERE nit = ? AND fecha BETWEEN ? AND ?;";
     private static final String SELECCIONAR_VENTA_CODIGO = "SELECT * FROM venta WHERE codigo = ?";
     private static final String INSERTAR_VENTA = "INSERT INTO venta (total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?,?,?,?)";
     private static final String ELIMINAR_VENTA = "DELETE FROM venta WHERE codigo = ?";
@@ -70,6 +75,109 @@ public class VentaDAO {
             Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ventas;
+    }
+
+    public ArrayList<VentaRealizada> listarVentasRealizadas() {
+
+        ArrayList<VentaRealizada> ventas = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_VENTAS_REALIZADAS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                int codigoVente = resultSet.getInt("codigo_venta");
+                double total = resultSet.getDouble("total");
+                Date fecha = resultSet.getDate("fecha");
+                int clienteCodigo = resultSet.getInt("cliente_codigo");
+                String nit = resultSet.getString("nit");
+                String nombreCliente = resultSet.getString("nombre");
+                String empleadoNombre = resultSet.getString("empleado_nombre");
+                int puntoVenta = resultSet.getInt("punto_venta");
+
+                LocalDate localDate;
+                if (fecha != null) {
+                    localDate = dateManager.convertirALocalDate(fecha);
+                } else {
+                    localDate = null;
+                }
+
+                ventas.add(new VentaRealizada(codigoVente, total, localDate, clienteCodigo, nit, nombreCliente, empleadoNombre, puntoVenta));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ventas;
+    }
+
+    public ArrayList<VentaRealizada> listarVentasRealizadasBetween(String nit, Date inicio, Date fin) {
+
+        ArrayList<VentaRealizada> ventas = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_VENTAS_BETWEEN);
+            preparedStatement.setString(1, nit);
+            preparedStatement.setDate(2, inicio);
+            preparedStatement.setDate(3, fin);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                int codigoVente = resultSet.getInt("codigo_venta");
+                double total = resultSet.getDouble("total");
+                Date fecha = resultSet.getDate("fecha");
+                int clienteCodigo = resultSet.getInt("cliente_codigo");
+                String nombreCliente = resultSet.getString("nombre");
+                String empleadoNombre = resultSet.getString("empleado_nombre");
+                int puntoVenta = resultSet.getInt("punto_venta");
+
+                LocalDate localDate;
+                if (fecha != null) {
+                    localDate = dateManager.convertirALocalDate(fecha);
+                } else {
+                    localDate = null;
+                }
+
+                ventas.add(new VentaRealizada(codigoVente, total, localDate, clienteCodigo, nit, nombreCliente, empleadoNombre, puntoVenta));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ventas;
+    }
+
+    public ArrayList<DetalleVenta> listarDetalleVenta(int codigoVenta) {
+
+        ArrayList<DetalleVenta> detalles = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_DETALLE_VENTA);
+            preparedStatement.setInt(1, codigoVenta);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+
+                double total = resultSet.getDouble("total");
+                Date fecha = resultSet.getDate("fecha");
+                int puntoVenta = resultSet.getInt("punto_venta_codigo");
+                String modelo = resultSet.getString("modelo");
+                String nombreProducto = resultSet.getString("nombre_producto");
+                double precio = resultSet.getDouble("precio");
+                String nit = resultSet.getString("nit");
+                String nombreCliente = resultSet.getString("nombre");
+                int codigoProducto = resultSet.getInt("codigo_producto");
+
+                LocalDate localDate;
+                if (fecha != null) {
+                    localDate = dateManager.convertirALocalDate(fecha);
+                } else {
+                    localDate = null;
+                }
+
+                detalles.add(new DetalleVenta(codigoVenta, total, localDate, puntoVenta, modelo, nombreProducto, precio, nit, nombreCliente, codigoProducto));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detalles;
     }
 
     /*

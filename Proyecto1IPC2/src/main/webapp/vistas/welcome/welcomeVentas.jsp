@@ -14,9 +14,11 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1 class="text-center">Bienvenido a la seccion de fabrica</h1>
-        <div class="text-center">
-            <img src="../../img/19197710.jpg" class="rounded" alt="..." style="height: 90vh; width: 90vh;">
+        <div style="position: relative; text-align: center; color: white;">
+            <div class="text-center">
+                <img src="../../img/5703647.jpg" class="rounded" alt="..." style="width: 100%;">
+                <div style="position: absolute; top: 3%; left: 50%; transform: translate(-50%,-50%)"><label class="h1" style="color: black">Bienvenido a la sección de ventas</label></div>
+            </div>
         </div>
     </body>
 </html>

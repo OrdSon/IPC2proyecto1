@@ -7,6 +7,7 @@ Modelos\LoteVenta.class
 Modelos\Cliente.class
 DAO\DiseñoDAO.class
 Modelos\PuntoVenta.class
+Modelos\VentaRealizada.class
 Web\ClienteServlet.class
 DAO\PuntoVentaDAO.class
 Utilidades\DateManager.class
@@ -18,6 +19,7 @@ Web\PiezaServlet.class
 DAO\DevolucionDAO.class
 Modelos\Caja.class
 Web\DevolucionServlet.class
+Modelos\DetalleVenta.class
 Web\CajaServlet.class
 DAO\ClienteDAO.class
 DAO\VentaDAO.class
