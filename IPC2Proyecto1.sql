@@ -199,9 +199,10 @@ SELECT v.codigo as codigo_venta, v.total as total, v.fecha as fecha, c.codigo as
 FROM venta as v inner join cliente as c on v.cliente_codigo = c.codigo inner join punto_venta as p on p.codigo = v.punto_venta_codigo inner join empleado as e on e.codigo = v.empleado_codigo;
 
 CREATE VIEW detalle_venta AS
-SELECT v.codigo AS codigo_venta, v.total, v.fecha, v.punto_venta_codigo, m.modelo, m.nombre AS nombre_producto, m.precio, c.nit, c.nombre 
+SELECT v.codigo AS codigo_venta, v.total, v.fecha, v.punto_venta_codigo, e.codigo AS codigo_producto, m.modelo, m.nombre AS nombre_producto, m.precio, c.nit, c.nombre 
 FROM venta as v INNER JOIN lote_venta AS l ON v.codigo = l.venta_codigo INNER JOIN mueble_ensamblado AS e ON e.codigo = l.mueble_ensamblado_codigo 
 INNER JOIN mueble AS m ON m.modelo = e.mueble_modelo INNER JOIN Cliente AS c on c.codigo = v.cliente_codigo;
+
 
 show tables;
 
@@ -221,3 +222,4 @@ SELECT * FROM mueble_ensamblado;
 SELECT pieza, tipo, COUNT(costo) AS cantidad, costo ,mueble FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
 SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo ORDER BY cantidad DESC;
 select * from detalle_venta;
+SELECT * FROM detalle_venta;
