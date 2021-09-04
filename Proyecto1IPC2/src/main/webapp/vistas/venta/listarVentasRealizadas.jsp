@@ -102,10 +102,8 @@
                         ArrayList<VentaRealizada> ventasRealizadas = ventaDAO.listarVentasRealizadas();
                         if (request.getSession().getAttribute("ventasRealizadas")!=null) {
                                 ventasRealizadas = (ArrayList<VentaRealizada>)request.getSession().getAttribute("ventasRealizadas");
-                                System.out.println("si hago esto");
                             }
                         if (ventasRealizadas != null) {
-                            System.out.println("si entro aqi");
                             for (int i = 0; i < ventasRealizadas.size(); i++) {
                                 VentaRealizada ventaRealizada = ventasRealizadas.get(i);
                     %>

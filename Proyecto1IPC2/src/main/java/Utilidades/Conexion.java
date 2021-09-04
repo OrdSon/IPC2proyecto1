@@ -13,7 +13,7 @@ import java.sql.DriverManager;
  * @author ordson
  */
 public class Conexion {
-    static Connection con;
+    private static Connection con;
     public Conexion(){
         try {
             if (con != null) {

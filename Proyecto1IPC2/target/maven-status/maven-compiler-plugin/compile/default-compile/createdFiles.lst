@@ -21,6 +21,7 @@ Modelos\Caja.class
 Web\DevolucionServlet.class
 Modelos\DetalleVenta.class
 Web\CajaServlet.class
+Web\ReporteServlet.class
 DAO\ClienteDAO.class
 DAO\VentaDAO.class
 Web\LoteVentaServlet.class
@@ -31,6 +32,7 @@ Web\PiezaAlmacenadaServlet.class
 Web\PuntoVentaServlet.class
 DAO\CompraDAO.class
 DAO\PiezaAlmacenadaDAO.class
+Modelos\MuebleVendido.class
 DAO\PiezaDAO.class
 Modelos\Diseño.class
 DAO\MuebleEnsambladoDAO.class
@@ -48,5 +50,6 @@ DAO\MovimientoDAO.class
 Modelos\Venta.class
 Web\MuebleServlet.class
 Web\VentaServlet.class
+DAO\reporteDAO.class
 Modelos\Mueble.class
 DAO\LoteVentaDAO.class

@@ -68,6 +68,10 @@
         <servlet-name>DesignServlet</servlet-name>
         <servlet-class>Web.DesignServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReporteServlet</servlet-name>
+        <servlet-class>Web.ReporteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClienteServlet</servlet-name>
         <url-pattern>/ClienteServlet</url-pattern>
@@ -135,6 +139,10 @@
     <servlet-mapping>
         <servlet-name>DesignServlet</servlet-name>
         <url-pattern>/DesignServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteServlet</servlet-name>
+        <url-pattern>/ReporteServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -173,6 +173,7 @@ use muebles;
 
 create view empleados_fabrica AS
 select * from empleado where area = 1;
+
 create view empleados_fabrica AS
 select * from empleado where area = 2;
 
@@ -203,9 +204,12 @@ SELECT v.codigo AS codigo_venta, v.total, v.fecha, v.punto_venta_codigo, e.codig
 FROM venta as v INNER JOIN lote_venta AS l ON v.codigo = l.venta_codigo INNER JOIN mueble_ensamblado AS e ON e.codigo = l.mueble_ensamblado_codigo 
 INNER JOIN mueble AS m ON m.modelo = e.mueble_modelo INNER JOIN Cliente AS c on c.codigo = v.cliente_codigo;
 
+CREATE VIEW mueble_vendido AS
+SELECT m.modelo, m.nombre, m.precio, m.costo AS costo_default ,e.costo ,e.codigo AS producto_codigo, l.venta_codigo FROM mueble as m INNER JOIN mueble_ensamblado AS e ON m.modelo = e.mueble_modelo INNER JOIN lote_venta AS l ON l.mueble_ensamblado_codigo = e.codigo;
+
 
 show tables;
-
+use muebles;
 SELECT * FROM mueble_venta;
 select * from pieza_almacenada;
 select * from piezas_listas where codigo = 157;
@@ -214,7 +218,7 @@ SELECT * FROM muebles_disponibles;
 SELECT * FROM cliente;
 SELECT * FROM movimiento;
 SELECT * FROM venta_realizada WHERE codigo;
-
+SELECT * FROM empleado;
 SELECT * FROM muebles_disponibles;
 SELECT * FROM venta;
 SELECT * FROM coincidencias;
@@ -223,3 +227,7 @@ SELECT pieza, tipo, COUNT(costo) AS cantidad, costo ,mueble FROM piezas_listas W
 SELECT tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo ORDER BY cantidad DESC;
 select * from detalle_venta;
 SELECT * FROM detalle_venta;
+SELECT * FROM mueble_ensamblado AS m INNER JOIN detalle_venta AS d ON m.codigo = d.codigo_producto;
+SELECT * FROM mueble as m INNER JOIN mueble_ensamblado AS e ON m.modelo = e.mueble_modelo INNER JOIN lote_venta AS l ON l.mueble_ensamblado_codigo = e.codigo;
+
+

@@ -22,7 +22,7 @@
         <div class = "container mt-4 col-lg-4 text-center">
             <div class="card col-sm-10">
                 <div class="card-body ">
-                    <form class="form-sign" action="loginServlet" method="GET">
+                    <form class="form-sign" action="loginServlet">
                         <div class="form-group">
                             <h2>Login</h2>
                         </div>

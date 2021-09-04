@@ -60,7 +60,9 @@
 
 
         <%} else {%>
-        <div
+        <div class="d-flex justify-content-center">
+            <label class="h1">INFORMACIÓN NO DISPONIBLE</label><br>
+        </div>
         <%}
             }
         %>

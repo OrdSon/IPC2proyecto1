@@ -28,6 +28,7 @@ public class EmpleadoDAO {
     private static final String SELECCIONAR_EMPLEADOS = "SELECT * FROM empleado";
     private static final String SELECCIONAR_EMPLEADO_CODIGO = "SELECT * FROM empleado WHERE codigo = ?";
     private static final String SELECCIONAR_EMPLEADO_DPI = "SELECT * FROM empleado WHERE dpi = ?";
+    private static final String SELECCIONAR_EMPLEADO_LIKE = "SELECT * FROM empleado WHERE dpi LIKE ? ESCAPE '!' LIMIT 1";
     private static final String INSERTAR_EMPLEADO = "INSERT INTO empleado(nombre, area, contraseña, dpi, "
             + "telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES (?,?,?,?,?,?,?,?,?)";
     private static final String UPDATE_EMPLEADO = "UPDATE empleado SET nombre = ?, area = ?, contraseña = ?, dpi = ?, telefono = ?, "
@@ -94,10 +95,12 @@ public class EmpleadoDAO {
                 
                 empleado = new Empleado(codigo, nombre, area, contraseña, dpi, telefono, direccion, fechaNacimiento, salario, fechaContratacion);
             }
+            return empleado;
         } catch (SQLException ex) {
             Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
-        return empleado;
+        return null;
     }
     public Empleado listarDPI(String dpi){
         
@@ -122,6 +125,35 @@ public class EmpleadoDAO {
                 LocalDate fechaContratacion = dateManager.convertirALocalDate(fechaContratacionSql);
                 
                 return new Empleado(codigo, nombre, area, contraseña, dpi, telefono, direccion, fechaNacimiento, salario, fechaContratacion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public Empleado listarDPILike(String dpi){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_EMPLEADO_LIKE);
+            dpi = dpi.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+            preparedStatement.setString(1, dpi+"%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {         
+                
+                int codigo = resultSet.getInt("codigo");
+                String dpiFull = resultSet.getString("dpi");
+                String nombre = resultSet.getString("nombre");
+                int area = resultSet.getInt("area");
+                String contraseña = resultSet.getString("contraseña");
+                String telefono = resultSet.getString("telefono");
+                String direccion = resultSet.getString("direccion");
+                Date  fechaNacimientoSql= resultSet.getDate("fecha_nacimiento");
+                String salario = resultSet.getString("salario");
+                Date fechaContratacionSql = resultSet.getDate("fecha_contratacion");
+                
+                LocalDate fechaNacimiento = dateManager.convertirALocalDate(fechaNacimientoSql);
+                LocalDate fechaContratacion = dateManager.convertirALocalDate(fechaContratacionSql);
+                
+                return new Empleado(codigo, nombre, area, contraseña, dpiFull, telefono, direccion, fechaNacimiento, salario, fechaContratacion);
             }
         } catch (SQLException ex) {
             Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);

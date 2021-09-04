@@ -39,7 +39,9 @@ public class VentaDAO {
     private static final String SELECCIONAR_VENTAS = "SELECT * FROM venta";
     private static final String SELECCIONAR_VENTAS_REALIZADAS = "SELECT * FROM venta_realizada";
     private static final String SELECCIONAR_DETALLE_VENTA = "SELECT * FROM detalle_venta WHERE codigo_venta = ?";
-    private static final String SELECCIONAR_VENTAS_BETWEEN = "SELECT * FROM venta_realizada WHERE nit = ? AND fecha BETWEEN ? AND ?;";
+    private static final String SELECCIONAR_VENTAS_CLIENTE = "SELECT * FROM venta_realizada WHERE nit = ? AND fecha BETWEEN ? AND ?;";
+    private static final String SELECCIONAR_VENTAS_EMPLEADO = "SELECT * FROM venta_realizada WHERE empleado = ?";
+    private static final String SELECCIONAR_VENTAS_FECHA = "SELECT * FROM venta_realizada WHERE fecha BETWEEN ? AND ?;";
     private static final String SELECCIONAR_VENTA_CODIGO = "SELECT * FROM venta WHERE codigo = ?";
     private static final String INSERTAR_VENTA = "INSERT INTO venta (total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (?,?,?,?,?)";
     private static final String ELIMINAR_VENTA = "DELETE FROM venta WHERE codigo = ?";
@@ -108,15 +110,56 @@ public class VentaDAO {
         }
         return ventas;
     }
-
-    public ArrayList<VentaRealizada> listarVentasRealizadasBetween(String nit, Date inicio, Date fin) {
+    public ArrayList<VentaRealizada> listarVentasRealizadasEmpleado(int codigo) {
 
         ArrayList<VentaRealizada> ventas = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_VENTAS_BETWEEN);
-            preparedStatement.setString(1, nit);
-            preparedStatement.setDate(2, inicio);
-            preparedStatement.setDate(3, fin);
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECCIONAR_VENTAS_EMPLEADO);
+            preparedStatement.setInt(1, codigo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                int codigoVente = resultSet.getInt("codigo_venta");
+                double total = resultSet.getDouble("total");
+                Date fecha = resultSet.getDate("fecha");
+                int clienteCodigo = resultSet.getInt("cliente_codigo");
+                String nit = resultSet.getString("nit");
+                String nombreCliente = resultSet.getString("nombre");
+                String empleadoNombre = resultSet.getString("empleado_nombre");
+                int puntoVenta = resultSet.getInt("punto_venta");
+
+                LocalDate localDate;
+                if (fecha != null) {
+                    localDate = dateManager.convertirALocalDate(fecha);
+                } else {
+                    localDate = null;
+                }
+
+                ventas.add(new VentaRealizada(codigoVente, total, localDate, clienteCodigo, nit, nombreCliente, empleadoNombre, puntoVenta));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ventas;
+    }
+
+    public ArrayList<VentaRealizada> listarVentasRealizadasBetween(String nit, Date inicio, Date fin) {
+        String query = SELECCIONAR_VENTAS_CLIENTE;
+        if (nit == null) {
+            query = SELECCIONAR_VENTAS_FECHA;
+        }
+
+        ArrayList<VentaRealizada> ventas = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            if (nit != null) {
+                preparedStatement.setString(1, nit);
+                preparedStatement.setDate(2, inicio);
+                preparedStatement.setDate(3, fin);
+            }else{
+                preparedStatement.setDate(1, inicio);
+                preparedStatement.setDate(2, fin);
+            }
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -153,7 +196,6 @@ public class VentaDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-
 
                 double total = resultSet.getDouble("total");
                 Date fecha = resultSet.getDate("fecha");

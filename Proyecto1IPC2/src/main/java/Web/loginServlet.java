@@ -58,7 +58,7 @@ public class loginServlet extends HttpServlet {
 
     private String getDestino(int resultado) {
 
-        String destino = INDEX;
+        String destino;
         switch (resultado) {
             case -1:
                 destino = INDEX;

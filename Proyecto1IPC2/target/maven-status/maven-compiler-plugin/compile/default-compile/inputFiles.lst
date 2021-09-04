@@ -2,6 +2,7 @@ C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\LoteVenta.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\MuebleEnsambladoDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\CompraServlet.java
+C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\MuebleVendido.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\PiezaAlmacenadaServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\VentaServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\Coincidencia.java
@@ -11,6 +12,7 @@ C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\Empleado.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\DiseñoDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\MuebleEnsamblado.java
+C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\reporteDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Utilidades\SweetAlert.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\MovimientoServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\MovimientoDAO.java
@@ -27,6 +29,7 @@ C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\CajaServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\VentaDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\ClienteServlet.java
+C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Web\ReporteServlet.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\ClienteDAO.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\Modelos\VentaRealizada.java
 C:\Users\ordso\OneDrive\Documentos\NetBeansProjects\IPC2proyecto1\Proyecto1IPC2\src\main\java\DAO\PiezaDAO.java
