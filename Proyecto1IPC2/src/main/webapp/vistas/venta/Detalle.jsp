@@ -39,6 +39,7 @@
                             <th>Modelo</th>
                             <th>Nombre</th>
                             <th>Precio</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +49,7 @@
                             <td><%=detalles.get(i).getModelo()%></td>
                             <td><%=detalles.get(i).getNombreProducto()%></td>
                             <td><%=detalles.get(i).getPrecio()%></td>
+                            <td><a href="DevolucionServlet?accion=agregar&muebleCodigo=<%=detalles.get(i).getCodigoProducto()%>&ventaCodigo=<%=detalles.get(i).getCodigoVenta()%>&precioVenta=<%=detalles.get(i).getPrecio()%>">Devolver</a></td>
                         </tr>
                         <% }
                         %>

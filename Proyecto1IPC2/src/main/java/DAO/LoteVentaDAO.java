@@ -26,7 +26,7 @@ public class LoteVentaDAO {
     private static final String SELECCIONAR_LOTE = "SELECT * FROM lote_venta";
     private static final String SELECCIONAR_LOTE_CODIGO = "SELECT * FROM lote_venta WHERE codigo = ?";
     private static final String INSERTAR_LOTE = "INSERT INTO lote_venta (mueble_ensamblado_codigo, venta_codigo) VALUES (?,?)";
-    private static final String ELIMINAR_LOTE = "DELETE FROM lote_venta WHERE codigo = ?";
+    private static final String ELIMINAR_LOTE = "DELETE FROM lote_venta WHERE mueble_ensamblado_codigo = ?";
 
     public LoteVentaDAO() {
         this.connection = Conexion.getConnection();
@@ -118,12 +118,7 @@ public class LoteVentaDAO {
             preparedStatement.setInt(1, codigo);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            try {
-                connection.rollback();
-                Logger.getLogger(LoteVentaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex1) {
-                Logger.getLogger(LoteVentaDAO.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+            System.out.println(ex);
         }
         return true;
     }

@@ -23,9 +23,9 @@ public class DevolucionDAO {
         DateManager dateManager = new DateManager();
     private static final String SELECCIONAR_DEVOLUCION = "SELECT * FROM devolucion";
     private static final String SELECCIONAR_DEVOLUCION_CODIGO = "SELECT * FROM devolucion WHERE codigo = ?";
-    private static final String INSERTAR_DEVOLUCION = "INSERT INTO devolucion (fecha, total, venta_codigo) VALUES (?, ?, ?)";
+    private static final String INSERTAR_DEVOLUCION = "INSERT INTO devolucion (fecha, total, venta_codigo, mueble_devuelto) VALUES (?,?,?,?)";
     private static final String ELIMINAR_DEVOLUCION = "DELETE FROM devolucion WHERE codigo = ?";
-
+    
     public DevolucionDAO() {
         this.connection = Conexion.getConnection();
     }
@@ -97,6 +97,7 @@ public class DevolucionDAO {
             preparedStatement.setDate(1, dateManager.convertirADate(devolucion.getFecha()));
             preparedStatement.setDouble(2, devolucion.getTotal());
             preparedStatement.setInt(3, devolucion.getVentaCodigo());
+            preparedStatement.setInt(4, devolucion.getMuebleDevuelto());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DevolucionDAO.class.getName()).log(Level.SEVERE, null, ex);

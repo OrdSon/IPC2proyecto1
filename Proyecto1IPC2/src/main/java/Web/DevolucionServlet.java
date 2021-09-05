@@ -5,8 +5,14 @@
  */
 package Web;
 
+import DAO.CajaDAO;
 import DAO.DevolucionDAO;
+import DAO.LoteVentaDAO;
+import DAO.MovimientoDAO;
+import DAO.MuebleEnsambladoDAO;
+import Modelos.Caja;
 import Modelos.Devolucion;
+import Modelos.Movimiento;
 import java.io.IOException;
 import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
@@ -23,6 +29,12 @@ public class DevolucionServlet extends HttpServlet {
 
     String listar = "vistas/devolucion/listarDevoluciones.jsp";
     String añadir = "vistas/devolucion/añadirDevoluciones.jsp";
+    String ventas = "vistas/venta/listarVentasRealizadas.jsp";
+    DevolucionDAO devolucionDAO = new DevolucionDAO();
+    CajaDAO cajaDAO = new CajaDAO();
+    MovimientoDAO movimientoDAO = new MovimientoDAO();
+    MuebleEnsambladoDAO muebleEnsambladoDAO = new MuebleEnsambladoDAO();
+    LoteVentaDAO loteVentaDAO = new LoteVentaDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,37 +45,30 @@ public class DevolucionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String acceso = "";
+        String acceso = ventas;
         String accion = request.getParameter("accion");
-        if (accion.equalsIgnoreCase("listar")) {
-            acceso = listar;
-        } else if (accion.equalsIgnoreCase("nuevo")) {
-            acceso = añadir;
-        } else if (accion.equalsIgnoreCase("añadir")) {
-            String txtFecha = request.getParameter("txtFecha");
-            String txtTotal = request.getParameter("txtTotal");
-            String txtMueble = request.getParameter("txtMueble");
-            String txtVenta = request.getParameter("txtVenta");
-            
-            LocalDate fecha = LocalDate.parse(txtFecha);
-            double total = Double.parseDouble(txtTotal);
-            int mueble = Integer.parseInt(txtMueble);
-            int venta = Integer.parseInt(txtVenta);
-            
-            Devolucion devolucion = new Devolucion(fecha, total, mueble, venta);
-            DevolucionDAO devolucionDAO = new DevolucionDAO();
-            devolucionDAO.añadir(devolucion);
-            acceso = listar;
-            /*EDICION PASO 2
-              Se obtiene la sesion para setear un atributo con nombre "codigoCliente"
-              para poder identificar al cliente en la transaccion,
-              luego se redirige a editarCliente.jsp
-             */
-        } else if (accion.equalsIgnoreCase("eliminar")) {
-            int codigo = Integer.parseInt(request.getParameter("codigo"));
-            DevolucionDAO devolucionDAO = new DevolucionDAO();
-            devolucionDAO.eliminar(codigo);
-            acceso = listar;
+        if (accion.equalsIgnoreCase("agregar")) {
+            try {
+                int codigo = Integer.parseInt(request.getParameter("muebleCodigo"));
+                if (codigo != 0) {
+                    int muebleCodigo = Integer.parseInt(request.getParameter("muebleCodigo"));
+                    int ventaCodigo = Integer.parseInt(request.getParameter("ventaCodigo"));
+                    double precioVenta = Double.parseDouble(request.getParameter("precioVenta"));
+                    double total = (precioVenta / 3);
+                    LocalDate hoy = LocalDate.now();
+                    Caja caja = cajaDAO.listarCodigo(1);
+                    double capital = caja.getCapital();
+                    double resultado = (capital - total);
+                    Caja cajaEditada = new Caja(1, resultado);
+                    Movimiento movimiento = new Movimiento(total, resultado, ventaCodigo, ventaCodigo);
+                    movimientoDAO.añadir(movimiento);
+                    cajaDAO.editar(cajaEditada);
+                    Devolucion devolucion = new Devolucion(hoy, total, muebleCodigo, ventaCodigo);
+                    devolucionDAO.añadir(devolucion);
+                    loteVentaDAO.eliminar(codigo);
+                }
+            } catch (NumberFormatException e) {
+            }
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
@@ -73,6 +78,5 @@ public class DevolucionServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
-
 
 }

@@ -18,7 +18,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1 class="text-center"> Nueva venta</h1>
+        <h1 class="text-center">Ventas realizadas</h1>
         <div style="height: 50px"></div>
 
         <!--<a href="DiseñoServlet?accion=nuevo ">Añadir diseño</a> -->
@@ -85,7 +85,7 @@
                 %>
                 <label class="h3">Ventas realizadas del cliente <%=nombreCliente%></label>
                 <%} else { %>
-                <label class="h3">Ventas realizadas</label>
+                <label class="h3"></label>
                 <%}%>
                 <table class="table table-striped">
                     <thead>
