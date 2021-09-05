@@ -40,13 +40,13 @@
                     nombreEmpleado = empleado.getNombre();
                     dpiEmpleado = empleado.getDpi() + "";
                 }
-                
+
             %>
             <div class="card col-sm-2">
                 <div class="card-body">
                     <form action="ReporteServlet">
                         <div>
-                            <label>Buscar cliente</label>
+                            <label>Buscar empleado</label>
                             <div >
                                 <label>DPI:</label> 
                                 <input type ="text" name = "txtDPI" class="form-control" value="<%=dpiEmpleado%>">      
@@ -70,12 +70,15 @@
                             </div>
 
                         </div>
-                        <div style="height: 3vh;"></div>
-                        <input type = "submit" name = "accion" value = "Ver ganancias por fecha" class="btn btn-success"><br>
-                        <div style="height: 1vh;"></div>
-                        <input type = "submit" name = "accion" value = "Ver ganancias por empleado" class="btn btn-warning"><br>
-                        <div style="height: 1vh;"></div>
-                        <input type = "submit" name = "accion" value = "Ver mejor empleado" class="btn btn-info"><br>
+                        <div class="list-group d-flex justify-content-center">
+
+                            <input type = "submit" name = "accion" value = "Ver ganancias por fecha" class="list-group-item list-group-item-primary"><br>
+
+                            <input type = "submit" name = "accion" value = "Ver ganancias por empleado" class="list-group-item list-group-item-secondary"><br>
+
+                            <input type = "submit" name = "accion" value = "Ver mejor empleado" class="list-group-item list-group-item-primary"><br>
+                            <a href="ReporteServlet?accion=exportarGanancias" class="list-group-item list-group-item-info">Exportar tabla</a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -100,7 +103,7 @@
                             for (int i = 0; i < muebles.size(); i++) {
                                 MuebleVendido temporal = muebles.get(i);
                                 contador += temporal.getGanancia();
-                                %>
+                        %>
                         <tr>
                             <td><%=temporal.getEmpleadoDPI()%></td>
                             <td><%=temporal.getEmpleadoNombre()%></td>
@@ -125,7 +128,7 @@
 
         </div>
         <div class="d-flex justify-content-center">
-            <label class="h2 text-center">Ganancia total: Q.<%=numberFormat.format(contador) %></label>
+            <label class="h2 text-center">Ganancia total: Q.<%=numberFormat.format(contador)%></label>
         </div>
     </body>
 </html>

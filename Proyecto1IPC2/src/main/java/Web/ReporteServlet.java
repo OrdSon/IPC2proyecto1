@@ -14,6 +14,9 @@ import Modelos.DetalleVenta;
 import Modelos.Empleado;
 import Modelos.MuebleVendido;
 import Modelos.VentaRealizada;
+import Reportes.ReporteGanancias;
+import Reportes.ReporteMuebles;
+import Reportes.ReporteVentas;
 import Utilidades.DateManager;
 import java.io.IOException;
 import java.sql.Date;
@@ -33,12 +36,16 @@ public class ReporteServlet extends HttpServlet {
 
     String listar = "vistas/reportes/reporteVentas.jsp";
     String listarGanancias = "vistas/reportes/reporteGanancias.jsp";
+    String listarMuebles = "vistas/reportes/reporteMuebles.jsp";
     EmpleadoDAO empleadoDAO = new EmpleadoDAO();
     VentaDAO ventaDAO = new VentaDAO();
     reporteDAO reporteDAO = new reporteDAO();
     ClienteDAO clienteDAO = new ClienteDAO();
     DateManager dateManager = new DateManager();
-
+    ReporteVentas reporteVentas = new ReporteVentas();
+    ReporteMuebles reporteMuebles = new ReporteMuebles();
+    ReporteGanancias reporteGanancias = new ReporteGanancias();
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,7 +81,7 @@ public class ReporteServlet extends HttpServlet {
             setReporteGananciasFecha(request, null);
             acceso = listarGanancias;
         } else if (accion.equalsIgnoreCase("Ver ventas del mejor")) {
-            
+
             setReporteVendedor(request);
 
         } else if (accion.equals("Ver mejor empleado")) {
@@ -88,7 +95,7 @@ public class ReporteServlet extends HttpServlet {
         } else if (accion.equalsIgnoreCase("Ver ganancias por empleado")) {
             request.getSession().setAttribute("encabezadoGanancias", "Reporte de ganancias por empleado");
             String dpi = request.getParameter("txtDPI");
-            if (!dpi.isEmpty()) {
+            if (dpi!=null && !dpi.isEmpty()) {
                 setReporteGananciasFecha(request, dpi);
             }
 
@@ -101,11 +108,27 @@ public class ReporteServlet extends HttpServlet {
             } catch (NullPointerException e) {
             }
 
+        } else if (accion.equalsIgnoreCase("listarMuebles")) {
+            setReporteMuebles(request, 3);
+            acceso = listarMuebles;
+        } else if (accion.equalsIgnoreCase("mejorMueble")) {
+            setReporteMuebles(request, 1);
+            acceso = listarMuebles;
+        } else if (accion.equalsIgnoreCase("peorMueble")) {
+            setReporteMuebles(request, 2);
+            acceso = listarMuebles;
+        } else if (accion.equalsIgnoreCase("exportar")) {
+            reporteVentas.exportarReporte(response, reporteVentas.getReporteVentas(request), "Reporte de ventas");
+        } else if (accion.equalsIgnoreCase("exportarMuebles")) {
+            reporteMuebles.exportarReporte(response, reporteMuebles.getReporteMuebles(request), "Reporte de muebles");
+        } else if (accion.equalsIgnoreCase("exportarGanancias")) {
+            reporteGanancias.exportarReporte(response, reporteGanancias.getReporteGanancias(request), "Reporte de ganancias");
         }
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(acceso);
         requestDispatcher.forward(request, response);
     }
+//************************************************************************
 
     private void setReporteGanancias(HttpServletRequest request) {
         request.getSession().setAttribute("encabezadoGanancias", "Reporte de ganancias");
@@ -156,6 +179,8 @@ public class ReporteServlet extends HttpServlet {
                 }
                 request.getSession().setAttribute("ventasReporte", ventasRealizadas);
                 request.getSession().setAttribute("detallesReporte", detallesVenta);
+                request.getSession().setAttribute("encabezadoVentas", "Reporte de ventas");
+
             }
 
         } catch (Exception e) {
@@ -211,7 +236,7 @@ public class ReporteServlet extends HttpServlet {
             if (empleado == null) {
                 return;
             }
-            request.getSession().setAttribute("encabezadoVentas", "Empleado con mayor cantidad de ventas DPI: "+empleado.getDpi()+"  Nombre: "+empleado.getNombre());
+            request.getSession().setAttribute("encabezadoVentas", "Empleado con mayor cantidad de ventas DPI: " + empleado.getDpi() + "  Nombre: " + empleado.getNombre());
             request.getSession().setAttribute("empleadoReporteActivo", empleado);
             int codigo = empleado.getCodigo();
             ArrayList<VentaRealizada> ventasRealizadas = ventaDAO.listarVentasRealizadasEmpleado(codigo);
@@ -233,6 +258,35 @@ public class ReporteServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
+        }
+    }
+
+    private void setReporteMuebles(HttpServletRequest request, int eleccion) {
+        ArrayList<DetalleVenta> detalleVentas;
+        String modelo = "";
+        switch (eleccion) {
+
+            case 1:
+                detalleVentas = reporteDAO.listarMejorMueble();
+                if (!detalleVentas.isEmpty()) {
+                    modelo = detalleVentas.get(0).getModelo();
+                }
+                request.getSession().setAttribute("reporteMuebles", detalleVentas);
+                request.getSession().setAttribute("modeloReporteActivo", modelo);
+                break;
+            case 2:
+
+                detalleVentas = reporteDAO.listarPeorMueble();
+                if (!detalleVentas.isEmpty()) {
+                    modelo = detalleVentas.get(0).getModelo();
+                }
+                request.getSession().setAttribute("reporteMuebles", detalleVentas);
+                request.getSession().setAttribute("modeloReporteActivo", modelo);
+                break;
+            default:
+                request.getSession().setAttribute("reporteMuebles", reporteDAO.listarDetalleVenta());
+
+                break;
         }
     }
 

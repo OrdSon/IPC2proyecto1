@@ -113,7 +113,7 @@
                         </tr>
                     </thead> 
                     <%
-                        if (request.getSession().getAttribute("listaProductos") != null) {
+                         if (request.getSession().getAttribute("listaProductos") != null) {
 
                             ArrayList<MuebleEnsamblado> muebles = (ArrayList<MuebleEnsamblado>) request.getSession().getAttribute("listaProductos");
                             for (int i = 0; i < muebles.size(); i++) {

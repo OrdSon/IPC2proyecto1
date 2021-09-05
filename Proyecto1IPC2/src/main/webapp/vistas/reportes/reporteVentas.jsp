@@ -74,14 +74,13 @@
                             </div>
 
                         </div>
-
-                        <input type = "submit" name = "accion" value = "Ver ventas por cliente" class="btn btn-info btn-block"><br>
-                        <br>
-                        <input type = "submit" name = "accion" value = "Ver ventas por fecha" class="btn btn-info btn-block"><br>
-                        <br>
-                        <input type = "submit" name = "accion" value = "Ver ventas del mejor" class="btn btn-info btn-block"><br>
-                        <br>
-                        <a href="ReporteServlet?accion=listar   " class="btn btn-info btn-block">Ver todas</a><br>
+                            <div class="list-group d-flex justify-content-center">
+                                <a href="ReporteServlet?accion=Ver ventas por cliente" class="list-group-item list-group-item-primary">Ver ventas por cliente</a>
+                                <a href="ReporteServlet?accion=Ver ventas por fecha" class="list-group-item list-group-item-secondary">Ver ventas por fecha</a>
+                                <a href="ReporteServlet?accion=Ver ventas del mejor" class="list-group-item list-group-item-primary">Ver ventas del mejor vendedor</a>
+                                <a href="ReporteServlet?accion=listar" class="list-group-item list-group-item-secondary">Ver todas las ventas</a>
+                                <a href="ReporteServlet?accion=exportar" class="list-group-item list-group-item-info">Exportar tabla</a>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -100,6 +99,7 @@
                             <th>NIT</th>
                             <th>Cliente</th>
                             <th>Fecha</th>
+                            <th>Empleado</th>
                         </tr>
 
                     </thead>
@@ -110,6 +110,7 @@
                             <td><%=ventaTemp.getNIT()%></td>
                             <td><%=ventaTemp.getNombreCliente()%></td>
                             <td><%=ventaTemp.getFecha()%></td>
+                            <td><%=ventaTemp.getEmpleadoNombre()%></td>
                         </tr>
                     </tbody>
                 </table>

@@ -4,6 +4,7 @@ DAO\MuebleDAO.class
 Modelos\Devolucion.class
 Web\MovimientoServlet.class
 Modelos\LoteVenta.class
+Reportes\Reporte.class
 Modelos\Cliente.class
 DAO\DiseñoDAO.class
 Modelos\PuntoVenta.class
@@ -12,6 +13,7 @@ Web\ClienteServlet.class
 DAO\PuntoVentaDAO.class
 Utilidades\DateManager.class
 Modelos\MuebleEnsamblado.class
+Reportes\ReporteMuebles.class
 Modelos\PiezaAlmacenada.class
 Modelos\Pieza.class
 Utilidades\Fecha.class
@@ -33,6 +35,7 @@ Web\PuntoVentaServlet.class
 DAO\CompraDAO.class
 DAO\PiezaAlmacenadaDAO.class
 Modelos\MuebleVendido.class
+Reportes\ReporteGanancias.class
 DAO\PiezaDAO.class
 Modelos\Diseño.class
 DAO\MuebleEnsambladoDAO.class
@@ -53,3 +56,4 @@ Web\VentaServlet.class
 DAO\reporteDAO.class
 Modelos\Mueble.class
 DAO\LoteVentaDAO.class
+Reportes\ReporteVentas.class

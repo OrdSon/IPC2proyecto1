@@ -35,14 +35,15 @@
                             <a class="nav-link active text-white" href="ReporteServlet?accion=listarGanancias" target="frameInterno">Reporte de ganancias</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="ClienteServlet?accion=listar" target="frameInterno">Agregar cliente</a>
+                            <a class="nav-link active text-white" href="ReporteServlet?accion=listarMuebles" target="frameInterno">Reporte de muebles</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="ClienteServlet?accion=listar" target="frameInterno">Agregar cliente</a>
+                            <a class="nav-link active text-white" href="ClienteServlet?accion=listar" target="frameInterno">Clientes</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="ClienteServlet?accion=listar" target="frameInterno">Agregar cliente</a>
+                            <a class="nav-link active text-white" href="EmpleadoServlet?accion=listar" target="frameInterno">Empleados</a>
                         </li>
+                        
                     </ul>
                     <div class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
