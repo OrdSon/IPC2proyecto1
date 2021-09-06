@@ -167,9 +167,6 @@ CREATE TABLE devolucion(
 	FOREIGN KEY (mueble_devuelto) REFERENCES mueble_ensamblado(codigo)
 );
 
-INSERT INTO punto_venta(codigo, nombre, direccion, telefono) VALUES(2,'Mi muebleria', 'Paseo las americas local 1', '50746766');
-INSERT INTO caja (capital, punto_venta_codigo) VALUES (10000, 2);
-INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Soy admin',3,'1234','7777777777777','50746766','xela','2000-03-01','1550000','2020-03-05');
 
 SELECT * FROM empleado;
 
@@ -223,4 +220,50 @@ CREATE USER 'mueblero'@'localhost' IDENTIFIED BY 'PassW123.';
 ALTER USER 'mueblero'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassW123.';
 GRANT ALL PRIVILEGES ON muebles . * TO 'mueblero'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
+INSERT INTO punto_venta(codigo, nombre, direccion, telefono) VALUES(2,'Mi muebleria', 'Paseo las americas local 1', '50746766');
+INSERT INTO caja (capital, punto_venta_codigo) VALUES (10000, 2);
+INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Soy admin',3,'1234','7777777777777','50746766','xela','2000-03-01','1550000','2020-03-05');
+INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Alexandro Magno',3,'1234','3333','54564578','xela','1630-03-01','1550000','2020-03-05');
+INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Jabba de Hutt',2,'1234','2222','47484596','Hutt','2500-03-01','250000','2015-06-15');
+INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Ventas mal',2,'1234','2211','56451235','lol','2500-03-01','250000','2015-06-15');
+INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Steve',1,'1234','1111','96963232','overworld','2000-03-01','1550000','2020-03-05');
+
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('74185297','Francisco Garcia','55556666','Xela');
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('96321458','Maria Mercedes','74511236','Xela');
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('95478745','Mishell Salguero','33254158','Xela');
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('12134587','Max Payne','45478859','Xela');
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('96563217','Optimus Prime','65554877','Xela');
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('74588563','Dante Gebel','55654787','Xela');
+INSERT INTO cliente (nit, nombre, telefono, direccion) VALUES ('85445478','Buzz Lightyear','55459923','Xela');
+
+INSERT INTO mueble (modelo, nombre, precio, costo) VALUES ('Silla-e','Silla electrica',5200,'1100');
+INSERT INTO mueble (modelo, nombre, precio, costo) VALUES ('Mesa-e','Mesa elegante',3555.5,'850');
+INSERT INTO mueble (modelo, nombre, precio, costo) VALUES ('Repisa1','Repisa rustica',630,'220');
+INSERT INTO mueble (modelo, nombre, precio, costo) VALUES ('Estante1','Estante rustico',533,'22');
+
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Silla-e', '2020-05-15');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Silla-e', '2020-05-17');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Silla-e', '2020-06-12');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Silla-e', '2020-08-19');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Mesa-e', '2021-01-12');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Mesa-e', '2021-03-04');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Mesa-e', '2021-07-11');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Mesa-e', '2020-02-10');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Repisa1', '2019-06-09');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Repisa1', '2021-07-10');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Repisa1', '2019-05-15');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Repisa1', '2020-05-15');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Estante1', '2021-09-1');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Estante1', '2021-09-6');
+INSERT INTO mueble_ensamblado (empleado_codigo, mueble_modelo, fecha) VALUES ('2','Estante1', '2021-09-1');
+
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (555.5,'2021-05-1',2,3,1);
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (1231,'2021-06-3',2,3,2);
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (5212.5,'2021-07-4',2,3,2);
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (8545.5,'2021-08-5',2,4,3);
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (1212.5,'2021-09-12',2,4,3);
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (9655.5,'2021-06-3',2,3,3);
+INSERT INTO venta(total, fecha, punto_venta_codigo, empleado_codigo, cliente_codigo) VALUES (1245.5,'2021-08-4',2,3,4);
+
 #documento cambiado

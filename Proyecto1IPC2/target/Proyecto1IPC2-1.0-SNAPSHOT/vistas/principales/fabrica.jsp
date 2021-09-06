@@ -28,26 +28,25 @@
                             <a class="nav-link active text-white"  href="vistas/welcome/welcomeFabrica.jsp" target="frameInterno">Inicio</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link text-white" aria-current="page" href="MuebleEnsambladoServlet?accion=listar" target="frameInterno">Ensambles</a>
+                            <a class="nav-link text-white" aria-current="page" href="MuebleEnsambladoServlet?accion=listar" target="frameInterno">Ensamblar</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="DesignServlet?accion=listar" target="frameInterno">Diseños</a>
                         </li>
                         <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="PiezaAlmacenadaServlet?accion=listar" target="frameInterno">Materia prima</a>
+                            <a class="nav-link active text-white" href="PiezaServlet?accion=listar" target="frameInterno">Piezas</a>
                         </li>
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="MuebleServlet?accion=listar" target="frameInterno">Muebles</a>
                         </li>
                         <li class="btn btn-info">
+                            <a class="nav-link active text-white" href="PiezaAlmacenadaServlet?accion=listar" target="frameInterno">Materia prima</a>
+                        </li>
+                        <li class="btn btn-info">
                             <a class="nav-link active text-white" href="MuebleEnsambladoServlet?accion=listarEnsambles" target="frameInterno">Muebles ensamblados</a>
                         </li>
-                        <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="PiezaServlet?accion=listar" target="frameInterno">Piezas</a>
-                        </li>
-                        <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="VentaServlet?accion=listar" target="frameInterno">Ventas</a>
-                        </li>
+
+
                     </ul>
                     <div class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,7 +74,7 @@
         </nav>
         <div class="m-4" style="height: 100%; width: 97%;">
             <iframe src="vistas/welcome/welcomeFabrica.jsp" name="frameInterno" style="height: 100%; width: 100%;">
-                
+
             </iframe>
         </div>
     </body>
