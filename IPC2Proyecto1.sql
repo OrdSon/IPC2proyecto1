@@ -191,7 +191,8 @@ SELECT p.codigo, p.nombre, d.cantidad, d.modelo_mueble FROM pieza as p INNER JOI
 CREATE VIEW muebles_disponibles AS
 SELECT  m.nombre, m.precio, m.modelo, e.costo, m.costo as costo_default , e.codigo, e.empleado_codigo, e.punto_venta_codigo, e.fecha FROM mueble as m INNER JOIN mueble_ensamblado as e ON m.modelo = e.mueble_modelo LEFT JOIN lote_venta as l ON l.mueble_ensamblado_codigo = e.codigo WHERE l.mueble_ensamblado_codigo IS NULL;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `muebles`.`piezas_disponibles` AS select `muebles`.`piezas_listas`.`pieza` AS `pieza`,`muebles`.`piezas_listas`.`tipo` AS `tipo`,count(`muebles`.`piezas_listas`.`costo`) AS `cantidad`,`muebles`.`piezas_listas`.`costo` AS `costo` from `muebles`.`piezas_listas` where (`muebles`.`piezas_listas`.`mueble` is null) group by `muebles`.`piezas_listas`.`costo`;
+CREATE VIEW piezas_disponibles AS
+SELECT pieza, tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mueble IS NULL GROUP BY costo;
 
 CREATE VIEW coincidencias AS
 select p.pieza, p.tipo, p.cantidad as disponibles, p.costo, d.modelo_mueble, d.cantidad as necesarias from piezas_disponibles as p inner join diseño as d on p.pieza = d.pieza_codigo;
@@ -219,7 +220,6 @@ SELECT c.nit, c.nombre, d.mueble_devuelto as producto, m.modelo, m.nombre as mue
 inner join devolucion as d on d.venta_codigo = v.codigo inner join mueble_ensamblado as e on e.codigo = d.mueble_devuelto inner join mueble as m on m.modelo = e.mueble_modelo;
 
 CREATE USER 'mueblero'@'localhost' IDENTIFIED BY 'PassW123.';
-GRANT ALL PRIVILEGES ON muebles . * TO 'mueblero'@'localhost';
-ALTER USER 'mueblero'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'PassW123.';
-SET PASSWORD FOR 'mueblero'@'localhost' = 'PassW123.';
+ALTER USER 'mueblero'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassW123.';
+GRANT ALL PRIVILEGES ON muebleria . * TO 'mueblero'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;

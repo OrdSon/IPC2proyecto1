@@ -15,7 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Editar cliente</h1>
+        <h1>Editar empleado</h1>
         <%
 
             EmpleadoDAO empleadoDAO = new EmpleadoDAO();
