@@ -197,7 +197,6 @@ SELECT pieza, tipo, COUNT(costo) AS cantidad, costo FROM piezas_listas WHERE mue
 CREATE VIEW coincidencias AS
 select p.pieza, p.tipo, p.cantidad as disponibles, p.costo, d.modelo_mueble, d.cantidad as necesarias from piezas_disponibles as p inner join diseño as d on p.pieza = d.pieza_codigo;
 
-
 CREATE VIEW mueble_venta AS
 SELECT COUNT(modelo) AS disponibles , nombre, precio, modelo, costo, costo_default, codigo, empleado_codigo, punto_venta_codigo FROM muebles_disponibles group by modelo;
 
@@ -219,7 +218,9 @@ CREATE VIEW detalle_devolucion AS
 SELECT c.nit, c.nombre, d.mueble_devuelto as producto, m.modelo, m.nombre as mueble, d.total, d.fecha from venta as v inner join cliente as c on v.cliente_codigo = c.codigo 
 inner join devolucion as d on d.venta_codigo = v.codigo inner join mueble_ensamblado as e on e.codigo = d.mueble_devuelto inner join mueble as m on m.modelo = e.mueble_modelo;
 
+
 CREATE USER 'mueblero'@'localhost' IDENTIFIED BY 'PassW123.';
 ALTER USER 'mueblero'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassW123.';
 GRANT ALL PRIVILEGES ON muebles . * TO 'mueblero'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+#documento cambiado

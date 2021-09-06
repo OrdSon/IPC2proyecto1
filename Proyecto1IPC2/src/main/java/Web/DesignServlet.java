@@ -84,7 +84,7 @@ String listar = "vistas/diseño/listarDiseños.jsp";
                 Pieza pieza = piezaDAO.listarNombre(nombre);
                 request.getSession().setAttribute("piezaDiseñoActiva", pieza);
                 
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
             }
             acceso = listar;
         } else if (accion.equalsIgnoreCase("Buscar pieza")) {
@@ -93,7 +93,7 @@ String listar = "vistas/diseño/listarDiseños.jsp";
                 int codigo = Integer.parseInt(txtCodigo);
                 Pieza pieza = piezaDAO.listarCodigo(codigo);
                 request.getSession().setAttribute("piezaDiseñoActiva", pieza);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
             }
             acceso = listar;
         }

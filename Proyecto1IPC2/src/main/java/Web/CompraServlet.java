@@ -47,21 +47,24 @@ public class CompraServlet extends HttpServlet {
         String acceso = "";
         String accion = request.getParameter("accion");
         if (accion.equalsIgnoreCase("listar")) {
-            
+
             acceso = listar;
         } else if (accion.equalsIgnoreCase("nuevo")) {
             acceso = añadir;
         } else if (accion.equalsIgnoreCase("añadir")) {
-            
-            String txtCantidad = request.getParameter("txtCantidad");
-            int cantidad = Integer.parseInt(txtCantidad);
 
-            Compra compra = crearCompra(request);
-            PiezaAlmacenada piezaAlmacenada = crearPieza(request, compra);
+            String txtCantidad = request.getParameter("txtCantidad");
             try {
-                compraDAO.comprarPiezas(compra, piezaAlmacenada, cantidad);
-            } catch (SQLException e) {
-                System.out.println("Error creando compras en el servlet");
+                int cantidad = Integer.parseInt(txtCantidad);
+
+                Compra compra = crearCompra(request);
+                PiezaAlmacenada piezaAlmacenada = crearPieza(request, compra);
+                try {
+                    compraDAO.comprarPiezas(compra, piezaAlmacenada, cantidad);
+                } catch (SQLException e) {
+                    System.out.println("Error creando compras en el servlet");
+                }
+            } catch (Exception e) {
             }
 
             acceso = BUSCAR_PIEZA;
@@ -91,14 +94,14 @@ public class CompraServlet extends HttpServlet {
                     pieza = null;
                 }
                 request.getSession().setAttribute("piezaActiva", pieza);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
             }
             acceso = BUSCAR_PIEZA;
-        }else if (accion.equalsIgnoreCase("desc")) {
-            request.getSession().setAttribute("ordenPiezas",1);
+        } else if (accion.equalsIgnoreCase("desc")) {
+            request.getSession().setAttribute("ordenPiezas", 1);
             acceso = BUSCAR_PIEZA;
-        }else if (accion.equalsIgnoreCase("asc")) {
-            request.getSession().setAttribute("ordenPiezas",2);
+        } else if (accion.equalsIgnoreCase("asc")) {
+            request.getSession().setAttribute("ordenPiezas", 2);
             acceso = BUSCAR_PIEZA;
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
