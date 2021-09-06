@@ -23,6 +23,7 @@ public class loginServlet extends HttpServlet {
     private final String FABRICA = "vistas/principales/fabrica.jsp";
     private final String VENTAS = "vistas/principales/ventas.jsp";
     private final String ADMINISTRACION = "vistas/principales/administracion.jsp";
+    private final String FAIL = "img/0nDG5VW.png";
     private final String INDEX = "index.jsp";
 
     @Override
@@ -71,6 +72,9 @@ public class loginServlet extends HttpServlet {
                 break;
             case 3:
                 destino = ADMINISTRACION;
+                break;
+            case 61:
+                destino = FAIL;
                 break;
             default:
                 destino = INDEX;

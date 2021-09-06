@@ -68,10 +68,10 @@ public class EmpleadoServlet extends HttpServlet {
             empleadoDAO.editar(empleado);
             acceso = listar;
 
-        } else if (accion.equalsIgnoreCase("eliminar")) {
+        } else if (accion.equalsIgnoreCase("cancelar")) {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
             EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-            empleadoDAO.eliminar(codigo);
+            empleadoDAO.cancelar(codigo);
             acceso = listar;
         }
         RequestDispatcher vista = request.getRequestDispatcher(acceso);

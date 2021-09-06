@@ -5,6 +5,7 @@ Modelos\Devolucion.class
 Web\MovimientoServlet.class
 Modelos\LoteVenta.class
 Reportes\Reporte.class
+Reportes\ReporteDevoluciones.class
 Modelos\Cliente.class
 DAO\DiseñoDAO.class
 Modelos\PuntoVenta.class
@@ -42,8 +43,10 @@ DAO\MuebleEnsambladoDAO.class
 Modelos\Movimiento.class
 Web\loginServlet.class
 Web\EmpleadoServlet.class
+Modelos\DetalleDevolucion.class
 Modelos\piezaComprada.class
 DAO\EmpleadoDAO.class
+listarDevoluciones\listarDevoluciones.class
 Web\DesignServlet.class
 Web\CompraServlet.class
 Utilidades\SweetAlert.class

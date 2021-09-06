@@ -29,9 +29,9 @@
             if (request.getSession().getAttribute("encabezadoVentas") != null) {
                 encabezado = (String) request.getSession().getAttribute("encabezadoVentas");
             }%>
-            <div class="d-flex justify-content-center">
-                <label><%=encabezado %></label>
-            </div>
+        <div class="d-flex justify-content-center">
+            <label><%=encabezado%></label>
+        </div>
         <div class="d-flex justify-content-center">
 
 
@@ -74,13 +74,14 @@
                             </div>
 
                         </div>
-                            <div class="list-group d-flex justify-content-center">
-                                <a href="ReporteServlet?accion=Ver ventas por cliente" class="list-group-item list-group-item-primary">Ver ventas por cliente</a>
-                                <a href="ReporteServlet?accion=Ver ventas por fecha" class="list-group-item list-group-item-secondary">Ver ventas por fecha</a>
-                                <a href="ReporteServlet?accion=Ver ventas del mejor" class="list-group-item list-group-item-primary">Ver ventas del mejor vendedor</a>
-                                <a href="ReporteServlet?accion=listar" class="list-group-item list-group-item-secondary">Ver todas las ventas</a>
-                                <a href="ReporteServlet?accion=exportar" class="list-group-item list-group-item-info">Exportar tabla</a>
-                            </div>
+
+                        <div class="list-group d-flex justify-content-center">
+                            <input type = "submit" name = "accion" value = "Ver ventas por cliente" class="list-group-item list-group-item-primary"><br>
+                            <input type = "submit" name = "accion" value = "Ver ventas por fecha" class="list-group-item list-group-item-secondary"><br>
+                            <input type = "submit" name = "accion" value = "Ver ventas del mejor" class="list-group-item list-group-item-primary"><br>
+                            <input type = "submit" name = "accion" value = "listar" class="list-group-item list-group-item-primary"><br>
+                            <a href="ReporteServlet?accion=exportar" class="list-group-item list-group-item-info">Exportar tabla</a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -138,16 +139,16 @@
                         </tr>
                     </tbody>
                     <%if (j == detalles.size() - 1) {%>
-                    </table>
-                        <%}%>
-                        <%}
-                                }
-                            }
-                        %>
-                    
-                        </div>  
-        </div>
-                        </div>
+                </table>
+                <%}%>
+                <%}
+                        }
+                    }
+                %>
 
-                        </body>
-                        </html>
+            </div>  
+        </div>
+    </div>
+
+</body>
+</html>

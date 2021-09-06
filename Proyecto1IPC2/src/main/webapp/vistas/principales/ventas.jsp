@@ -42,6 +42,9 @@
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="ClienteServlet?accion=listar" target="frameInterno">Agregar cliente</a>
                         </li>
+                        <li class="btn btn-info">
+                            <a class="nav-link active text-white" href="DevolucionServlet?accion=listar" target="frameInterno">Devoluciones</a>
+                        </li>
                     </ul>
                     <div class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -15,13 +15,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Muebleria clientes</title>
     </head>
     <body>
         <h1>Lista de empleados</h1>
-        <a href="EmpleadoServlet?accion=nuevo">Añadir Empleado</a>
-        <table border = "1">
+        <a href="EmpleadoServlet?accion=nuevo" class="btn btn-info">Añadir Empleado</a>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Codigo</th>
@@ -58,9 +60,9 @@
                     
                     <td>
 
-                        <a href="EmpleadoServlet?accion=editar&codigo=<%=empleado.getCodigo()%>">editar</a>
+                        <a href="EmpleadoServlet?accion=editar&codigo=<%=empleado.getCodigo()%>" class="btn btn-warning">editar</a>
 
-                        <a href="EmpleadoServlet?accion=eliminar&codigo=<%=empleado.getCodigo()%>">Eliminar</a>
+                        <a href="EmpleadoServlet?accion=cancelar&codigo=<%=empleado.getCodigo()%>" class="btn btn-danger">Cancelar</a>
                     </td>
                 </tr>
                 <%}%>

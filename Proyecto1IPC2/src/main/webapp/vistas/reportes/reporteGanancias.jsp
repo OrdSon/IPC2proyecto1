@@ -25,7 +25,7 @@
         <h1 class="text-center"> Reporte de ganancias </h1>
         <div style="height: 50px"></div>
 
-        <!--<a href="DiseñoServlet?accion=nuevo ">Añadir diseño</a> -->
+
 
         <div class="d-flex justify-content-center">
 

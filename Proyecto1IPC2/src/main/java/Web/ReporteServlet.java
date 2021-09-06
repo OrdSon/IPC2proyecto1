@@ -5,21 +5,32 @@
  */
 package Web;
 
+import DAO.CajaDAO;
 import DAO.ClienteDAO;
+import DAO.DevolucionDAO;
 import DAO.EmpleadoDAO;
+import DAO.LoteVentaDAO;
+import DAO.MovimientoDAO;
 import DAO.VentaDAO;
 import DAO.reporteDAO;
+import Modelos.Caja;
 import Modelos.Cliente;
+import Modelos.DetalleDevolucion;
 import Modelos.DetalleVenta;
+import Modelos.Devolucion;
 import Modelos.Empleado;
+import Modelos.Movimiento;
 import Modelos.MuebleVendido;
 import Modelos.VentaRealizada;
+import Reportes.ReporteDevoluciones;
 import Reportes.ReporteGanancias;
 import Reportes.ReporteMuebles;
 import Reportes.ReporteVentas;
 import Utilidades.DateManager;
+import com.mysql.cj.jdbc.interceptors.SessionAssociationInterceptor;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -37,15 +48,21 @@ public class ReporteServlet extends HttpServlet {
     String listar = "vistas/reportes/reporteVentas.jsp";
     String listarGanancias = "vistas/reportes/reporteGanancias.jsp";
     String listarMuebles = "vistas/reportes/reporteMuebles.jsp";
-    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+    String listarDevoluciones = "vistas/reportes/reporteDevolucion.jsp";
+    CajaDAO cajaDAO = new CajaDAO();
     VentaDAO ventaDAO = new VentaDAO();
     reporteDAO reporteDAO = new reporteDAO();
     ClienteDAO clienteDAO = new ClienteDAO();
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
     DateManager dateManager = new DateManager();
+    LoteVentaDAO loteVentaDAO = new LoteVentaDAO();
+    DevolucionDAO devolucionDAO = new DevolucionDAO();
     ReporteVentas reporteVentas = new ReporteVentas();
+    MovimientoDAO movimientoDAO = new MovimientoDAO();
     ReporteMuebles reporteMuebles = new ReporteMuebles();
     ReporteGanancias reporteGanancias = new ReporteGanancias();
-    
+    ReporteDevoluciones reporteDevoluciones = new ReporteDevoluciones();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,7 +88,7 @@ public class ReporteServlet extends HttpServlet {
         } else if (accion.equalsIgnoreCase("listarGanancias")) {
             setReporteGanancias(request);
             acceso = listarGanancias;
-        } else if (accion.equalsIgnoreCase("Buscar")) {
+        } else if (accion.equalsIgnoreCase("Buscar empleado")) {
             Empleado empleado = empleadoDAO.listarDPILike(request.getParameter("txtDPI"));
             if (empleado != null) {
                 request.getSession().setAttribute("empleadoReporteActivo", empleado);
@@ -95,7 +112,7 @@ public class ReporteServlet extends HttpServlet {
         } else if (accion.equalsIgnoreCase("Ver ganancias por empleado")) {
             request.getSession().setAttribute("encabezadoGanancias", "Reporte de ganancias por empleado");
             String dpi = request.getParameter("txtDPI");
-            if (dpi!=null && !dpi.isEmpty()) {
+            if (dpi != null && !dpi.isEmpty()) {
                 setReporteGananciasFecha(request, dpi);
             }
 
@@ -123,8 +140,53 @@ public class ReporteServlet extends HttpServlet {
             reporteMuebles.exportarReporte(response, reporteMuebles.getReporteMuebles(request), "Reporte de muebles");
         } else if (accion.equalsIgnoreCase("exportarGanancias")) {
             reporteGanancias.exportarReporte(response, reporteGanancias.getReporteGanancias(request), "Reporte de ganancias");
+        } else if (accion.equalsIgnoreCase("agregarDevolucion")) {
+            try {
+                int codigo = Integer.parseInt(request.getParameter("muebleCodigo"));
+                if (codigo != 0) {
+                    int muebleCodigo = Integer.parseInt(request.getParameter("muebleCodigo"));
+                    int ventaCodigo = Integer.parseInt(request.getParameter("ventaCodigo"));
+                    double precioVenta = Double.parseDouble(request.getParameter("precioVenta"));
+                    double total = (precioVenta / 3);
+                    LocalDate hoy = LocalDate.now();
+                    Caja caja = cajaDAO.listarCodigo(1);
+                    double capital = caja.getCapital();
+                    double resultado = (capital - total);
+                    Caja cajaEditada = new Caja(1, resultado);
+                    Movimiento movimiento = new Movimiento(total, resultado, ventaCodigo, ventaCodigo);
+                    movimientoDAO.añadir(movimiento);
+                    cajaDAO.editar(cajaEditada);
+                    Devolucion devolucion = new Devolucion(hoy, total, muebleCodigo, ventaCodigo);
+                    devolucionDAO.añadir(devolucion);
+                    loteVentaDAO.eliminar(codigo);
+                }
+            } catch (NumberFormatException e) {
+            }
+            acceso = listarDevoluciones;
+        } else if (accion.equalsIgnoreCase("listarDevoluciones") || accion.equalsIgnoreCase("Ver todas las devoluciones")) {
+            ArrayList<DetalleDevolucion> devoluciones = devolucionDAO.listarDetalles();
+            request.getSession().setAttribute("listaDevoluciones", devoluciones);
+            acceso = listarDevoluciones;
+        } else if (accion.equalsIgnoreCase("Buscar")) {
+            try {
+                String nit = request.getParameter("txtNit");
+                Cliente cliente = clienteDAO.listarNit(nit);
+                request.getSession().setAttribute("clienteDevolucionActivo", cliente);
+            } catch (NullPointerException e) {
+            }
+            acceso = listarDevoluciones;
+        } else if (accion.equalsIgnoreCase("Ver devoluciones por fecha")) {
+            getDevolucionesFecha(request);
+            acceso = listarDevoluciones;
+        } else if (accion.equalsIgnoreCase("Ver devoluciones por cliente")) {
+            getDevolucionesCliente(request);
+            acceso = listarDevoluciones;
+        } else if (accion.equals("exportarDevolucion")) {
+            reporteDevoluciones.exportarReporte(response, reporteDevoluciones.getReporteDevoluciones(request), "Reporte de devoluciones");
+            acceso = listarDevoluciones;
         }
-
+ 
+        
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(acceso);
         requestDispatcher.forward(request, response);
     }
@@ -290,4 +352,66 @@ public class ReporteServlet extends HttpServlet {
         }
     }
 
+    private void getDevolucionesFecha(HttpServletRequest request) {
+
+        String fechaInicio = request.getParameter("inicial");
+        String fechaFinal = request.getParameter("final");
+        Date inicio;
+        Date fin;
+
+        if (fechaInicio.isEmpty()) {
+            inicio = dateManager.convertirADate(LocalDate.MIN);
+        } else {
+            try {
+                inicio = dateManager.formatear(fechaInicio);
+            } catch (ParseException e) {
+                inicio = dateManager.convertirADate(LocalDate.MIN);
+            }
+        }
+        if (fechaFinal.isEmpty()) {
+            fin = dateManager.convertirADate(LocalDate.now());
+        } else {
+            try {
+                fin = dateManager.formatear(fechaFinal);
+            } catch (ParseException e) {
+                fin = dateManager.convertirADate(LocalDate.now());
+            }
+        }
+        ArrayList<DetalleDevolucion> detalleDevolucions = devolucionDAO.listarDetallesBetween(inicio, fin, null);
+        request.getSession().setAttribute("listaDevoluciones", detalleDevolucions);
+
+    }
+
+    private void getDevolucionesCliente(HttpServletRequest request) {
+        String nit = request.getParameter("txtNit");
+        if (nit == null || nit.isEmpty()) {
+            return;
+        }
+        String fechaInicio = request.getParameter("inicial");
+        String fechaFinal = request.getParameter("final");
+        Date inicio;
+        Date fin;
+
+        if (fechaInicio.isEmpty()) {
+            inicio = dateManager.convertirADate(LocalDate.MIN);
+        } else {
+            try {
+                inicio = dateManager.formatear(fechaInicio);
+            } catch (ParseException e) {
+                inicio = dateManager.convertirADate(LocalDate.MIN);
+            }
+        }
+        if (fechaFinal.isEmpty()) {
+            fin = dateManager.convertirADate(LocalDate.now());
+        } else {
+            try {
+                fin = dateManager.formatear(fechaFinal);
+            } catch (ParseException e) {
+                fin = dateManager.convertirADate(LocalDate.now());
+            }
+        }
+        ArrayList<DetalleDevolucion> detalleDevolucions = devolucionDAO.listarDetallesBetween(inicio, fin, nit);
+        request.getSession().setAttribute("listaDevoluciones", detalleDevolucions);
+
+    }
 }

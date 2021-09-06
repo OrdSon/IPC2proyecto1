@@ -43,6 +43,9 @@
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="EmpleadoServlet?accion=listar" target="frameInterno">Empleados</a>
                         </li>
+                        <li class="btn btn-info">
+                            <a class="nav-link active text-white" href="ReporteServlet?accion=listarDevoluciones" target="frameInterno">Reporte de devoluciones</a>
+                        </li>
                         
                     </ul>
                     <div class="nav-item dropdown text-center">

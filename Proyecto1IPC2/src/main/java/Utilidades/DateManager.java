@@ -9,8 +9,6 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,16 +26,10 @@ public class DateManager {
         return localDate;
     }
 
-    public Date formatear(String fecha) {
+    public Date formatear(String fecha) throws ParseException{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
             java.util.Date temporalDate = format.parse(fecha);
             Date date = new Date(temporalDate.getTime());
             return date;
-        } catch (ParseException ex) {
-            Logger.getLogger(Fecha.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 }

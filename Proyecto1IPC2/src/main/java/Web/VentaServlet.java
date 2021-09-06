@@ -93,7 +93,7 @@ public class VentaServlet extends HttpServlet {
             try {
                 String nit = request.getParameter("txtNIT");
                 Cliente cliente = clienteDAO.listarNit(nit);
-                request.getSession().setAttribute("clienteVentaActiva", cliente);
+                request.getSession().setAttribute("clienteDevolucionActivo", cliente);
                 acceso = realizadas;
             } catch (NullPointerException e) {
             }

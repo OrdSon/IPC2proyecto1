@@ -12,6 +12,7 @@ import Modelos.Mueble;
 import Modelos.MuebleEnsamblado;
 import Utilidades.DateManager;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,15 +45,15 @@ public class MuebleEnsambladoServlet extends HttpServlet {
         String accion = request.getParameter("accion");
         if (accion.equalsIgnoreCase("listar")) {
             acceso = listar;
-        }else if (accion.equalsIgnoreCase("listarEnsambles")) {
+        } else if (accion.equalsIgnoreCase("listarEnsambles")) {
             acceso = ensambles;
-        }else if (accion.equalsIgnoreCase("asc")) {
+        } else if (accion.equalsIgnoreCase("asc")) {
             request.getSession().setAttribute("ordenEnsambles", 2);
             acceso = ensambles;
-        }else if (accion.equalsIgnoreCase("desc")) {
+        } else if (accion.equalsIgnoreCase("desc")) {
             request.getSession().setAttribute("ordenEnsambles", 1);
             acceso = ensambles;
-        }else if (accion.equalsIgnoreCase("añadir")) {
+        } else if (accion.equalsIgnoreCase("añadir")) {
             Empleado activo = obtenerEmpleado(request);
             String muebleModelo = request.getParameter("txtModelo");
             String fecha = request.getParameter("fecha");
@@ -60,8 +61,14 @@ public class MuebleEnsambladoServlet extends HttpServlet {
             if (fecha == null || fecha.isEmpty()) {
                 localDate = LocalDate.now();
             } else {
-                java.sql.Date sqlDate = dateManager.formatear(fecha);
-                localDate = dateManager.convertirALocalDate(sqlDate);
+                java.sql.Date sqlDate;
+                try {
+                    sqlDate = dateManager.formatear(fecha);
+                    localDate = dateManager.convertirALocalDate(sqlDate);
+                } catch (ParseException e) {
+                    localDate = LocalDate.now();
+                }
+
             }
             MuebleEnsamblado muebleEnsamblado = new MuebleEnsamblado(activo.getCodigo(), 2, muebleModelo, localDate);
             muebleEnsambladoDAO.añadir(muebleEnsamblado);
