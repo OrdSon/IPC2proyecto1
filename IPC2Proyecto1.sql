@@ -221,5 +221,5 @@ inner join devolucion as d on d.venta_codigo = v.codigo inner join mueble_ensamb
 
 CREATE USER 'mueblero'@'localhost' IDENTIFIED BY 'PassW123.';
 ALTER USER 'mueblero'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassW123.';
-GRANT ALL PRIVILEGES ON muebleria . * TO 'mueblero'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON muebles . * TO 'mueblero'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
