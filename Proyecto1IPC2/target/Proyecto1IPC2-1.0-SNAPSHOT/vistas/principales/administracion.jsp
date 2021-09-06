@@ -27,7 +27,7 @@
                         <li class="btn btn-info">
                             <a class="nav-link active text-white"  href="vistas/welcome/welcomeAdministracion.jsp" target="frameInterno">Inicio</a>
                         </li>
-
+                        
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="ReporteServlet?accion=listar" target="frameInterno">Reporte de ventas</a>
                         </li>
@@ -46,10 +46,7 @@
                         <li class="btn btn-info">
                             <a class="nav-link active text-white" href="ReporteServlet?accion=listarDevoluciones" target="frameInterno">Reporte de devoluciones</a>
                         </li>
-                        <li class="btn btn-info">
-                            <a class="nav-link active text-white" href="DesignServlet?accion=listar" target="frameInterno">Diseños</a>
-                        </li>
-
+                        
                     </ul>
                     <div class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -77,7 +74,7 @@
         </nav>
         <div class="m-4" style="height: 100%; width: 97%;">
             <iframe src="vistas/welcome/welcomeAdministracion.jsp" name="frameInterno" style="height: 100%; width: 100%;">
-
+                
             </iframe>
         </div>
     </body>

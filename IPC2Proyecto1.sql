@@ -15,6 +15,7 @@ CREATE TABLE empleado(
     CONSTRAINT pk_empleado PRIMARY KEY (codigo)
 );
 
+
 #check
 CREATE TABLE punto_venta(
     codigo INT NOT NULL AUTO_INCREMENT,
@@ -23,7 +24,7 @@ CREATE TABLE punto_venta(
     telefono VARCHAR (8),
     CONSTRAINT pk_punto_venta PRIMARY KEY (codigo)
 );
-#check
+
 CREATE TABLE caja(
     codigo INT NOT NULL AUTO_INCREMENT,
     capital DOUBLE,
@@ -41,7 +42,7 @@ CREATE TABLE cliente(
     direccion VARCHAR(200),
     CONSTRAINT pk_cliente PRIMARY KEY (codigo)
 );
-#check
+
 CREATE TABLE venta(
     codigo INT NOT NULL AUTO_INCREMENT,
     total DOUBLE,
@@ -57,7 +58,7 @@ CREATE TABLE venta(
     CONSTRAINT fk_venta_cliente FOREIGN KEY (cliente_codigo) 
     REFERENCES cliente(codigo)
 );
-#check
+
 CREATE TABLE devolucion(
     codigo INT NOT NULL AUTO_INCREMENT,
     fecha DATE,
@@ -70,14 +71,12 @@ CREATE TABLE devolucion(
     CONSTRAINT fk_mueble_devuelto 
 	FOREIGN KEY (mueble_devuelto) REFERENCES mueble_ensamblado(codigo)
 );
-#check
+
 CREATE TABLE pieza(
     codigo INT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100),
     CONSTRAINT pk_pieza PRIMARY KEY (codigo)
 );
-
-#check
 ALTER TABLE mueble DROP PRIMARY KEY, ADD PRIMARY KEY(nombre);
 CREATE TABLE mueble(
 	modelo VARCHAR(8),
@@ -87,7 +86,7 @@ CREATE TABLE mueble(
     CONSTRAINT pk_mueble PRIMARY KEY (nombre)
 );
 
-#check
+
 CREATE TABLE mueble_ensamblado (
     codigo INT NOT NULL AUTO_INCREMENT,
     empleado_codigo INT NOT NULL,
@@ -103,7 +102,7 @@ CREATE TABLE mueble_ensamblado (
     CONSTRAINT fk_mueble_modelo FOREIGN KEY (mueble_modelo)
     REFERENCES mueble(modelo) 
 );
-#check
+
 CREATE TABLE compra(
     codigo INT NOT NULL AUTO_INCREMENT,
     fecha DATE,
@@ -113,7 +112,7 @@ CREATE TABLE compra(
     CONSTRAINT fk_punto_compra FOREIGN KEY (punto_venta_codigo) 
     REFERENCES punto_venta(codigo)
 );
-#check
+
 CREATE TABLE pieza_almacenada(
     codigo INT NOT NULL AUTO_INCREMENT,
     costo DOUBLE,
@@ -128,7 +127,7 @@ CREATE TABLE pieza_almacenada(
     CONSTRAINT fk_pieza_mueble FOREIGN KEY (mueble_ensamblado_codigo)
     REFERENCES mueble_ensamblado(codigo)   
 );
-#check
+
 CREATE TABLE movimiento(
     codigo INT NOT NULL AUTO_INCREMENT,
     monto DOUBLE,
@@ -144,7 +143,7 @@ CREATE TABLE movimiento(
     CONSTRAINT fk_movimiento_caja FOREIGN KEY (caja_codigo)
     REFERENCES caja(codigo) 
 );
-#check
+
 CREATE TABLE lote_venta(
     codigo INT NOT NULL AUTO_INCREMENT,
     mueble_ensamblado_codigo INT,
@@ -155,7 +154,7 @@ CREATE TABLE lote_venta(
     CONSTRAINT fk_lote_venta FOREIGN KEY (venta_codigo)
     REFERENCES venta(codigo) 
 );
-#check
+
 CREATE TABLE diseño (
 	codigo INT NOT NULL AUTO_INCREMENT,
     modelo_mueble VARCHAR(8),
@@ -166,11 +165,14 @@ CREATE TABLE diseño (
     CONSTRAINT fk_diseño_pieza FOREIGN KEY (pieza_codigo) REFERENCES pieza(codigo)
 );
 
-INSERT INTO punto_venta(codigo, nombre, direccion, telefono) VALUES(2,'Mi muebleria', 'Paseo las americas local 1', '50746766');
 INSERT INTO caja (capital, punto_venta_codigo) VALUES (10000, 2);
-INSERT INTO empleado(nombre, area, contraseña, dpi, telefono, direccion, fecha_nacimiento, salario, fecha_contratacion) VALUES('Soy admin');
 
-SELECT * FROM empleado;
+ALTER TABLE devolucion ADD 
+mueble_devuelto INT;
+ALTER TABLE devolucion ADD CONSTRAINT fk_mueble_devuelto 
+FOREIGN KEY (mueble_devuelto) REFERENCES lote_venta(mueble_ensamblado_codigo);
+
+use muebles;
 
 create view empleados_fabrica AS
 select * from empleado where area = 1;
@@ -214,7 +216,6 @@ CREATE VIEW detalle_devolucion AS
 SELECT c.nit, c.nombre, d.mueble_devuelto as producto, m.modelo, m.nombre as mueble, d.total, d.fecha from venta as v inner join cliente as c on v.cliente_codigo = c.codigo 
 inner join devolucion as d on d.venta_codigo = v.codigo inner join mueble_ensamblado as e on e.codigo = d.mueble_devuelto inner join mueble as m on m.modelo = e.mueble_modelo;
 
-CREATE USER 'mueblero'@'localhost' IDENTIFIED BY '1234';
-GRANT ALL PRIVILEGES ON muebles . * TO 'mueblero'@'localhost';
-FLUSH PRIVILEGES;
-use muebles;
+
+
+
