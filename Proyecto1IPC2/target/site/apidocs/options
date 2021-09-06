@@ -1,0 +1,24 @@
+-classpath
+'C:/Users/ordso/.m2/repository/javax/javaee-web-api/7.0/javaee-web-api-7.0.jar;C:/Users/ordso/.m2/repository/mysql/mysql-connector-java/8.0.26/mysql-connector-java-8.0.26.jar;C:/Users/ordso/.m2/repository/com/google/protobuf/protobuf-java/3.11.4/protobuf-java-3.11.4.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/ordso/OneDrive/Documentos/NetBeansProjects/IPC2proyecto1/Proyecto1IPC2/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2021. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/ordso/OneDrive/Documentos/NetBeansProjects/IPC2proyecto1/Proyecto1IPC2/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Proyecto1IPC2 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/ordso/OneDrive/Documentos/NetBeansProjects/IPC2proyecto1/Proyecto1IPC2/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Proyecto1IPC2 1.0-SNAPSHOT API'

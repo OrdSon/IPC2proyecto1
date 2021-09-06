@@ -18,32 +18,30 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
     </head>
-    <body>
-        <div class = "container mt-4 col-lg-4 text-center">
-            <div class="card col-sm-10">
-                <div class="card-body ">
-                    <form class="form-sign" action="loginServlet">
-                        <div class="form-group">
-                            <h2>Login</h2>
-                        </div>
-                        <div class="form-group">
-                            <label>Empleado:</label>
-                            <input type="text" name ="txtEmpleado" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Contraseña</label>
-                            <input type="password" name ="txtContraseña" class="form-control">
-                        </div>
-                        
-                        <input type="submit" name="accion" value="ingresar" class="btn btn-primary btn-block">
-                    </form>
+    <body style="background-image: url('img/texture-background.jpg');">
+        <div style="height: 10vh;"> </div>
+            <div class = "container mt-4 col-lg-4 text-center">
+                <div class="card col-sm-10">
+                    <div class="card-body ">
+                        <form class="form-sign" action="loginServlet">
+                            <div class="form-group">
+                                <h2>Login</h2>
+                            </div>
+                            <div class="form-group">
+                                <label>Empleado:</label>
+                                <input type="text" name ="txtEmpleado" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Contraseña</label>
+                                <input type="password" name ="txtContraseña" class="form-control">
+                            </div>
+
+                            <input type="submit" name="accion" value="ingresar" class="btn btn-primary btn-block">
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <%Conexion conexion = new Conexion();%>
-        <a href="ClienteServlet?accion=listar">Mostrar clientes</a><br>
-        <a href="PuntoVentaServlet?accion=listar">Mostrar puntos de venta</a><br>
-        <a href="EmpleadoServlet?accion=listar">Mostrar empleados</a>
-        <a href="EnsambladorServlet?comando=listar" >Mostrar ensambladores</a>
+            <%Conexion conexion = new Conexion();%>
+        
     </body>
 </html>

@@ -7,28 +7,39 @@ package Utilidades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
  * @author ordson
  */
 public class Conexion {
+
     private static Connection con;
-    public Conexion(){
+
+    public Conexion() {
+        conectar();
+    }
+
+    private void conectar() {
         try {
             if (con != null) {
                 System.out.println("conexion previa aun vigente");
                 return;
             }
             Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/muebles","root","Shinouyo0.");     
+            String schema = "jdbc:mysql://localhost:3306/muebles";
+            String user = "mueblero";
+            String password = "1234";
+            con = DriverManager.getConnection(schema, user, password);
             System.out.println("conexion exitosa");
-        } catch (Exception e) {
-            System.err.println("Error"+e);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("Error" + e);
         }
     }
-    public static Connection getConnection(){
+
+    public static Connection getConnection() {
         return con;
     }
-    
+
 }
